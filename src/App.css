@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #393E46;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,8 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: black;
+  size: 10px;
 }
 
 @keyframes App-logo-spin {
@@ -39,7 +40,7 @@
 
 .Navbar {
   height: 8vh;
-  background-color: #777777;
+  background-color: #EEEEEE;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -51,5 +52,6 @@
   color: black;
 }
 
-
-
+.NavbarLogo {
+  background-image: url(./NavbarLogo.png);
+}

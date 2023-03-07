@@ -1,23 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
+import sitelogo from './SiteLogo.png';
 import Navbar from './components/Navbar.js';
 function App() {
   return (
     <div className="App">
       <Navbar/>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src= {sitelogo} alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Welcome to Wheel Call You, where we make your moving experience that much better! To get started, please click the button below:
         </p>
-        <a
+        <button
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
-        </a>
+          Sign Up Now!
+        </button>
       </header>
     </div>
   );
