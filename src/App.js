@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { withRouter } from 'react-router';
 import './App.css';
 import sitelogo from './SiteLogo.png';
 import Navbar from './components/navbar/Navbar.js';
@@ -12,11 +14,11 @@ function App() {
       <Router>
         <Navbar/>
         <Routes>
-          <Route exact path='/' component={App} />
-          <Route path='/about' component={About} />
-          <Route path='/contact' component={Contact} />
-          <Route path='/login' component={Login} />
-          <Route path='/signUp' component={SignUp} />
+          <Route exact path='/' element={<App />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signUp' element={<SignUp />} />
         </Routes>
       </Router>
       <header className="App-header">
