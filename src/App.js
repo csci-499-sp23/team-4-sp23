@@ -32,7 +32,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Sign Up Now!
+          Sign Up Now
         </button>
       </header>
     </div>
