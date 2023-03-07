@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: red;
+  color: white;
 }
 
 .App-link {
@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.Navbar {
+  height: 8vh;
+  background-color: #777777;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.NavButtons {
+  font-size: larger;
+  text-decoration: none;
+  color: black;
+}
+
+
+
