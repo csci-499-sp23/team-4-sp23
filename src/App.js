@@ -1,10 +1,24 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
 import sitelogo from './SiteLogo.png';
-import Navbar from './components/Navbar.js';
+import Navbar from './components/navbar/Navbar.js';
+import Login from './components/pages/Login.js';
+import About from './components/pages/About.js';
+import Contact from './components/pages/Contact.js';
+import SignUp from './components/pages/SignUp.js';
 function App() {
   return (
     <div className="App">
-      <Navbar/>
+      <Router>
+        <Navbar/>
+        <Routes>
+          <Route exact path='/' component={App} />
+          <Route path='/about' component={About} />
+          <Route path='/contact' component={Contact} />
+          <Route path='/login' component={Login} />
+          <Route path='/signUp' component={SignUp} />
+        </Routes>
+      </Router>
       <header className="App-header">
         <img src= {sitelogo} alt="logo" />
         <p>
