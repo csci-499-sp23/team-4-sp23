@@ -26,7 +26,10 @@
 
 .App-link {
   color: black;
-  size: 10px;
+  width: 100px;
+  height: 50px;
+  font-size: large;
+  cursor: pointer;
 }
 
 @keyframes App-logo-spin {
@@ -46,12 +49,13 @@
   justify-content: space-evenly;
 }
 
+
 .NavButtons {
   font-size: larger;
   text-decoration: none;
   color: black;
 }
 
-.NavbarLogo {
-  background-image: url(./NavbarLogo.png);
+.SiteLogo {
+  size: 100px;
 }

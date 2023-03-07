@@ -2,22 +2,22 @@ import React from 'react';
 import { Link } from "react-router-dom";
 const Navbar= () =>{
     return(
-    <div>
-        <li>
-            <Link to='../App.js'><img src='./NavbarLogo.png' alt='Logo'></img></Link>
-        </li>
-        <li>
-            <Link to='/about'>About</Link>
-        </li>
-        <li>
-            <Link to='/contact'>Contact Us</Link>
-        </li>
-        <li>
-            <Link to="/login">Login</Link>
-        </li>
-        <li>
-            <Link to="/signUp">Sign Up</Link>
-        </li>
+    <div className ="Navbar">
+        <div className = "NavButtons">
+            <Link to='/App.js' className = "NavButtons"><img src='./NavbarLogo.png' alt='Logo'></img></Link>
+        </div>
+        <div className = "NavButtons">
+            <Link to='/about'className = "NavButtons">About</Link>
+        </div>
+        <div className = "NavButtons">
+            <Link to='/contact' className = "NavButtons">Contact Us</Link>
+        </div>
+        <div >
+            <Link to="/login" className = "NavButtons">Login</Link>
+        </div>
+        <div>
+            <Link to="/signUp" className = "NavButtons">Sign Up</Link>
+        </div>
     </div>
     );
 };

@@ -22,7 +22,7 @@ function App() {
         </Routes>
       </Router>
       <header className="App-header">
-        <img src= {sitelogo} alt="logo" />
+        <img src= {sitelogo} alt="logo" className = "SiteLogo"/>
         <p>
           Welcome to Wheel Call You, where we make your moving experience that much better! To get started, please click the button below:
         </p>
