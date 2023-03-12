@@ -22,16 +22,8 @@ function App() {
       <header className="App-header">
         <img src= {sitelogo} alt="logo" className = "SiteLogo"/>
         <p>
-          Welcome to Wheel Call You, where we make your moving experience that much better! To get started, please click the button below:
+          Welcome to Wheel Call You, where we make your moving experience that much better!
         </p>
-        <button
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Sign Up Now
-        </button>
       </header>
     </div>
   );

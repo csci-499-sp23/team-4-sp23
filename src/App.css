@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: red;
+  background-color: #DBE2EF;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -43,7 +43,7 @@
 
 .Navbar {
   height: 8vh;
-  background-color: #EEEEEE;
+  background-color: #3F72AF;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -58,4 +58,9 @@
 
 .SiteLogo {
   size: 100px;
+}
+
+.NavLogo {
+  height: 175px;
+  width: 175px;
 }
