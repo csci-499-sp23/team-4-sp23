@@ -6,6 +6,7 @@ import Login from './components/pages/Login.js';
 import About from './components/pages/About.js';
 import Contact from './components/pages/Contact.js';
 import SignUp from './components/pages/SignUp.js';
+
 function App() {
   return (
     <div className="App">
