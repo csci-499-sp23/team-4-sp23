@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
-import sitelogo from './SiteLogo.png';
 import Navbar from './components/navbar/Navbar.js';
+import Home from './components/pages/Home.js';
 import Login from './components/pages/Login.js';
 import About from './components/pages/About.js';
 import Contact from './components/pages/Contact.js';
@@ -12,19 +12,13 @@ function App() {
       <Router>
         <Navbar/>
         <Routes>
-          <Route exact path='/App.js' element={<App />} />
+          <Route path='/home' element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signUp' element={<SignUp />} />
         </Routes>
       </Router>
-      <header className="App-header">
-        <img src= {sitelogo} alt="logo" className = "SiteLogo"/>
-        <p>
-          Welcome to Wheel Call You, where we make your moving experience that much better!
-        </p>
-      </header>
     </div>
   );
 }
