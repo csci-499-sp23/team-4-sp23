@@ -1,8 +1,9 @@
 import React from 'react';
 const SignUp = () =>{
     return(
-    <div>
-        <h1>Sign Up</h1>
+    <div className="Signup">
+        <p>Username: <input type="text"></input></p>
+        <p>Password: <input type="password"></input></p>
     </div>
     );
 };
