@@ -18,6 +18,7 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signUp' element={<SignUp />} />
+          <Route path='*' element={<Home />} />
         </Routes>
       </Router>
     </div>
