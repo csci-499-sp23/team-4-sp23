@@ -4,7 +4,7 @@ const Navbar= () =>{
     return(
     <div className ="Navbar">
         <div className = "NavButtons">
-            <Link to='/App.js'><img src= {require('./NavbarLogo.png')} alt='Logo' className = 'NavLogo'></img></Link>
+            <Link to='/home'><img src= {require('./NavbarLogo.png')} alt='Logo' className = 'NavLogo'></img></Link>
         </div>
         <div className = "NavButtons">
             <Link to='/about'className = "NavButtons">About</Link>
