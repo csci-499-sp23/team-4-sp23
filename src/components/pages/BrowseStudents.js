@@ -7,9 +7,10 @@ import { collection, getDocs } from "@firebase/firestore";
 
 const StudentList = () =>{
     const [students, setStudents] = useState([]);
-    const studentsCollectionRef = collection(db, "students");
+    
     useEffect(() => {
         const getStudents = async () => {
+            const studentsCollectionRef = collection(db, "students");
             const data = await getDocs(studentsCollectionRef);
             setStudents(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
         };
