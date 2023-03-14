@@ -6,7 +6,6 @@ import Login from './components/pages/Login.js';
 import About from './components/pages/About.js';
 import Contact from './components/pages/Contact.js';
 import SignUp from './components/pages/SignUp.js';
-import BrowseStudents from './components/pages/BrowseStudents';
 
 function App() {
   return (
@@ -19,7 +18,6 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signUp' element={<SignUp />} />
-          <Route path='/browseStudents' element={<BrowseStudents />} />
         </Routes>
       </Router>
       <header className="App-header">
