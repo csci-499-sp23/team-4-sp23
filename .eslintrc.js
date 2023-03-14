@@ -2,6 +2,6 @@ module.exports = {
     "rules": {
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "error"
-    }
-    "plugins": ["@typescript-eslint"];
+    },
+    "plugins": ["@typescript-eslint"]
   };
