@@ -2,6 +2,7 @@ h1 {
   text-align: center;
   color: #3F72AF;
   font-family: 'Lato', sans-serif;
+  font-size: 2.5rem;
 }
 
 h2 {
@@ -33,6 +34,12 @@ hr {
   pointer-events: none;
 }
 
+.SiteLogo {
+  height: 100vh;
+  position: relative;
+  top: -150px;
+}
+
 .Navbar {
   height: 10vh;
   background-color: #3F72AF;
@@ -45,6 +52,10 @@ hr {
   font-size: 1.5rem;
   text-decoration: none;
   color: black;
+}
+
+.NavButtons:hover {
+  color:white;
 }
 
 .NavLogo {
@@ -69,3 +80,33 @@ hr {
   background-color:#DBE2EF;
   padding-top: 20px;
 }
+
+.Login-button {
+  background-color: #3F72AF;
+  width: 12%;
+  height: 4vh;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.Login-button:hover {
+  background-color: #3cb0fd;
+}
+
+.Signup-button {
+  background-color: #3F72AF;
+  width: 12%;
+  height: 4vh;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.Signup-button:hover {
+  background-color: #3cb0fd;
+}
+
+input {
+  width: 12%;
+  margin-bottom: 10px;
+}
+

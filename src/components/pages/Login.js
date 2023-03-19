@@ -22,7 +22,7 @@ const Login = () =>{
             <br></br>
             <input type="password" id="password" name="password"></input>
             <br></br><br></br>
-            <button type="submit" value="Submit" onClick={handleSubmit}></button>
+            <button className="Login-button" type="submit" value="Submit" onClick={handleSubmit}>Submit</button>
         </form>
     </div>
     );
