@@ -6,6 +6,7 @@ import Login from './components/pages/Login.js';
 import About from './components/pages/About.js';
 import Contact from './components/pages/Contact.js';
 import SignUp from './components/pages/SignUp.js';
+import RentalMap from './components/pages/RentalMap.js'
 import BrowseStudents from './components/pages/BrowseStudents.js';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<RentalMap />} />
           <Route path='/signUp' element={<SignUp />} />
           <Route path='/browseStudents' element={<BrowseStudents />} />
           <Route path='*' element={<Home />} />
