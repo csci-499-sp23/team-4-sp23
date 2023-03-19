@@ -1,8 +1,5 @@
 import React from 'react';
-import RentalMap from './components/pages/RentalMap.js'
-
 const Login = () =>{
-    var loggedIn = false;
     return(
     <div>
         <h1>Login</h1>
