@@ -1,5 +1,15 @@
 import React from 'react';
+import { useNavigate} from 'react-router-dom'
+
 const Login = () =>{
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        navigate("/RentalMap");
+    }
+
+    var loggedIn = false;
     return(
     <div>
         <h1>Login</h1>
@@ -13,7 +23,7 @@ const Login = () =>{
             <br></br>
             <input type="password" id="password" name="password"></input>
             <br></br><br></br>
-            <input type="submit" value="Submit"></input>
+            <button type="submit" value="Submit" onClick={handleSubmit}></button>
         </form>
     </div>
     );
