@@ -9,7 +9,6 @@ const Login = () =>{
         navigate("/RentalMap");
     }
 
-    var loggedIn = false;
     return(
     <div>
         <h1>Login</h1>
