@@ -29,7 +29,7 @@ const SignUp = () =>{
             <br></br>
             <input type="password" id="password" name="password"></input>
             <br></br><br></br>
-            <input type="submit" value="Submit"></input>
+            <input className = "Signup-button" type="submit" value="Submit"></input>
         </form>
     </div>
     );
