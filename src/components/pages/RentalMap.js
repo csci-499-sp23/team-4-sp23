@@ -18,7 +18,7 @@ const RentalMap = () => {
   ];
 
   const [activeInfoWindow, setActiveInfoWindow] = useState("");
-  const [markers, setMarkers] = useState(initialMarkers);
+  const [markers] = useState(initialMarkers);
 
   const containerStyle = {
     width: '100%',
