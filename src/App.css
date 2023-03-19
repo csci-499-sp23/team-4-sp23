@@ -1,3 +1,29 @@
+h1 {
+  text-align: center;
+  color: #3F72AF;
+  font-family: 'Lato', sans-serif;
+}
+
+h2 {
+  color: #3F72AF;
+  font-family: 'Lato', sans-serif;
+}
+
+p {
+  font-family: 'Source Sans Pro', sans-serif;
+  color:#DBE2EF;
+}
+
+ul {
+  color:#DBE2EF;
+}
+hr {
+  border-style: dotted none none;
+  border-width: 8px;
+  width: 5%;
+  color:#DBE2EF;
+}
+
 .App {
   text-align: center;
 }
@@ -7,57 +33,18 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #DBE2EF;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
-}
-
-.App-link {
-  color: black;
-  width: 100px;
-  height: 50px;
-  font-size: large;
-  cursor: pointer;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .Navbar {
-  height: 8vh;
+  height: 10vh;
   background-color: #3F72AF;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
 
-
 .NavButtons {
-  font-size: larger;
+  font-size: 1.5rem;
   text-decoration: none;
   color: black;
-}
-
-.SiteLogo {
-  size: 100px;
 }
 
 .NavLogo {
@@ -67,4 +54,18 @@
 
 .Signup {
   justify-self: end;
+}
+
+.Details {
+  text-align: left;
+  padding-left: 20px;
+  width: 90%;
+  line-height: 2;
+}
+
+.Home-top {
+  width: 100%;
+  margin: auto;
+  background-color:#DBE2EF;
+  padding-top: 20px;
 }
