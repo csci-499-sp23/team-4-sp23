@@ -1,35 +1,43 @@
-import React from 'react';
+import { createUserWithEmailAndPassword } from '@firebase/auth';
+import React, { useState } from 'react';
+import { auth } from '../../firebase-config';
+
 const SignUp = () =>{
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const signUp = (e) => {
+        e.preventDefault();
+        createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+            console.log(userCredential);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
     return(
         <div>
         <h1>Sign Up</h1>
 
-        <form action='/signUp.php' method="get">
-            <label for="fName">First Name</label>
-            <br></br>
-            <input type="text" id="fName" name="fName"></input>
-            <br></br>
-            <label for="lName">Last Name</label>
-            <br></br>
-            <input type="text" id="lName" name="lName"></input>
-            <br></br>
+        <form onSubmit = {signUp}>
             <label for="email">Email Address</label>
             <br></br>
-            <input type="text" id="email" name="email"></input>
-            <br></br>
-            <label for="username">Username</label>
-            <br></br>
-            <input type="text" id="username" name="username"></input>
+            <input 
+                type="email" 
+                placeholder="Enter your email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)}>
+            </input>
             <br></br>
             <label for="password">Password</label>
             <br></br>
-            <input type="password" id="password" name="password"></input>
-            <br></br>
-            <label for="password">Confirm Password</label>
-            <br></br>
-            <input type="password" id="password" name="password"></input>
+            <input 
+                type="password" 
+                placeholder="Enter your password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}>
+            </input>
             <br></br><br></br>
-            <input className = "Signup-button" type="submit" value="Submit"></input>
+            <button type="submit">Sign Up</button>
         </form>
     </div>
     );
