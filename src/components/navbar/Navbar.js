@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import AuthDetails from '../pages/AuthDetails';
+
 const Navbar= () =>{
     return(
     <div className ="Navbar">
@@ -18,6 +20,7 @@ const Navbar= () =>{
         <div>
             <Link to= '/signUp' className = "NavButtons">Sign Up</Link>
         </div>
+        <AuthDetails/>
     </div>
     );
 };
