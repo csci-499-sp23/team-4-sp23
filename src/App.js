@@ -9,11 +9,13 @@ import SignUp from './components/pages/SignUp.js';
 import RentalMap from './components/pages/RentalMap.js'
 import BrowseStudents from './components/pages/BrowseStudents.js';
 
+
 function App() {
   return (
     <div className="App">
       <Router>
         <Navbar/>
+        
         <Routes>
           <Route path='/home' element={<Home />} />
           <Route path='/about' element={<About />} />
