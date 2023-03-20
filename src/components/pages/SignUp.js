@@ -14,7 +14,6 @@ const SignUp = () =>{
             console.log(error);
         });
     }
-
     return(
         <div>
         <h1>Sign Up</h1>
@@ -24,6 +23,7 @@ const SignUp = () =>{
             <br></br>
             <input 
                 type="email" 
+                placeholder="Enter your email" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)}>
             </input>
@@ -32,6 +32,7 @@ const SignUp = () =>{
             <br></br>
             <input 
                 type="password" 
+                placeholder="Enter your password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}>
             </input>
