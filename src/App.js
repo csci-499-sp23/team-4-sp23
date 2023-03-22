@@ -8,6 +8,7 @@ import Contact from './components/pages/Contact.js';
 import SignUp from './components/pages/SignUp.js';
 import RentalMap from './components/pages/RentalMap.js'
 import BrowseStudents from './components/pages/BrowseStudents.js';
+import VerifSent from './components/pages/VerifSent.js';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path='/signUp' element={<SignUp />} />
           <Route path='/browseStudents' element={<BrowseStudents />} />
           <Route path='/rentalMap' element={<RentalMap />} />
+          <Route path='/verifSent' element={<VerifSent />} />
           <Route path='*' element={<Home />} />
         </Routes>
       </Router>

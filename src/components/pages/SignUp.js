@@ -1,17 +1,23 @@
-import { createUserWithEmailAndPassword } from '@firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from '@firebase/auth';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase-config';
 
 const SignUp = () =>{
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const navigate = useNavigate();
+
     const signUp = (e) => {
         e.preventDefault();
         createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
             console.log(userCredential);
+            sendEmailVerification(userCredential.user);
+            auth.signOut();
+            navigate("/VerifSent");
         }).catch((error) => {
-            console.log(error);
+            alert(error);
         });
     }
     return(
