@@ -8,17 +8,28 @@ const Login = () =>{
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
+
     const signIn = (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth, email, password);
+        
+        signInWithEmailAndPassword(auth, email, password).then(authUser => {
+
+            if(authUser.user.emailVerified){ //This will return true or false
+                navigate("/RentalMap");
+            }else{
+                auth.signOut();
+                alert('email not verified');
+            }
+            });
     }
 
-    const navigate = useNavigate();
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
         signIn(e);
-        navigate("/RentalMap");
+        
     }
 
     return(
