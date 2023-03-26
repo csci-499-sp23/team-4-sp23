@@ -16,7 +16,7 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password).then(authUser => {
 
             if (authUser.user.emailVerified) { //This will return true or false
-                navigate("/RentalMap");
+                navigate("/StudentProfilePage");
             } else {
                 auth.signOut();
                 alert('email not verified');
@@ -44,7 +44,7 @@ const Login = () => {
                     <label for="password" className="form-label">Password</label>
                     <input type="password" className="form-control" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
-                <a class="btn btn-primary" href="/StudentProfilePage" onClick={handleSubmit} role="button">Submit</a>
+                <a class="btn btn-primary" onClick={handleSubmit} role="button">Submit</a>
             </form>
         </div>
     );
