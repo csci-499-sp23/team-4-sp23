@@ -35,7 +35,7 @@ const Login = () => {
     return (
         <div class="container-fluid">
             <h2>Login</h2>
-            <form onClick={handleSubmit}>
+            <form>
                 <div className="mb-3 fields">
                     <label for="email" className="form-label">Email address</label>
                     <input type="email" className="form-control" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
@@ -44,7 +44,7 @@ const Login = () => {
                     <label for="password" className="form-label">Password</label>
                     <input type="password" className="form-control" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
-                <a class="btn btn-primary" href="/StudentProfilePage" role="button">Submit</a>
+                <a class="btn btn-primary" href="/StudentProfilePage" onClick={handleSubmit} role="button">Submit</a>
             </form>
         </div>
     );
