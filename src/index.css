@@ -1,10 +1,10 @@
 body {
   margin: 0;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #2C3333;
-  color:#DBE2EF;
+  color: white;
 }
 
 code {

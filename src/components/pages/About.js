@@ -2,7 +2,7 @@ import React from 'react';
 const About = () =>{
     return(
         <div>
-            <h1>About</h1>
+            <h2>About</h2>
             <div className='Details'>
                 <h2>What is Wheel Call You?</h2>
                 <p>Wheel Call You is an app aimed to help alleviate the move-in process for college students. This is done by pairing them up with a roommate based on their personalities/preferences. Not only will you find the best partner to share your new place with, but also automatically split the costs for the move-in process to assist each other financially.</p>
