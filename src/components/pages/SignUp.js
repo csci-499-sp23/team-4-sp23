@@ -32,7 +32,7 @@ const SignUp = () => {
                     <label for="password" className="form-label">Password</label>
                     <input type="password" className="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
-                <a class="btn btn-primary" href="/StudentProfilePage" onClick={signUp} role="button">Submit</a>
+                <a class="btn btn-primary" onClick={signUp} role="button">Submit</a>
             </form>
         </div>
     );
