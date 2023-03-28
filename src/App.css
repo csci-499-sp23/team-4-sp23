@@ -1,7 +1,7 @@
 /*Main Section*/
 h1 {
   color: #F9F7F7;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   font-size: 3.5rem;
   line-height: 1.5;
   padding: 10% 0 0 0;
@@ -12,9 +12,14 @@ h2 {
   font-family: 'Montserrat', sans-serif;
 }
 
+h3 {
+  color:#F9F7F7;
+}
+
 p {
   font-family: 'Montserrat', sans-serif;
   color:#DBE2EF;
+  line-height: 1.5;
 }
 
 ul {
@@ -35,9 +40,32 @@ hr {
   padding: 7% 0;
 }
 
+#feature-section {
+  padding: 5 10%;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-icons {
+  color: #3F72AF;
+  padding-bottom: 5%;
+}
+
+.feature-icons:hover {
+  color: #112D4E;
+}
+
+.feature-box {
+  text-align: center;
+  padding: 7%;
+}
+
 .fields {
-  margin-right: 20%;
-  margin-left: 20%;
+  margin: 0 20%;
+}
+
+.footer-text {
+  margin: 0;
 }
 
 .home-button {
@@ -53,7 +81,11 @@ hr {
 
 .row {
   margin: 0;
-  padding: 5%;
+  padding: 5% 5% 0 5%;
+}
+
+.school-section {
+  padding: 7% 0 0 0;
 }
 
 .site-logo {
@@ -62,7 +94,13 @@ hr {
   top:-10%;
 }
 
-.title-section {
+.social-icon {
+  margin: 2% 1% 2%;
+
+}
+
+#title-section {
   background-color:#3F72AF;
+  padding: 0 0 0% 0;
 }
 
