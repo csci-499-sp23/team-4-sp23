@@ -28,16 +28,17 @@ const RentalMap = () => {
           const city = addressComponents.pop();
           const street = addressComponents.join(' ');
 
-          const location = `${street}, ${city}, ${state} ${zip}`;
+          const address = `${street}, ${city}, ${state} ${zip}`;
 
-          const geocodeResponse = await Geocode.fromAddress(location);
+          const geocodeResponse = await Geocode.fromAddress(address);
           const { lat, lng } = geocodeResponse.results[0].geometry.location;
 
           return {
             position: { lat, lng },
             label: { color: 'black', text: ' ' },
             link: links,
-            location,
+            location: locations,
+            address
           };
         })
       );
@@ -64,11 +65,11 @@ const RentalMap = () => {
               <InfoWindow
                 position={marker.position}
                 onCloseClick={handleInfoWindowClose}
-                options={{ pixelOffset: { color: '#00000' } }}
               >
                 <div>
-                  <p><strong>Location: </strong>{marker.location}</p>
-                  <p><strong>Link: </strong><a href={marker.link}>{marker.link}</a></p>
+                  <p color='black'><strong color='black'> </strong>{marker.location}</p>
+                  <p color='black'><strong color='black'>Address: </strong>{marker.address}</p>
+                  <p color='black'><strong color='black'>Link: </strong><a href={marker.link}>{marker.link}</a></p>
                 </div>
               </InfoWindow>
             )}
