@@ -3,7 +3,6 @@ import { GoogleMap, InfoWindow, LoadScript, Marker } from "@react-google-maps/ap
 import { db } from '../../firebase-config.js';
 import { collection, getDocs } from 'firebase/firestore';
 import Geocode from 'react-geocode';
-import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 Geocode.setApiKey('AIzaSyDhz3m22jJJjC6BOX83Qbjdm2FaQiXVK4A');
 
@@ -65,7 +64,7 @@ const RentalMap = () => {
               <InfoWindow
                 position={marker.position}
                 onCloseClick={handleInfoWindowClose}
-                style={{ color: 'black' }}
+                options={{ pixelOffset: { color: '#00000' } }}
               >
                 <div>
                   <p><strong>Location: </strong>{marker.location}</p>
