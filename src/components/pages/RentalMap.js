@@ -1,74 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from "@react-google-maps/api";
+import { db } from '../../firebase-config.js';
+import { collection, getDocs } from 'firebase/firestore';
+import Geocode from 'react-geocode';
+
+Geocode.setApiKey('AIzaSyDhz3m22jJJjC6BOX83Qbjdm2FaQiXVK4A');
 
 const RentalMap = () => {
-  let latitude = 40.7678;
-  let longitude = -73.9645;
+  const [activeInfoWindow, setActiveInfoWindow] = useState(null);
+  const [markers, setMarkers] = useState([]);
 
-  const initialMarkers = [
-    {
-      position: {
-        lat: latitude,
-        lng: longitude
-      },
-      label: { color: "white", text: "P1"},
-      draggable: true
-    },
+  const containerStyle = { width: '100%', height: '900px' };
+  const center = { lat: 40.7678, lng: -73.9645 };
 
-  ];
+  const handleInfoWindowClose = () => setActiveInfoWindow(null);
 
-  const [activeInfoWindow, setActiveInfoWindow] = useState("");
-  const [markers] = useState(initialMarkers);
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, 'trucks'));
 
-  const containerStyle = {
-    width: '100%',
-    height: '500px',
-  }
+      const newMarkers = await Promise.all(
+        querySnapshot.docs.map(async (doc) => {
+          const { addresses, links, locations } = doc.data();
+          const addressComponents = addresses.split(' ');
+          const zip = addressComponents.pop();
+          const state = addressComponents.pop();
+          const city = addressComponents.pop();
+          const street = addressComponents.join(' ');
 
-  const center = {
-    lat: latitude,
-    lng: longitude,
-  }
+          const address = `${street}, ${city}, ${state} ${zip}`;
 
-  const mapClicked = (event) => {
-    console.log(event.latLng.lat(), event.latLng.lng())
-  }
+          const geocodeResponse = await Geocode.fromAddress(address);
+          const { lat, lng } = geocodeResponse.results[0].geometry.location;
 
-  const markerClicked = (marker, index) => {
-    setActiveInfoWindow(index)
-    console.log(marker, index)
-  }
+          return {
+            position: { lat, lng },
+            label: { color: 'black', text: ' ' },
+            link: links,
+            location: locations,
+            address
+          };
+        })
+      );
 
-  const markerDragEnd = (event, index) => {
-    console.log(event.latLng.lat())
-    console.log(event.latLng.lng())
-  }
+      setMarkers(newMarkers);
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <LoadScript googleMapsApiKey='AIzaSyAJEDpGht_MfORJGqHehYKpH2K-5sGlB5U'>
-      <GoogleMap 
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={15}
-        onClick={mapClicked}
-      >
+    <LoadScript googleMapsApiKey='AIzaSyDhz3m22jJJjC6BOX83Qbjdm2FaQiXVK4A'>
+      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15}>
         {markers.map((marker, index) => (
           <Marker
             key={index}
             position={marker.position}
             label={marker.label}
-            draggable={marker.draggable}
-            onDragEnd={event => markerDragEnd(event, index)}
-            onClick={event => markerClicked(marker, index)}
-            >
-              {
-                (activeInfoWindow === index)
-                &&
-                <InfoWindow posiiton={marker.position}>
-                  <b>{marker.position.lat}, {marker.position.lng}</b>
-                </InfoWindow>
-              }
-            </Marker>
+            icon={require('../img/marker.png')}
+            draggable={false}
+            onClick={() => setActiveInfoWindow(marker)}
+          >
+            {activeInfoWindow === marker && (
+              <InfoWindow
+                position={marker.position}
+                onCloseClick={handleInfoWindowClose}
+              >
+                <div>
+                  <p color='black'><strong color='black'> </strong>{marker.location}</p>
+                  <p color='black'><strong color='black'>Address: </strong>{marker.address}</p>
+                  <p color='black'><strong color='black'>Link: </strong><a href={marker.link}>{marker.link}</a></p>
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
         ))}
       </GoogleMap>
     </LoadScript>
