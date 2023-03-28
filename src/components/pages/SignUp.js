@@ -1,8 +1,8 @@
 import { createUserWithEmailAndPassword, sendEmailVerification } from '@firebase/auth';
-import React, { useState, useEffect, componentDidMount  } from 'react';
+import React, { useState  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../../firebase-config';
-import { collection, onSnapshot, getDocs } from "@firebase/firestore";
+import { collection, getDocs } from "@firebase/firestore";
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -17,9 +17,9 @@ const SignUp = () => {
         snapshot.docs.forEach((doc) => {
             domainsJSON.push({...doc.data(), id: doc.id})
         })
-        domainsJSON.map((domain) => {
+        domainsJSON.map((domain) => (
             domains.push(domain.domain)
-        })
+        ))
     }).catch(err => {
         console.log(err.message);
     })
