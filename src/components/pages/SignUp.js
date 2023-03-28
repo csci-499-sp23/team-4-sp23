@@ -1,36 +1,58 @@
 import { createUserWithEmailAndPassword, sendEmailVerification } from '@firebase/auth';
-import React, { useState } from 'react';
+import React, { useState, useEffect, componentDidMount  } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase-config';
+import { auth, db } from '../../firebase-config';
+import { collection, onSnapshot, getDocs } from "@firebase/firestore";
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    let domainsJSON = [];
+    let domains = [];
+
+    const colRef = collection(db, 'auth_domains');
+    
+    getDocs(colRef).then((snapshot) => {
+        
+        snapshot.docs.forEach((doc) => {
+            domainsJSON.push({...doc.data(), id: doc.id})
+        })
+        domainsJSON.map((domain) => {
+            domains.push(domain.domain)
+        })
+    }).catch(err => {
+        console.log(err.message);
+    })
 
     const navigate = useNavigate();
 
-    const signUp = (e) => {
+    const signUp = async (e) => {
         e.preventDefault();
-        createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-            console.log(userCredential);
-            sendEmailVerification(userCredential.user);
-            auth.signOut();
-            navigate("/VerifSent");
-        }).catch((error) => {
-            alert(error);
-        });
+        
+        if(domains.includes((email.substring(email.indexOf('@'))).toLowerCase())) {
+            createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+                sendEmailVerification(userCredential.user);
+                auth.signOut();
+                navigate("/VerifSent");
+            }).catch((error) => {
+                console.log(error);
+            });
+        } else {
+            alert("The email domain you are using is not authorized")
+        }
     }
     return (
+        
         <div className="container-fluid">
             <h2>Sign Up!</h2>
             <form>
                 <div className="mb-3 fields">
                     <label for="email" className="form-label">Email address</label>
-                    <input type="email" className="form-control" id="exampleInputEmail1" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                    <input required type="email" className="form-control" id="exampleInputEmail1" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 </div>
                 <div class="mb-3 fields">
                     <label for="password" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                    <input required type="password" className="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
                 <a class="btn btn-primary" href="/VerifSent" onClick={signUp} role="button">Submit</a>
             </form>
