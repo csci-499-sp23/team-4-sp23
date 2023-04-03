@@ -3,6 +3,8 @@ import { getFirestore } from "@firebase/firestore";
 import { getAuth } from "@firebase/auth";
 
 const firebaseConfig = {
+  experimentalForceLongPolling: true,
+  useFetchStreams: false, 
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_PROJECT_ID,
