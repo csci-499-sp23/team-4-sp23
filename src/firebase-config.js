@@ -12,16 +12,6 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCzABhmD4wXvZRuGVnQjeDg1trTfWLdVeA",
-//   authDomain: "wheel-call-you-9b6ca.firebaseapp.com",
-//   projectId: "wheel-call-you-9b6ca",
-//   storageBucket: "wheel-call-you-9b6ca.appspot.com",
-//   messagingSenderId: "701045750455",
-//   appId: "1:701045750455:web:5061846e1c71c39af1eb32",
-//   measurementId: "G-EXXC62JZHE"
-// };
-
 export const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
