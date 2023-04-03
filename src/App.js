@@ -6,7 +6,6 @@ import Login from './components/pages/Login.js';
 import Contact from './components/pages/Contact.js';
 import SignUp from './components/pages/SignUp.js';
 import RentalMap from './components/pages/RentalMap.js'
-import Survey from './components/pages/Survey'
 import BrowseStudents from './components/pages/BrowseStudents.js';
 import VerifSent from './components/pages/VerifSent.js';
 import StudentProfilePage from './components/pages/StudentProfilePage.js'
@@ -25,7 +24,6 @@ function App() {
           <Route path='/browseStudents' element={<BrowseStudents />} />
           <Route path='/StudentProfilePage' element={<StudentProfilePage />}/>
           <Route path='/rentalMap' element={<RentalMap />} />
-          <Route path='/survey' element={<Survey />} />
           <Route path='/verifSent' element={<VerifSent />} />
           <Route path='*' element={<Home />} />
         </Routes>
