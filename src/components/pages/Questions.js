@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function Question(props) {
-  const { question, options, handleChange } = props;
+  const { question, options,} = props;
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionClick = (option) => {
