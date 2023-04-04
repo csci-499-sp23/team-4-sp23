@@ -21,7 +21,7 @@ const StudentProfilePage = () => {
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="issue"></textarea>
                         </div>
                         <p class="card-text">Tell us a little more about yourself. {bio}</p>
-                        <a class="btn btn-primary" href="" role="button" onSubmit={() => setBio("...")}>Edit</a>
+                        <button class="btn btn-primary" onSubmit={() => setBio("...")}>Edit</button>
                     </div>
                 </div>
             </div>
