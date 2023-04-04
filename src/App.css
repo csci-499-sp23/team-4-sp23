@@ -35,6 +35,9 @@ hr {
 .App {
   text-align: center;
 }
+.card-text {
+  color: black;
+}
 
 .container-fluid {
   padding: 7% 0;
@@ -70,6 +73,10 @@ hr {
 
 .home-button {
   margin: 5% 0 0 0;
+}
+
+.marker-text {
+  color:black;
 }
 
 .NavLogo {

@@ -67,9 +67,9 @@ const RentalMap = () => {
                 onCloseClick={handleInfoWindowClose}
               >
                 <div>
-                  <p color='black'><strong color='black'> </strong>{marker.location}</p>
-                  <p color='black'><strong color='black'>Address: </strong>{marker.address}</p>
-                  <p color='black'><strong color='black'>Link: </strong><a href={marker.link}>{marker.link}</a></p>
+                  <p class="marker-text"> {marker.location}</p>
+                  <p class="marker-text">Address: {marker.address}</p>
+                  <p class="marker-text">Link:<a href={marker.link}>{marker.link}</a></p>
                 </div>
               </InfoWindow>
             )}
