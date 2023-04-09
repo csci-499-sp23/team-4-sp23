@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Question from './Questions';
-import '../../App.css';
 
 function Survey() {
   // Define state for answers
