@@ -24,7 +24,7 @@ function Survey() {
 
   return (
     <div className="survey-container">
-      <h1>Survey</h1>
+      <h2>Survey</h2>
       <form>
         <Question
           question="Do you have a driver's license?"
