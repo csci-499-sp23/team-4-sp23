@@ -17,16 +17,13 @@ import StudentProfilePage from './components/pages/StudentProfilePage.js'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
-  const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
         if(user) {
-            setAuthUser(user);
-            console.log(authUser?.email);
             setIsLoggedIn(true);
         }  else {
-            setAuthUser(null);
+            setIsLoggedIn(false);
         }
     });
 
