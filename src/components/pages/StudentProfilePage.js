@@ -13,7 +13,7 @@ const StudentProfilePage = () => {
     const [dob, setDOB] = useState("");
     const [university, setUniversity] = useState("");
     const [userImage, setUserImage] = useState("https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=");
-    const studentsCollectionRef = collection(db, "students");
+    // const studentsCollectionRef = collection(db, "students");
 
     const updateProfile = async () => {
         // TODO
