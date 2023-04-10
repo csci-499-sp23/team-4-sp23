@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../../App.css';
 
 export default function Question(props) {
   const { question, options, handleChange } = props;
