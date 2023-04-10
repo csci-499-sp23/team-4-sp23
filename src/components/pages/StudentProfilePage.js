@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from "react-dom/client";
-import { db } from '../../firebase-config';
-import { collection } from "firebase/firestore";
+// import { db } from '../../firebase-config';
+// import { collection } from "firebase/firestore";
 
 
 const StudentProfilePage = () => {
