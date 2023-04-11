@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from "@react-google-maps/api";
 import { db } from '../../firebase-config.js';
 import { collection, getDocs } from 'firebase/firestore';
-import Geocode from 'react-geocode';
-
-Geocode.setApiKey('AIzaSyDhz3m22jJJjC6BOX83Qbjdm2FaQiXVK4A');
 
 const RentalMap = () => {
   const [activeInfoWindow, setActiveInfoWindow] = useState(null);
@@ -17,27 +14,21 @@ const RentalMap = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, 'trucks'));
+      const querySnapshot = await getDocs(collection(db, 'rental_locations'));
 
       const newMarkers = await Promise.all(
         querySnapshot.docs.map(async (doc) => {
-          const { addresses, links, locations } = doc.data();
-          const addressComponents = addresses.split(' ');
-          const zip = addressComponents.pop();
-          const state = addressComponents.pop();
-          const city = addressComponents.pop();
-          const street = addressComponents.join(' ');
-
-          const address = `${street}, ${city}, ${state} ${zip}`;
-
-          const geocodeResponse = await Geocode.fromAddress(address);
-          const { lat, lng } = geocodeResponse.results[0].geometry.location;
-
+          const { name, address, lat, lng, link  } = doc.data();
+          const tLat = parseFloat(lat);
+          const tLng = parseFloat(lng);
+      
+          const latLng = new window.google.maps.LatLng( {lat:tLat, lng:tLng} )
+          console.log(latLng)
           return {
-            position: { lat, lng },
+            position: latLng ,
             label: { color: 'black', text: ' ' },
-            link: links,
-            location: locations,
+            link,
+            location: name,
             address
           };
         })
