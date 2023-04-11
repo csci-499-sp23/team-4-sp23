@@ -18,16 +18,15 @@ const RentalMap = () => {
 
       const newMarkers = await Promise.all(
         querySnapshot.docs.map(async (doc) => {
-          const { name, address, lat, lng, link  } = doc.data();
+          const { name, address, lat, lng, links  } = doc.data();
           const tLat = parseFloat(lat);
           const tLng = parseFloat(lng);
       
           const latLng = new window.google.maps.LatLng( {lat:tLat, lng:tLng} )
-          console.log(latLng)
           return {
             position: latLng ,
             label: { color: 'black', text: ' ' },
-            link,
+            link: links,
             location: name,
             address
           };
@@ -60,7 +59,7 @@ const RentalMap = () => {
                 <div>
                   <p class="marker-text"> {marker.location}</p>
                   <p class="marker-text">Address: {marker.address}</p>
-                  <p class="marker-text">Link:<a href={marker.link}>{marker.link}</a></p>
+                  <p class="marker-text">Link: <a href={marker.link}>{marker.link}</a></p>
                 </div>
               </InfoWindow>
             )}
