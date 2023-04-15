@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import ReactDOM from "react-dom/client";
+import { useUserSelector } from '../../services/selectors';
 // import { db } from '../../firebase-config';
 // import { collection } from "firebase/firestore";
 
 
 const StudentProfilePage = () => {
+    const user = useUserSelector()
     const [bio, setBio] = useState("");
     const [location, setLocation] = useState("");
     const [USState, setUSState] = useState("");
@@ -27,6 +29,7 @@ const StudentProfilePage = () => {
                     <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" onChange={(e) => setUserImage(e.target.value)}></input>
                     <div class="card-body">
                         <h5 class="card-title">Bio</h5>
+                        {user?.email}
                         <div class="mb-3 fields">
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="issue"></textarea>
                         </div>
