@@ -37,7 +37,7 @@ function App() {
     return () => {
       listen();
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">

@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "@firebase/auth";
+//import React, { useEffect, useState } from "react";
+import { signOut } from "@firebase/auth";
+//import { onAuthStateChanged}from "@firebase/auth";
 import { auth } from "../../firebase-config";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+//import { useSelector} from "react-redux";
 import { logout } from "../../services/appSlice";
 import { useUserSelector } from "../../services/selectors";
 
