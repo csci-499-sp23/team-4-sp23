@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { getProfiles } from "../../firebase";
+//import React, { useEffect, useState } from "react";
+//import { getProfiles } from "../../firebase";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {

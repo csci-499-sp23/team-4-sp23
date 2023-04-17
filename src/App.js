@@ -15,7 +15,7 @@ import VerifSent from "./components/pages/VerifSent.js";
 import Survey from "./components/pages/Survey";
 import StudentProfilePage from "./components/pages/StudentProfilePage.js";
 import Match from "./components/pages/Match";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login, logout } from "./services/appSlice";
 
 function App() {
