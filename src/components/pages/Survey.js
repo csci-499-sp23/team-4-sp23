@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Question from './Questions';
-import '../../App.css';
 
 function Survey() {
   // Define state for answers
@@ -74,7 +73,7 @@ function Survey() {
         />
 
       </form>
-      <button onClick={() => console.log(answers)}>Submit</button>
+      <button class="btn btn-primary" onClick={() => console.log(answers)}>Submit</button>
     </div>
   );
 }

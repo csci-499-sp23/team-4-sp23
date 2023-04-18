@@ -1,30 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { onAuthStateChanged, signOut } from '@firebase/auth';
-import { auth } from '../../firebase-config';
+//import React, { useEffect, useState } from "react";
+import { signOut } from "@firebase/auth";
+//import { onAuthStateChanged}from "@firebase/auth";
+import { auth } from "../../firebase-config";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+//import { useSelector} from "react-redux";
+import { logout } from "../../services/appSlice";
+import { useUserSelector } from "../../services/selectors";
 
 const AuthDetails = () => {
-    const [authUser, setAuthUser] = useState(null);
+  const authUser = useUserSelector();
+  const dispatch = useDispatch();
+  //   const [authUser, setAuthUser] = useState(null);
 
-    useEffect(() => {
-        const listen = onAuthStateChanged(auth, (user) => {
-            if(user) {
-                setAuthUser(user);
-            }  else {
-                setAuthUser(null);
-            }
-        });
+  const navigate = useNavigate();
 
-        return () => {
-            listen();
-        }
-    }, []);
+  const userSignOut = () => {
+    signOut(auth);
+    dispatch(logout());
 
-    const userSignOut = () => {
-        signOut(auth);
-    }
-    return (
-        <div>{ authUser ? <div><p>Signed In</p><button onClick={userSignOut}>Sign Out</button></div>: <p>Signed Out</p>}</div>
-    );
-}
+    navigate("/Login");
+  };
+  return (
+    <div className="d-flex">
+      {authUser ? (
+        <div className="d-flex gap-2">
+          <NavLink to='/StudentProfilePage'> {authUser?.email}</NavLink>
+          <button className="btn btn-secondary" onClick={userSignOut}>
+            Sign Out
+          </button>
+        </div>
+      ) : (
+        <p>Signed Out</p>
+      )}
+    </div>
+  );
+};
 
 export default AuthDetails;

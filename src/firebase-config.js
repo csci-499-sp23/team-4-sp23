@@ -2,6 +2,7 @@ import { initializeApp } from "@firebase/app";
 import { getFirestore } from "@firebase/firestore";
 import { getAuth } from "@firebase/auth";
 
+
 // const firebaseConfig = {
 //   apiKey: process.env.REACT_APP_API_KEY,
 //   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -21,6 +22,7 @@ const firebaseConfig = {
   appId: "1:701045750455:web:5061846e1c71c39af1eb32",
   measurementId: "G-EXXC62JZHE"
 };
+
 
 const app = initializeApp(firebaseConfig);
 
