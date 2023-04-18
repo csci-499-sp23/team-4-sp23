@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 
 export default function Question(props) {
-  const { question, options, handleChange } = props;
-  const [selectedOption, setSelectedOption] = useState(null);
+  const { question, options, maxOptions = 1 } = props;
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    handleChange(option);
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((selectedOption) => selectedOption !== option));
+    } else if (selectedOptions.length < maxOptions) {
+      setSelectedOptions([...selectedOptions, option]);
+    }
   };
 
   return (
@@ -14,7 +17,7 @@ export default function Question(props) {
       <div>{question}</div>
       <div className="options-container">
         {options.map((option) => {
-          const isSelected = selectedOption === option;
+          const isSelected = selectedOptions.includes(option);
           return (
             <div
               key={option}
