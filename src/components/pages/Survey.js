@@ -12,15 +12,20 @@ function Survey() {
     frequentStops: null,
     silentRide: null,
     roadsideClub: null,
+    personalityTraits: [],
   });
-
+  
   // Define handleChange function to update answers state
   const handleChange = (question, answer) => {
+    if (question === 'personalityTraits' && answer.length !== 3) {
+      return;
+    }
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
       [question]: answer,
     }));
   };
+  
 
   return (
     <div className="survey-container">
@@ -47,7 +52,7 @@ function Survey() {
           handleChange={(answer) => handleChange('carSick', answer)}
         />
         <Question
-          question="Are you someone who has to make frequent stops? (i.e. bathroom breaks, food stops)"
+          question="Are you someone who has to make frequent stops? (i.e. bathroom breaks, food stops, etc.)"
           options={['Yes, I need to make frequent stops', 'No, I dont need to make frequent stops']}
           handleChange={(answer) => handleChange('frequentStops', answer)}
         />
@@ -57,10 +62,17 @@ function Survey() {
           handleChange={(answer) => handleChange('silentRide', answer)}
         />
         <Question
-          question="Are you a member of a Roadside Assistance Club? (e.g. AAA)"
+          question="Are you a member of a Roadside Assistance Club? (e.g. AAA, AARP, etc.)"
           options={['Yes, I am a member of a Roadside Assistance Club', 'No, I am not a member of a Roadside Assistance Club']}
           handleChange={(answer) => handleChange('roadsideClub', answer)}
         />
+        <Question
+          question="Which of the following describe you best? (Select up to 3)"
+          options={[  "Adventurous", "Artistic",  "Assertive",  "Charismatic",  "Confident",  "Creative",  "Curious",  "Dependable",  "Determined",  "Efficient",  "Empathetic",  "Energetic",  "Enthusiastic", "Generous", "Humorous", "Intelligent", "Motivated",  "Organized",  "Outgoing",  "Patient", "Proactive",  "Reliable", "Responsible", "Spontaneous", "Trustworthy"]}
+          handleChange={(answer) => handleChange('personalityTraits', answer)}
+          maxOptions={3}
+        />
+
       </form>
       <button onClick={() => console.log(answers)}>Submit</button>
     </div>
