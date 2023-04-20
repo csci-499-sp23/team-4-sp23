@@ -170,6 +170,7 @@ const StudentProfilePage = () => {
                             <option value="Lehman College">Lehman College</option>
                         </select>
                         <p class="card-text">Please let us know what university you go to: {university}</p>
+                        <a href="/ParentProfilePage" class="btn btn-primary" role="button">Switch to Parent</a>
                     </div>
                 </div>
             </div>

@@ -40,11 +40,6 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/parentProfilePage">
-              Parent
-            </NavLink>
-          </li>
-          <li className="nav-item">
             <NavLink className="nav-link btn btn-primary" to="signup">
               Sign Up Now!
             </NavLink>
