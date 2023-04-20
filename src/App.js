@@ -14,6 +14,7 @@ import BrowseStudents from "./components/pages/BrowseStudents.js";
 import VerifSent from "./components/pages/VerifSent.js";
 import Survey from "./components/pages/Survey";
 import StudentProfilePage from "./components/pages/StudentProfilePage.js";
+import ParentProfilePage from "./components/pages/ParentProfilePage.js";
 import Match from "./components/pages/Match";
 import { useDispatch } from "react-redux";
 import { login, logout } from "./services/appSlice";
@@ -58,6 +59,7 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/parentProfilePage" element={<ParentProfilePage />} />
           <Route path="/rentalMap" element={<RentalMap />} />
           <Route path="/verifSent" element={<VerifSent />} />
           <Route path="/survey" element={<Survey />} />
