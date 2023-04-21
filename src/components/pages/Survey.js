@@ -73,7 +73,7 @@ function Survey() {
         />
 
       </form>
-      <button class="btn btn-primary" onClick={() => console.log(answers)}>Submit</button>
+      <button className="btn btn-primary" onClick={() => console.log(answers)}>Submit</button>
     </div>
   );
 }

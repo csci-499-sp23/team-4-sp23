@@ -12,34 +12,34 @@ exports[`renders correctly 1`] = `
   </h3>
   <form>
     <div
-      class="mb-3 fields"
+      className="mb-3 fields"
     >
       <label
         action="/contact.php"
-        class="form-label"
+        className="form-label"
         for="exampleFormControlInput1"
         method="get"
       >
         Email address
       </label>
       <input
-        class="form-control"
+        className="form-control"
         id="exampleFormControlInput1"
         name="email"
         type="email"
       />
     </div>
     <div
-      class="mb-3 fields"
+      className="mb-3 fields"
     >
       <label
-        class="form-label"
+        className="form-label"
         for="exampleFormControlTextarea1"
       >
         Issue
       </label>
       <textarea
-        class="form-control"
+        className="form-control"
         id="exampleFormControlTextarea1"
         name="issue"
         rows="5"

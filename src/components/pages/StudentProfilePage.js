@@ -138,23 +138,31 @@ const StudentProfilePage = () => {
 
     
     return (
+<<<<<<< Updated upstream
         
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
                 <div class="card">
                     <img src={userImage} class="card-img-top" alt="..."></img>
+=======
+        <div className="row row-cols-1 row-cols-md-2 g-4">
+            <div className="col">
+                <div className="card">
+                    <img src={userImage} className="card-img-top" alt="..."></img>
+>>>>>>> Stashed changes
                     <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" onChange={(e) => setUserImage(e.target.value)}></input>
-                    <div class="card-body">
-                        <h5 class="card-title">Bio</h5>
+                    <div className="card-body">
+                        <h5 className="card-title">Bio</h5>
                         {user?.email}
-                        <div class="mb-3 fields">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="issue"></textarea>
+                        <div className="mb-3 fields">
+                            <textarea className="form-control" id="exampleFormControlTextarea1" rows="5" name="issue"></textarea>
                         </div>
-                        <p class="card-text">Tell us a little more about yourself. {bio}</p>
-                        <button class="btn btn-primary" onSubmit={() => setBio("...")}>Edit</button>
+                        <p className="card-text">Tell us a little more about yourself. {bio}</p>
+                        <button className="btn btn-primary" onSubmit={() => setBio("...")}>Edit</button>
                     </div>
                 </div>
             </div>
+<<<<<<< Updated upstream
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -164,19 +172,51 @@ const StudentProfilePage = () => {
                         {displayDOB()}
                         <h5 class="card-title">University</h5>
                         <select class="form-select" aria-label="Default select example" onChange={(e) => setUniversity(e.target.value)}>
+=======
+            <div className="col">
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title">Street Address</h5>
+                        <input required type="text" className="form-control" onChange={(e) => setLocation(e.target.value)}></input>
+                        <p className="card-text">Please enter your street address: {location}</p>
+                        <p className="card-text">Please select your state: {location}</p>
+                        <h5 className="card-title">State</h5>
+                        <select className="form-select" aria-label="Default select example" onChange={(e) => setUSState(e.target.value)}>
+                            <option selected>Please select your university</option>
+                            <option value="MA">MA</option>
+                            <option value="NJ">NJ</option>
+                            <option value="NY">NY</option>
+                        </select>
+                        <p className="card-text">Please select your state: {USState}</p>
+                        <h5 className="card-title">City</h5>
+                        <input required type="text" className="form-control" onChange={(e) => setCity(e.target.value)}></input>
+                        <p className="card-text">Please enter your city: {city}</p>
+                        <h5 className="card-title">ZIP</h5>
+                        <input required type="text" className="form-control" onChange={(e) => setZip(e.target.value)}></input>
+                        <p className="card-text">Please enter your ZIP code: {zip}</p>
+                        <h5 className="card-title">Date of Birth</h5>
+                        <input required type="date" className="form-control" onChange={(e) => setDOB(e.target.value)}></input>
+                        <p className="card-text">Input your date of birth: {dob}</p>
+                        <h5 className="card-title">University</h5>
+                        <select className="form-select" aria-label="Default select example" onChange={(e) => setUniversity(e.target.value)}>
+>>>>>>> Stashed changes
                             <option selected>Please select your university</option>
                             <option value="Hunter College">Hunter College</option>
                             <option value="Baruch College">Baruch College</option>
                             <option value="Lehman College">Lehman College</option>
                         </select>
+<<<<<<< Updated upstream
                         <p class="card-text">Please let us know what university you go to: {university}</p>
                         <a href="/ParentProfilePage" class="btn btn-primary" role="button">Switch to Parent</a>
+=======
+                        <p className="card-text">Please let us know what university you go to: {university}</p>
+                        <button className="btn btn-primary" onClick={updateProfile}>Submit</button>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
         </div>
     );
 };
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<StudentProfilePage />);
+
 export default StudentProfilePage;

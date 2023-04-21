@@ -25,7 +25,7 @@ const AuthDetails = () => {
     <div className="d-flex">
       {authUser ? (
         <div className="d-flex gap-2">
-          <NavLink to='/StudentProfilePage'> {authUser?.email}</NavLink>
+          {/* <NavLink to='/StudentProfilePage'> {authUser?.email}</NavLink> */}
           <button className="btn btn-secondary" onClick={userSignOut}>
             Sign Out
           </button>

@@ -63,11 +63,11 @@ const SignUp = () => {
                     <label for="email" className="form-label">Email address</label>
                     <input required type="email" className="form-control" id="exampleInputEmail1" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 </div>
-                <div class="mb-3 fields">
+                <div className="mb-3 fields">
                     <label for="password" className="form-label">Password</label>
                     <input required type="password" className="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
-                <a class="btn btn-primary" href="/VerifSent" onClick={signUp} role="button">Submit</a>
+                <a className="btn btn-primary" href="/VerifSent" onClick={signUp} role="button">Submit</a>
             </form>
         </div>
     );

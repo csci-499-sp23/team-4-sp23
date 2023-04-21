@@ -28,7 +28,8 @@ function App() {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true);
-        dispatch(login(user));
+
+        dispatch(login(user.toJSON()));
       } else {
         setIsLoggedIn(false);
         dispatch(logout());
@@ -39,6 +40,17 @@ function App() {
       listen();
     };
   }, [dispatch]);
+
+// const functions = require('firebase-functions');
+// const express = require('express');
+// const app = express();
+
+// app.get('/cors', (req, res) => {
+//   res.set('Access-Control-Allow-Origin', '*');
+//   res.send({ "msg": "This has CORS enabled 🎈" })
+// });
+
+// exports.app = functions.https.onRequest(app);
 
   return (
     <div className="App">
