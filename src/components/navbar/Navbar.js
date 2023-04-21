@@ -1,10 +1,6 @@
-import React, { useCallback } from "react";
-import AuthDetails from "../pages/AuthDetails";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useUserSelector } from "../../services/selectors";
-import { auth } from "../../firebase-config";
-import { useDispatch } from "react-redux";
-import { logout } from "../../services/appSlice";
+import AuthDetails from "../pages/AuthDetails";
 
 const SignedIn = ({ children }) => {
   const user = useUserSelector();
@@ -17,17 +13,6 @@ const SignedOut = ({ children }) => {
   return !user ? children : <></>;
 };
 const Navbar = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const signOut = (e) => {
-    // e?.preventDefault()
-    signOut(auth);
-    // dispatch(logout());
-
-    // navigate("/Login");
-  };
-
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <NavLink className="navbar-brand " to="/home">
@@ -78,7 +63,7 @@ const Navbar = () => {
                 Logout
               </button>
             </li> */}
-            <AuthDetails/>
+            <AuthDetails />
             <li className="nav-item">
               <NavLink className="nav-link btn btn-primary" to="signup">
                 Account

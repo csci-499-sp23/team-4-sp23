@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom/client";
-import { useUserSelector } from "../../services/selectors";
+import { collection, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
-import { collection, query, where, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { useUserSelector } from "../../services/selectors";
 
 const StudentProfilePage = () => {
   const user = useUserSelector();

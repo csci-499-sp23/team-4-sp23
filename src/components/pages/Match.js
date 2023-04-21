@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 //import { getProfiles } from "../../firebase";
 
 import { functionsApi } from "../../firebase";
@@ -25,9 +25,9 @@ const matchReducer = (state, action) => {
 };
 const Match = () => {
   const [profiles, setProfiles] = useState([]);
-  const [matchFilters, dispatch] = useReducer(matchReducer, { distanceInKm: 5, distanceUnit: "km", loading: false });
+  const [matchFilters, dispatch] = useReducer(matchReducer, { distanceInKm: 5, distanceUnit: "km", loading: null });
 
-  const refreshMatchs = () => {
+  const refreshMatchs = useCallback(() => {
     dispatch({ type: "isLoading" });
     setProfiles([]);
     functionsApi
@@ -38,7 +38,7 @@ const Match = () => {
       })
       .catch(console.error)
       .finally(() => dispatch({ type: "loadingComplete" }));
-  };
+  }, [matchFilters]);
 
   const refreshSAddresses = () => {
     dispatch({ type: "isLoading" });
@@ -50,8 +50,11 @@ const Match = () => {
   };
 
   useEffect(() => {
-    refreshMatchs();
-  }, []);
+    if (matchFilters.loading === null) {
+      refreshMatchs();
+    }
+    console.log("tintin");
+  }, [matchFilters, refreshMatchs]);
   //do not remove the empty bracket, or you will cause an infinite loop
 
   return (
