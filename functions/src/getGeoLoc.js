@@ -1,7 +1,9 @@
 /* eslint-disable camelcase */
 const fetch = require("node-fetch");
+const firebase = require("firebase-functions");
 
 // replace with your own API key
+
 const apiKey = process.env.GOOGLE_GEOCODE_API_KEY;
 const endpoint = "https://maps.googleapis.com/maps/api/geocode/json";
 

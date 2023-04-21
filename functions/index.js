@@ -7,7 +7,6 @@ const {initializeApp} = require("firebase-admin/app");
 const {getStudentsList, getMatches, getGeoLoc} = require("./src/matches");
 initializeApp(functions.config().firestore);
 
-
 exports.getStudentAddresses = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     const addresses = await getStudentsList().then((students) =>
@@ -18,36 +17,37 @@ exports.getStudentAddresses = functions.https.onRequest((req, res) => {
   });
 });
 
-
 // replace mockStudent with actual stude
 
-exports.getMatches = functions.https.onCall(async (data, context) => {
-  functions.logger.info("Hello from matches!", {
-    structuredData: true,
-  });
+exports.getMatches = functions
+    .runWith({secrets: ["GOOGLE_GEOCODE_API_KEY"]})
+    .https.onCall(async (data, context) => {
+      functions.logger.info("Hello from matches!", {
+        structuredData: true,
+      });
 
-  // compute matches () [distance: 5, 10,20,50,100]
-  // const matches = demoProfiles;
-  const {distanceInKm = 10} = data;
-  console.log({data, auth: context.auth});
-  const [student = null] = await getStudentsList({
-    filters: [
-      {field: "email", operator: "==", value: context.auth.token.email},
-    ],
-  });
+      // compute matches () [distance: 5, 10,20,50,100]
+      // const matches = demoProfiles;
+      const {distanceInKm = 10} = data;
+      console.log({data, auth: context.auth});
+      const [student = null] = await getStudentsList({
+        filters: [
+          {field: "email", operator: "==", value: context.auth.token.email},
+        ],
+      });
 
-  console.log({student});
-  if (student === null) {
-    throw new Error("Error: you dont have an account in our records");
-  }
-  const matches = await getMatches({
-    student,
-    filters: {distanceInKm},
-  });
+      console.log({student});
+      if (student === null) {
+        throw new Error("Error: you dont have an account in our records");
+      }
+      const matches = await getMatches({
+        student,
+        filters: {distanceInKm},
+      });
 
-  // write your code to pull matches here
-  return {data: matches};
-});
+      // write your code to pull matches here
+      return {data: matches};
+    });
 
 exports.updateStudentLocation = functions.https.onCall((res, req) => {
   cors(req, res, () => {
