@@ -16,7 +16,7 @@
 //   await firebase.loadFirestoreRules({
 //     projectId,
 //     rules: `
-//       rules_version = '2';  
+//       rules_version = '2';
 //       service cloud.firestore {
 //         match /databases/{database}/documents {
 //           match /users/{userId} {
