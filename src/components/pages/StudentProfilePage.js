@@ -168,26 +168,9 @@ const StudentProfilePage = () => {
         <div className="card">
           <div className="card-body">
             <h5 className="card-title">Street Address</h5>
-            <input required type="text" className="form-control" onChange={(e) => setLocation(e.target.value)}></input>
-            <p className="card-text">Please enter your street address: {location}</p>
-            <p className="card-text">Please select your state: {location}</p>
-            <h5 className="card-title">State</h5>
-            <select className="form-select" aria-label="Default select example" onChange={(e) => setUSState(e.target.value)}>
-              <option selected>Please select your university</option>
-              <option value="MA">MA</option>
-              <option value="NJ">NJ</option>
-              <option value="NY">NY</option>
-            </select>
-            <p className="card-text">Please select your state: {USState}</p>
-            <h5 className="card-title">City</h5>
-            <input required type="text" className="form-control" onChange={(e) => setCity(e.target.value)}></input>
-            <p className="card-text">Please enter your city: {city}</p>
-            <h5 className="card-title">ZIP</h5>
-            <input required type="text" className="form-control" onChange={(e) => setZip(e.target.value)}></input>
-            <p className="card-text">Please enter your ZIP code: {zip}</p>
+            {displayStreetAddress()}
             <h5 className="card-title">Date of Birth</h5>
-            <input required type="date" className="form-control" onChange={(e) => setDOB(e.target.value)}></input>
-            <p className="card-text">Input your date of birth: {dob}</p>
+            {displayDOB()}
             <h5 className="card-title">University</h5>
             <select className="form-select" aria-label="Default select example" onChange={(e) => setUniversity(e.target.value)}>
               <option selected>Please select your university</option>
