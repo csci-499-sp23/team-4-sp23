@@ -143,4 +143,13 @@ hr {
   color: black;
 }
 
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+.button-container .btn {
+  width: 200px;
+}
