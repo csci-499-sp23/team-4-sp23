@@ -7,3 +7,8 @@ Justin Salle
 Jessica De Mota Munoz
 Alex O'keefe
 Ranako Holder
+
+## How to run the project with one command 
+`npm run dev`
+
+## env vars needed

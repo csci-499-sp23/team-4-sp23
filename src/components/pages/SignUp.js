@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, sendEmailVerification } from '@firebase/auth';
-import React, { useState  } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../../firebase-config';
 import { collection, getDocs, addDoc } from "@firebase/firestore";
@@ -14,11 +14,11 @@ const SignUp = () => {
     const studentsCollectionRef = collection(db, "students");
 
     const colRef = collection(db, 'auth_domains');
-    
+
     getDocs(colRef).then((snapshot) => {
-        
+
         snapshot.docs.forEach((doc) => {
-            domainsJSON.push({...doc.data(), id: doc.id})
+            domainsJSON.push({ ...doc.data(), id: doc.id })
         })
         domainsJSON.map((domain) => (
             domains.push(domain.domain)
@@ -31,11 +31,11 @@ const SignUp = () => {
 
     const signUp = async (e) => {
         e.preventDefault();
-        
-        if(domains.includes((email.substring(email.indexOf('@'))).toLowerCase())) {
+
+        if (domains.includes((email.substring(email.indexOf('@'))).toLowerCase())) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await addDoc(studentsCollectionRef, {email: userCredential.user.email, first_name: firstName, last_name: lastName});
+                await addDoc(studentsCollectionRef, { email: userCredential.user.email, first_name: firstName, last_name: lastName });
                 sendEmailVerification(userCredential.user);
                 auth.signOut();
                 navigate("/VerifSent");
@@ -47,7 +47,7 @@ const SignUp = () => {
         }
     }
     return (
-        
+
         <div className="container-fluid">
             <h2>Sign Up!</h2>
             <form>
@@ -63,12 +63,24 @@ const SignUp = () => {
                     <label for="email" className="form-label">Email address</label>
                     <input required type="email" className="form-control" id="exampleInputEmail1" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 </div>
-                <div class="mb-3 fields">
+                <div className="mb-3 fields">
                     <label for="password" className="form-label">Password</label>
                     <input required type="password" className="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
-                <a class="btn btn-primary" href="/VerifSent" onClick={signUp} role="button">Submit</a>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked></input>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    I'm a student
+                </label>
+                <br></br>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"></input>
+                <label class="form-check-label" for="flexRadioDefault2">
+                    I'm a parent
+                </label>
+                <br></br>
+                <br></br>
+                <a className="btn btn-primary" href="/VerifSent" onClick={signUp} role="button">Submit</a>
             </form>
+
         </div>
     );
 };

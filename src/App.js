@@ -14,6 +14,7 @@ import BrowseStudents from "./components/pages/BrowseStudents.js";
 import VerifSent from "./components/pages/VerifSent.js";
 import Survey from "./components/pages/Survey";
 import StudentProfilePage from "./components/pages/StudentProfilePage.js";
+import ParentProfilePage from "./components/pages/ParentProfilePage.js";
 import Match from "./components/pages/Match";
 import { useDispatch } from "react-redux";
 import { login, logout } from "./services/appSlice";
@@ -27,7 +28,8 @@ function App() {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true);
-        dispatch(login(user));
+
+        dispatch(login(user.toJSON()));
       } else {
         setIsLoggedIn(false);
         dispatch(logout());
@@ -38,6 +40,17 @@ function App() {
       listen();
     };
   }, [dispatch]);
+
+// const functions = require('firebase-functions');
+// const express = require('express');
+// const app = express();
+
+// app.get('/cors', (req, res) => {
+//   res.set('Access-Control-Allow-Origin', '*');
+//   res.send({ "msg": "This has CORS enabled 🎈" })
+// });
+
+// exports.app = functions.https.onRequest(app);
 
   return (
     <div className="App">
@@ -58,6 +71,7 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/parentProfilePage" element={<ParentProfilePage />} />
           <Route path="/rentalMap" element={<RentalMap />} />
           <Route path="/verifSent" element={<VerifSent />} />
           <Route path="/survey" element={<Survey />} />
