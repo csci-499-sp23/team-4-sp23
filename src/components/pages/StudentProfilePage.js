@@ -254,14 +254,15 @@ const StudentProfilePage = () => {
           <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" onChange={(e) => setUserImage(e.target.value)}></input>
           <div className="card-body">
             <h5 className="card-title">Bio</h5>
+            <p className="card-text">Tell us a little more about yourself. {bio}</p>
             {user?.email}
             <div className="mb-3 fields">
               <textarea className="form-control" id="exampleFormControlTextarea1" rows="5" name="issue"></textarea>
             </div>
-            <p className="card-text">Tell us a little more about yourself. {bio}</p>
-            <button className="btn btn-primary" onSubmit={() => setBio("...")}>
-              Edit
-            </button>
+            <button className="btn btn-primary" onSubmit={() => setBio("...")}>Edit</button>
+                <div class="button-container">
+                    <a href="/survey" class="btn btn-primary">Take Survey</a>
+                </div>
           </div>
         </div>
       </div>
