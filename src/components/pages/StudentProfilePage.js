@@ -34,8 +34,7 @@ const StudentProfilePage = () => {
     };
     
     fetchSchools();
-    console.log(schoolsList);
-  }, []);
+  }, [schoolsList]);
 
   useEffect(() => {
     if (user?.email) {
