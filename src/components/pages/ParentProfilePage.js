@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import ReactDOM from "react-dom/client";
 import BrowseStudents from "./BrowseStudents.js";
 const ParentProfilePage = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
     return (
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
