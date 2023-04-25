@@ -21,7 +21,7 @@ const StudentList = () =>{
         students.map((student) => {
             return (
                 <div>
-                    <h1>Name: {student.first_name} {student.last_name}</h1>
+                    <h3 className="browse-text">Name: {student.first_name} {student.last_name}</h3>
                 </div>
             );
         })
