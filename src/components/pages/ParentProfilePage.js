@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from "react-dom/client";
-
+import BrowseStudents from "./BrowseStudents.js";
 const ParentProfilePage = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -10,17 +10,9 @@ const ParentProfilePage = () => {
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                    <h2>Parent Profile</h2>
-                    <input required type="text" className="form-control" onChange={(e) => setFirstName(e.target.value)}></input>
-                    <p class="card-text">Enter first name: {firstName}</p>
-                    <input required type="text" className="form-control" onChange={(e) => setLastName(e.target.value)}></input>
-                    <p class="card-text">Enter first name: {lastName}</p>
-                    <input required type="email" className="form-control" onChange={(e) => setEmail(e.target.value)}></input>
-                    <p class="card-text">Enter your email: {email}</p>
-                    <button class="btn btn-primary">Submit</button>
-                    <br></br>
-                    <br></br>
-                    <a href="/StudentProfilePage" class="btn btn-primary" role="button">Switch to Student</a>
+                        <h2>Parent Profile</h2>
+                        <BrowseStudents />
+                        <a href="/StudentProfilePage" class="btn btn-primary" role="button">Switch to Student</a>
                     </div>
                 </div>
             </div>
