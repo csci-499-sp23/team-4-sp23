@@ -1,4 +1,4 @@
-import { collection, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { collection, doc, onSnapshot, query, updateDoc, where, getDocs, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { useUserSelector } from "../../services/selectors";
@@ -11,13 +11,36 @@ const StudentProfilePage = () => {
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
   const [dob, setDOB] = useState("");
+  const [universityID, setUniversityID] = useState("");
   const [university, setUniversity] = useState("");
+  const [schoolsList, setSchoolsList] = useState([]);
   const [userImage, setUserImage] = useState("https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=");
   const [studentData, setStudentData] = useState(null);
+ 
+
+  useEffect(() => {
+    const fetchSchools = async () => {
+      const schoolsRef = collection(db, "schools");
+      try {
+        const data = await getDocs(schoolsRef);
+        const filteredData = data.docs.map((doc) => ({
+          ...doc.data(), id: doc.id
+        }));
+        setSchoolsList(filteredData);
+      } catch(err) {
+        console.error(err);
+      }
+      
+    };
+    
+    fetchSchools();
+    console.log(schoolsList);
+  }, []);
 
   useEffect(() => {
     if (user?.email) {
       const studentRef = query(collection(db, "students"), where("email", "==", user.email));
+      
 
       const unsubscribe = onSnapshot(studentRef, (snapshot) => {
         const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -25,6 +48,7 @@ const StudentProfilePage = () => {
         if (data.length > 0) {
           setLocation(data[0].street_add);
           setDOB(data[0].dob);
+          setUniversityID(data[0].university);
         }
       });
 
@@ -34,6 +58,27 @@ const StudentProfilePage = () => {
     }
   }, [user]);
 
+  const fetchUniversityName = async (universityID) => {
+    if (universityID) {
+      try {
+        const universityDocRef = doc(db, "schools", universityID);
+        const universityDoc = await getDoc(universityDocRef);
+
+        const universityName = universityDoc.data().name;
+        setUniversity(universityName);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      setUniversity("");
+    }
+  };
+  
+  useEffect(() => {
+    fetchUniversityName(universityID);
+  }, [universityID]);
+
+  
   const displayStreetAddress = () => {
     if (
       user?.email &&
@@ -120,13 +165,6 @@ const StudentProfilePage = () => {
     }
   };
 
-  const updateDOB = async () => {
-    const studentDoc = doc(db, "students", studentData[0].id);
-    if (dob !== "") {
-      await updateDoc(studentDoc, { dob: dob });
-    }
-  };
-
   const clearAddress = async () => {
     const studentDoc = doc(db, "students", studentData[0].id);
     await updateDoc(studentDoc, { street_add: "" });
@@ -140,10 +178,74 @@ const StudentProfilePage = () => {
     setZip("");
   };
 
+  const updateDOB = async () => {
+    const studentDoc = doc(db, "students", studentData[0].id);
+    if (dob !== "") {
+      await updateDoc(studentDoc, { dob: dob });
+    }
+  };
+
   const clearDOB = async () => {
     const studentDoc = doc(db, "students", studentData[0].id);
     await updateDoc(studentDoc, { dob: "" });
   };
+
+  const setSelectedUniversity = (id, name) => {
+    setUniversityID(id);
+    setUniversity(name);
+  };
+  
+  const displayUniversity = () => {
+    if (
+      user?.email &&
+      studentData &&
+      studentData[0].university !== undefined &&
+      studentData[0].university !== "" 
+    ) {
+      return (
+        <div>
+          <div>{university}</div>
+          <button class="btn btn-primary" onClick={clearUniversity}>
+            Clear University
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <select className="form-select" aria-label="Default select example" onChange={(e) => {
+            const selectedSchool = schoolsList.find((school) => school.id === e.target.value);
+            setSelectedUniversity(selectedSchool.id, selectedSchool.name);
+          }}>
+              <option selected>Please select your university</option>
+              {schoolsList.map((school) => (
+                <option key={school.id} value={school.id}>
+                  {school.name}
+                </option>
+              ))}
+          </select>
+          <p className="card-text">Please let us know what university you go to: {university}</p>
+          <button class="btn btn-primary" onClick={updateUniversity}>
+            Update University
+          </button>
+        </div>
+      )
+      
+    }
+  };
+
+  const updateUniversity = async () => {
+    const studentDoc = doc(db, "students", studentData[0].id);
+    if (university !== "") {
+      await updateDoc(studentDoc, { university:  universityID });
+    }
+  };
+
+  const clearUniversity = async () => {
+    const studentDoc = doc(db, "students", studentData[0].id);
+    await updateDoc(studentDoc, { university: "" });
+  };
+  
 
   return (
     <div className="row row-cols-1 row-cols-md-2 g-4">
@@ -172,14 +274,7 @@ const StudentProfilePage = () => {
             <h5 className="card-title">Date of Birth</h5>
             {displayDOB()}
             <h5 className="card-title">University</h5>
-            <select className="form-select" aria-label="Default select example" onChange={(e) => setUniversity(e.target.value)}>
-              <option selected>Please select your university</option>
-              <option value="Hunter College">Hunter College</option>
-              <option value="Baruch College">Baruch College</option>
-              <option value="Lehman College">Lehman College</option>
-            </select>
-
-            <p className="card-text">Please let us know what university you go to: {university}</p>
+            {displayUniversity()}
             <a href="/ParentProfilePage" class="btn btn-primary" role="button">
               Switch to Parent
             </a>
