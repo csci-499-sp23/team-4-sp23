@@ -1,6 +1,6 @@
 // import { db } from "./firebase"; // assuming you have a firebase.js file that exports the db object
-import { auth, db } from "./firebase-config";
-
+import { httpsCallable } from "firebase/functions";
+import { auth, db, functions } from "./firebase-config";
 
 export const getProfiles = async (queryCollection = "student", filterFn = (ref) => ref.get()) => {
   try {
@@ -82,3 +82,33 @@ export const doesProfileExist = async ({ email }) => {
     return { exists, profileType };
   });
 };
+
+/**
+ * @type {string} function name
+ *
+ */
+function getCallableFunction(functionName) {
+  /**@typdef {Promise<{data:T}>} FunctionsResponse<T> */
+  return httpsCallable(functions, functionName);
+}
+
+export const functionsApi = {
+  getMatches: getCallableFunction("getMatches"),
+  getStudentAddresses: getCallableFunction("getStudentAddresses"),
+  dynamicFunction: (functionName) => getCallableFunction(functionName),
+};
+
+//syncronous function
+function getRandomNumbr() {
+  return Math.random();
+}
+console.log(getRandomNumbr());
+
+//async functions
+function promAsyncGeetRandomNumber() {
+  return new Promise((res, rej) => {
+    res(getRandomNumbr());
+  });
+}
+
+promAsyncGeetRandomNumber().then((response) => console.log(response));
