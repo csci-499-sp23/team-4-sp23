@@ -1,6 +1,7 @@
 import { initializeApp } from "@firebase/app";
 import { getAuth } from "@firebase/auth";
 import { getFirestore } from "@firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 //import cors from 'cors';
 
@@ -41,6 +42,7 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const functions = getFunctions(app);
+export const storage = getStorage(app);
 
 //setup for local development
 // const [NODE_ENV, API_PORT = 5001] = [process.env.NODE_ENV, process.env.REACT_APP_API_PORT];
