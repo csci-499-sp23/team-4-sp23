@@ -45,13 +45,11 @@ export const functions = getFunctions(app);
 export const storage = getStorage(app);
 
 //setup for local development
-const [NODE_ENV, API_PORT = 5001] = [process.env.NODE_ENV, process.env.REACT_APP_API_PORT];
-
-if (NODE_ENV === 'production' && [undefined,null,''].includes(process.env.REACT_APP_API_PORT)){
-  throw new Error('Error: REACT_APP_API_PORT env_var invalid')
-}
+const NODE_ENV = process.env.NODE_ENV;
 
 if (NODE_ENV === "development") {
+  const API_PORT = process.env.REACT_APP_API_PORT ?? 5001;
+
   console.log("%c running firebase local emulator: %O", "background:blue;color:white", { NODE_ENV, PORT: API_PORT });
   connectFunctionsEmulator(functions, "localhost", API_PORT);
 }
