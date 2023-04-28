@@ -65,7 +65,7 @@ const Navbar = () => {
             </li> */}
             <AuthDetails />
             <li className="nav-item">
-              <NavLink className="nav-link btn btn-primary" to="signup">
+              <NavLink className="nav-link btn btn-primary" to="/StudentProfilePage">
                 Account
               </NavLink>
             </li>

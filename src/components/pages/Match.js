@@ -87,6 +87,7 @@ const Match = () => {
               <span>{profile.age}.</span>
               <span>{profile.bio}.</span>
               <span>{profile.school?.name}</span>
+              <button className='btn btn-primary mt-3 align-self-center ms-auto'>Message</button>
             </div>
             <img src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"} alt="profilee" className="flex-none rounded" width="150" height="150" />
           </div>
