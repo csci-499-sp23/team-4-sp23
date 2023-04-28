@@ -48,7 +48,7 @@ export const storage = getStorage(app);
 const NODE_ENV = process.env.NODE_ENV;
 
 if (NODE_ENV === "development") {
-  const API_PORT = process.env.REACT_APP_API_PORT ?? 5001;
+  const API_PORT = process.env.REACT_APP_API_PORT ?? 4000;
 
   console.log("%c running firebase local emulator: %O", "background:blue;color:white", { NODE_ENV, PORT: API_PORT });
   connectFunctionsEmulator(functions, "localhost", API_PORT);
