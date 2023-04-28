@@ -1,7 +1,11 @@
 require("dotenv").config();
-const cors = require("cors")({origin: "*"});
+const cors = require("cors")({
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+});
 
 const functions = require("firebase-functions");
+
 
 const {initializeApp} = require("firebase-admin/app");
 const {getStudentsList, getMatches, getGeoLoc} = require("./src/matches");
@@ -63,4 +67,10 @@ exports.updateStudentLocation = functions.https.onCall((res, req) => {
 
     res.send({result: {address, latLonArr}});
   });
+});
+
+
+exports.healthCheck = functions.https.onRequest((req, res) => {
+  res.write("healthy");
+  res.end();
 });

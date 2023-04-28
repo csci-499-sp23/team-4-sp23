@@ -25,7 +25,7 @@ const matchReducer = (state, action) => {
 };
 const Match = () => {
   const [profiles, setProfiles] = useState([]);
-  const [matchFilters, dispatch] = useReducer(matchReducer, { distanceInKm: 5, distanceUnit: "km", loading: null });
+  const [matchFilters, dispatch] = useReducer(matchReducer, { distanceInKm: 5, distanceUnit: "mi", loading: null });
 
   const refreshMatchs = useCallback(() => {
     dispatch({ type: "isLoading" });
@@ -40,14 +40,7 @@ const Match = () => {
       .finally(() => dispatch({ type: "loadingComplete" }));
   }, [matchFilters]);
 
-  const refreshSAddresses = () => {
-    dispatch({ type: "isLoading" });
-    functionsApi
-      .getStudentAddresses()
-      .then(console.log)
-      .catch(console.error)
-      .finally(() => dispatch({ type: "loadingComplete" }));
-  };
+
 
   useEffect(() => {
     if (matchFilters.loading === null) {
@@ -62,9 +55,6 @@ const Match = () => {
       <div className="col-6">Matches {profiles?.length}</div>
 
       <div className="col-6 button-controls">
-        <button className="btn btn-primary" onClick={refreshSAddresses}>
-          get my addy
-        </button>
 
         <button className="btn btn-primary" onClick={refreshMatchs}>
           get matches
