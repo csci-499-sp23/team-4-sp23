@@ -73,7 +73,8 @@ const getMatches = async (
   const students = await getStudentsList({
     filters: [
       {field: "school_id", operator: "==", value: student.school_id},
-      {field: "email", operator: "not-in", value: [student.email]}, // exclude user with same email as us
+      // exclude user with same email as us
+      {field: "email", operator: "not-in", value: [student.email]},
     ],
   });
   // .slice(0, 10);
