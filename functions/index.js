@@ -1,7 +1,11 @@
 require("dotenv").config();
-const cors = require("cors")({origin: true});
+const cors = require("cors")({
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+});
 
 const functions = require("firebase-functions");
+
 
 const {initializeApp} = require("firebase-admin/app");
 const {getStudentsList, getMatches, getGeoLoc} = require("./src/matches");
