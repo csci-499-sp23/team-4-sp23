@@ -1,5 +1,5 @@
 require("dotenv").config();
-const cors = require("cors")({origin: "*"});
+const cors = require("cors")({origin: true});
 
 const functions = require("firebase-functions");
 
