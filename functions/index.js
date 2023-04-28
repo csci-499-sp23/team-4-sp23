@@ -64,3 +64,9 @@ exports.updateStudentLocation = functions.https.onCall((res, req) => {
     res.send({result: {address, latLonArr}});
   });
 });
+
+
+exports.healthCheck = functions.https.onRequest((req, res) => {
+  res.write("healthy");
+  res.end();
+});
