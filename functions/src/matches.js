@@ -6,15 +6,18 @@ const docToJson = (doc) => {
   return {id: doc.id, ...doc.data()};
 };
 
+
 const getStudentsList = async ({filters} = {filters: []}) => {
-  let query = await getFirestore().collection("students");
+  const query = await getFirestore().collection("students");
 
-  for (const {field, operator, value} of filters) {
-    console.log({field, operator, value});
-    query = query.where(field, operator, value);
-  }
 
-  const studentsRef = await query.get();
+  const reducedQuery = filters.reduce((acc, currentFilter) => {
+    const {field, operator, value} = currentFilter;
+    acc = acc.where(field, operator, value);
+    return acc;
+  }, query);
+
+  const studentsRef = await reducedQuery.get();
 
   /** @type {Student[]}*/
   const result = studentsRef.docs.map(async (studentDoc) => {
@@ -68,7 +71,10 @@ const getMatches = async (
 
   // get all students
   const students = await getStudentsList({
-    filters: [{field: "school_id", operator: "==", value: student.school_id}],
+    filters: [
+      {field: "school_id", operator: "==", value: student.school_id},
+      {field: "email", operator: "not-in", value: [student.email]}, // exclude user with same email as us
+    ],
   });
   // .slice(0, 10);
 
