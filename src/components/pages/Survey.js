@@ -238,105 +238,148 @@ function Survey() {
   const handleSubmit = async (event) => {
     setIsSubmitted(true);
 
+    // eslint-disable-next-line
     if(answers.hasLicense == "Yes, I have my license") {
       await addDoc(qaCollectionRef, { question_code: 309, answer_code: 44410, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.hasLicense == "No, I dont have my license") {
       await addDoc(qaCollectionRef, { question_code: 309, answer_code: 44402, user_id: studentData[0].id });
     }
 
+    // eslint-disable-next-line
     if(answers.vehicleType == 'A Sedan') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44416, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.hasLicense == 'A SUV') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44413, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.hasLicense == 'A Minivan') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44415, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.hasLicense == 'A Van') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44414, user_id: studentData[0].id });
     }
 
+    // eslint-disable-next-line
     if(answers.universityYear == 'Freshman') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44406, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.hasLicense == 'Sophomore') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44405, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.hasLicense == 'Junior') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44403, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.hasLicense == 'Senior') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44404, user_id: studentData[0].id });
     }
 
+    // eslint-disable-next-line
     if(answers.carSick == 'Yes, I get car sick') {
       await addDoc(qaCollectionRef, { question_code: 301, answer_code: 44410, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if (answers.carSick == "No, I dont get car sick") {
       await addDoc(qaCollectionRef, { question_code: 301, answer_code: 44402, user_id: studentData[0].id });
     }
 
+    // eslint-disable-next-line
     if(answers.frequentStops == 'Yes, I need to make frequent stops') {
       await addDoc(qaCollectionRef, { question_code: 306, answer_code: 44410, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.frequentStops == "No, I dont need to make frequent stops") {
       await addDoc(qaCollectionRef, { question_code: 306, answer_code: 44402, user_id: studentData[0].id });
     }
 
+    // eslint-disable-next-line
     if(answers.silentRide == 'Yes, I prefer a silent car ride') {
       await addDoc(qaCollectionRef, { question_code: 304, answer_code: 44410, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.silentRide == "No, I dont prefer a silent car ride"){
       await addDoc(qaCollectionRef, { question_code: 304, answer_code: 44402, user_id: studentData[0].id });
     }
 
+    // eslint-disable-next-line
     if(answers.roadsideClub == 'Yes, I am a member of a Roadside Assistance Club') {
       await addDoc(qaCollectionRef, { question_code: 305, answer_code: 44410, user_id: studentData[0].id });
+      // eslint-disable-next-line
     } else if(answers.roadsideClub == "No, I am not a member of a Roadside Assistance Club") {
       await addDoc(qaCollectionRef, { question_code: 305, answer_code: 44402, user_id: studentData[0].id });
     }
 
     for(let i = 0; i < answers.personalityTraits.length; i++) {
+      // eslint-disable-next-line
       if(answers.personalityTraits[i] == 'Adventurous') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44417, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Artistic') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44418, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Assertive') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44419, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Charismatic') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44420, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Confident') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44421, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Creative') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44422, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Curious') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44423, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Dependable') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44424, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Determined') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44425, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Efficient') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44426, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Empathetic') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44427, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Energetic') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44428, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Enthusiastic') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44429, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Generous') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44430, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Humorous') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44431, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Intelligent') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44432, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Motivated') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44433, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Organized') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44434, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Outgoing') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44435, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Patient') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44436, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Proactive') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44437, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Reliable') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44438, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Responsible') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44439, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Spontaneous') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44440, user_id: studentData[0].id });
+        // eslint-disable-next-line
       } else if (answers.personalityTraits[i] == 'Trustworthy') {
         await addDoc(qaCollectionRef, { question_code: 310, answer_code: 44441, user_id: studentData[0].id });
       }
