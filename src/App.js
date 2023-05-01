@@ -41,16 +41,16 @@ function App() {
     };
   }, [dispatch]);
 
-// const functions = require('firebase-functions');
-// const express = require('express');
-// const app = express();
+  // const functions = require('firebase-functions');
+  // const express = require('express');
+  // const app = express();
 
-// app.get('/cors', (req, res) => {
-//   res.set('Access-Control-Allow-Origin', '*');
-//   res.send({ "msg": "This has CORS enabled 🎈" })
-// });
+  // app.get('/cors', (req, res) => {
+  //   res.set('Access-Control-Allow-Origin', '*');
+  //   res.send({ "msg": "This has CORS enabled 🎈" })
+  // });
 
-// exports.app = functions.https.onRequest(app);
+  // exports.app = functions.https.onRequest(app);
 
   return (
     <div className="App">
