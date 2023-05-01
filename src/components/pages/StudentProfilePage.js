@@ -23,6 +23,7 @@ const StudentProfilePage = () => {
  
   const imageListRef = ref(storage, "/profile_photos")
   useEffect(() => {
+    console.log("in");
     const fetchSchools = async () => {
       const schoolsRef = collection(db, "schools");
       try {
@@ -38,7 +39,7 @@ const StudentProfilePage = () => {
     };
     
     fetchSchools();
-  }, [schoolsList]);
+  }, []);
 
   useEffect(() => {
     if (user?.email) {
