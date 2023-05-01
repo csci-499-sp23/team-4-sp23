@@ -8,8 +8,8 @@ const Convo = ({ guest }) => {
 }
 
 
-const loadConvos = () => {
-}
+// const loadConvos = () => {
+// }
 
 export default function Conversations() {
     const [recentConvos] = useState([])

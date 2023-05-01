@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { db, auth } from "../../firebase-config";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { db } from "../../firebase-config";
 import { useMessageReceiver, useUserSelector } from "../../services/selectors";
 // import SendMessage from './SendMessage';
-import { addDoc, collection, getDocs, query, where, orderBy, limit, or, onSnapshot } from "@firebase/firestore";
+import { addDoc, collection, onSnapshot, query } from "@firebase/firestore";
 
 const getMessageKeyPair = (...emails) => {
   const [email1, email2] = emails;
@@ -19,7 +19,7 @@ const fetchMessages = (guestEmail, hostEmail, cb) => {
 
   const messagesRef = collection(db, "messages");
 
-  const filter = or(where("messageKey", "==", messageKeyPair[0]), where("messageKey", "==", messageKeyPair[1]));
+  // const filter = or(where("messageKey", "==", messageKeyPair[0]), where("messageKey", "==", messageKeyPair[1]));
   const q = query(messagesRef);
   // lisften for new messages
   onSnapshot(q, (snapshots) => {
@@ -30,14 +30,14 @@ const fetchMessages = (guestEmail, hostEmail, cb) => {
 };
 
 //fetch the receivers i am chatting with
-const fetchReceivers = (cb) => {
-  db.collection("students")
-    .doc(auth.currentUser.uid)
-    .get()
-    .then((doc) => {
-      const currentUser = doc.data();
-    });
-};
+// const fetchReceivers = (cb) => {
+//   db.collection("students")
+//     .doc(auth.currentUser.uid)
+//     .get()
+//     .then((doc) => {
+//       const currentUser = doc.data();
+//     });
+// };
 
 const makeMessage = (guestEmail, hostEmail, msg) => {
   return { messageKey: [guestEmail, hostEmail], message: msg, timestamp: new Date().toISOString(), messageId: crypto.randomUUID() };
