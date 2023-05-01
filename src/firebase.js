@@ -1,4 +1,3 @@
-// import { db } from "./firebase"; // assuming you have a firebase.js file that exports the db object
 import { httpsCallable } from "firebase/functions";
 import { auth, db, functions } from "./firebase-config";
 
