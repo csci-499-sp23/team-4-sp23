@@ -41,7 +41,7 @@ function Survey() {
     };
     
     fetchAnswers();
-  }, [answersData]);
+  }, []);
 
   useEffect(() => {
     if (user?.email) {
@@ -60,6 +60,7 @@ function Survey() {
   }, [user]);
 
   useEffect(() => {
+    console.log("in");
     if (user?.email && studentData) {
       
       const surveyRef = query(collection(db, "question_answers"), where("user_id", "==", studentData[0].id));
@@ -127,7 +128,7 @@ function Survey() {
       };
     }
   
-  }, [user, studentData, answers, answersData, surveyData]);
+  }, [user, studentData, answersData, answers, surveyData]);
   
 
   const displaySurvey = () => {  

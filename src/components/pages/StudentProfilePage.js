@@ -61,8 +61,6 @@ const StudentProfilePage = () => {
         unsubscribe();
       };
     }
-
-    
   }, [user]);
 
   useEffect(() => {
