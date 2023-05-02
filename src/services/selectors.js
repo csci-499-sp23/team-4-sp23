@@ -6,4 +6,9 @@ export const useUserSelector = () => {
   return user;
 };
 
+export const useMessageReceiver = () => {
+  const { messageReceiver } = useAppSelector()
+  return messageReceiver;
+}
+
 export default useAppSelector;

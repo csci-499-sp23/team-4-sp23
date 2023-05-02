@@ -1,7 +1,10 @@
 import { collection, doc, onSnapshot, query, updateDoc, where, getDocs, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
+import { storage } from '../../firebase-config';
 import { useUserSelector } from "../../services/selectors";
+import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
+import { v4 } from 'uuid';
 
 const StudentProfilePage = () => {
   const user = useUserSelector();
@@ -16,9 +19,11 @@ const StudentProfilePage = () => {
   const [schoolsList, setSchoolsList] = useState([]);
   const [userImage, setUserImage] = useState("https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=");
   const [studentData, setStudentData] = useState(null);
+  const [imageUpload, setImageUpload] = useState(null);
  
-
+  const imageListRef = ref(storage, "/profile_photos")
   useEffect(() => {
+    console.log("in");
     const fetchSchools = async () => {
       const schoolsRef = collection(db, "schools");
       try {
@@ -34,7 +39,7 @@ const StudentProfilePage = () => {
     };
     
     fetchSchools();
-  }, [schoolsList]);
+  }, []);
 
   useEffect(() => {
     if (user?.email) {
@@ -48,6 +53,7 @@ const StudentProfilePage = () => {
           setLocation(data[0].street_add);
           setDOB(data[0].dob);
           setUniversityID(data[0].university);
+          setBio(data[0].bio);
         }
       });
 
@@ -56,6 +62,97 @@ const StudentProfilePage = () => {
       };
     }
   }, [user]);
+
+  useEffect(() => {
+    listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        if(`profile_photos/${item.name}` === studentData[0].image) {
+          getDownloadURL(item).then((url) => {
+            setUserImage(url);
+          })
+        }
+      })
+    });
+  }, [imageListRef, studentData]);
+
+  const uploadImage = async () => {
+    if(imageUpload == null) return;
+    const imageName = `profile_photos/${imageUpload.name + v4()}`;
+
+    const imageRef = ref(storage, imageName)
+
+    uploadBytes(imageRef, imageUpload).then(() => {
+      alert("Image Uploaded");
+    });
+
+    const studentDoc = doc(db, "students", studentData[0].id);
+    await updateDoc(studentDoc, { image: imageName });
+  };
+
+  const displayBio = () => {
+    if (user?.email && studentData && studentData[0].bio !== undefined && studentData[0].bio !== "") {
+      return (
+        <div>
+          <div>{studentData[0].bio}</div>
+          <br></br>
+          <button class="btn btn-primary" onClick={clearBio}>
+            Clear Bio
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <div className="mb-3 fields">
+              <textarea className="form-control" id="exampleFormControlTextarea1" rows="5" name="issue" onChange={(e) => setBio(e.target.value)}></textarea>
+          </div>
+          <button class="btn btn-primary" onClick={updateBio}>
+            Update Bio
+          </button>
+        </div>
+      );
+    }
+  };
+
+  const updateBio = async () => {
+    const studentDoc = doc(db, "students", studentData[0].id);
+    if (bio !== "") {
+      await updateDoc(studentDoc, { bio: bio });
+    }
+  };
+
+  const clearBio = async () => {
+    const studentDoc = doc(db, "students", studentData[0].id);
+    await updateDoc(studentDoc, { bio: "" });
+  };
+
+  const displayImage = () => {
+    if(
+      userImage === "https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=" ||
+      userImage === ""
+    ) {
+      return (
+        <div>
+            <img src={userImage} className="card-img-top" alt="..."></img>
+            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" onChange={(event) => {setImageUpload(event.target.files[0])}}></input>
+            <button onClick={uploadImage}> Upload Image</button>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <img src={userImage} className="card-img-top" alt="..."></img>
+          <button onClick={clearImage}> Clear Image</button>
+        </div>
+      )
+    }
+  };
+
+  const clearImage = async () => {
+    const studentDoc = doc(db, "students", studentData[0].id);
+    await updateDoc(studentDoc, { image: "" });
+    setUserImage("https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=");
+  };
 
   const fetchUniversityName = async (universityID) => {
     if (universityID) {
@@ -250,18 +347,16 @@ const StudentProfilePage = () => {
     <div className="row row-cols-1 row-cols-md-2 g-4">
       <div className="col">
         <div className="card">
-          <img src={userImage} className="card-img-top" alt="..."></img>
-          <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" onChange={(e) => setUserImage(e.target.value)}></input>
+          {displayImage()}
           <div className="card-body">
             <h5 className="card-title">Bio</h5>
+            <p className="card-text">Tell us a little more about yourself.</p>
             {user?.email}
-            <div className="mb-3 fields">
-              <textarea className="form-control" id="exampleFormControlTextarea1" rows="5" name="issue"></textarea>
+            {displayBio()}
+            <br></br>
+            <div class="button-container">
+                    <a href="/survey" class="btn btn-primary">Take Survey</a>
             </div>
-            <p className="card-text">Tell us a little more about yourself. {bio}</p>
-            <button className="btn btn-primary" onSubmit={() => setBio("...")}>
-              Edit
-            </button>
           </div>
         </div>
       </div>
@@ -270,10 +365,13 @@ const StudentProfilePage = () => {
           <div className="card-body">
             <h5 className="card-title">Street Address</h5>
             {displayStreetAddress()}
+            <br></br>
             <h5 className="card-title">Date of Birth</h5>
             {displayDOB()}
+            <br></br>
             <h5 className="card-title">University</h5>
             {displayUniversity()}
+            <br></br>
             <a href="/ParentProfilePage" class="btn btn-primary" role="button">
               Switch to Parent
             </a>

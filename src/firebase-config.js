@@ -1,11 +1,12 @@
 import { initializeApp } from "@firebase/app";
 import { getAuth } from "@firebase/auth";
 import { getFirestore } from "@firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 //import cors from 'cors';
 
 //for cloud functions
-import { /*connectFunctionsEmulator,*/ getFunctions } from "firebase/functions";
+import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 
 // const firebaseConfig = {
 //   apiKey: process.env.REACT_APP_API_KEY,
@@ -41,15 +42,14 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const functions = getFunctions(app);
+export const storage = getStorage(app);
 
 //setup for local development
-// const [NODE_ENV, API_PORT = 5001] = [process.env.NODE_ENV, process.env.REACT_APP_API_PORT];
+const NODE_ENV = process.env.NODE_ENV;
 
-// if (NODE_ENV === 'production' && [undefined,null,''].includes(process.env.REACT_APP_API_PORT)){
-//   throw new Error('Error: REACT_APP_API_PORT env_var invalid')
-// }
+if (NODE_ENV === "development") {
+  const API_PORT = process.env.REACT_APP_API_PORT ?? 5001;
 
-// if (NODE_ENV === "development") {
-//   console.log("%c running firebase local emulator: %O", "background:blue;color:white", { NODE_ENV, PORT: API_PORT });
-//   connectFunctionsEmulator(functions, "localhost", API_PORT);
-// }
+  console.log("%c running firebase local emulator: %O", "background:blue;color:white", { NODE_ENV, PORT: API_PORT });
+  connectFunctionsEmulator(functions, "localhost", API_PORT);
+}

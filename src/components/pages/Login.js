@@ -1,7 +1,8 @@
-import { signInWithEmailAndPassword } from "@firebase/auth";
-import { auth } from "../../firebase-config";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from '@firebase/auth'
+import { auth } from '../../firebase-config'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -47,12 +48,6 @@ const Login = () => {
           </label>
           <input type="password" className="form-control" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
         </div>
-        {/* <a className="btn btn-primary" href="/StudentProfilePage" onClick={handleSubmit} role="button">Submit</a> */}
-        <button className="btn btn-primary" type="submit">
-          Submit
-        </button>
-      </form>
-    </div>
-  );
+    );
 };
 export default Login;
