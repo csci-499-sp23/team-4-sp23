@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from "react-dom/client";
-import BrowseStudents from "./BrowseStudents.js";
+import { useState } from 'react';
 const ParentProfilePage = () => {
+    const [email, setEmail] = useState("");
     return (
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h2>Parent Profile</h2>
-                        <BrowseStudents />
-                        <a href="/StudentProfilePage" class="btn btn-primary" role="button">Switch to Student</a>
-                    </div>
-                </div>
-            </div>
-
+        <div className="mb-3 fields">
+            <h2>Before you get started...</h2>
+            <br></br>
+            <label for="email" className="form-label">Enter your child's email address:</label>
+            <input type="email" className="form-control" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+            <br></br>
+            <a className="btn btn-primary" href="/VerifSent" role="button">Submit</a>
+            <br></br>
+            <br></br>
+            <a href="/StudentProfilePage" class="btn btn-primary" role="button">Switch to Student</a>
         </div>
     )
 }
