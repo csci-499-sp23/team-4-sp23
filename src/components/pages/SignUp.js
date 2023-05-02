@@ -31,8 +31,17 @@ const SignUp = () => {
 
     const signUp = async (e) => {
         e.preventDefault();
+        if(email.length === 0){
+            alert("Please enter your email.")
+        }
+        else if(email.search("@") === -1){
+            alert("Please enter a valid email.")
+        }
+        else if(password.length < 6){
+            alert("Password must be at least 6 characters.")
+        }
 
-        if (domains.includes((email.substring(email.indexOf('@'))).toLowerCase())) {
+        else if (domains.includes((email.substring(email.indexOf('@'))).toLowerCase())) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await addDoc(studentsCollectionRef, { email: userCredential.user.email, first_name: firstName, last_name: lastName });
