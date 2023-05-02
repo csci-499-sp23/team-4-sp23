@@ -66,7 +66,7 @@ const StudentProfilePage = () => {
   useEffect(() => {
     listAll(imageListRef).then((response) => {
       response.items.forEach((item) => {
-        if(`profile_photos/${item.name}` === studentData[0].profile_photo) {
+        if(`profile_photos/${item.name}` === studentData[0].image) {
           getDownloadURL(item).then((url) => {
             setUserImage(url);
           })
@@ -86,7 +86,7 @@ const StudentProfilePage = () => {
     });
 
     const studentDoc = doc(db, "students", studentData[0].id);
-    await updateDoc(studentDoc, { profile_photo: imageName });
+    await updateDoc(studentDoc, { image: imageName });
   };
 
   const displayBio = () => {
@@ -149,7 +149,7 @@ const StudentProfilePage = () => {
 
   const clearImage = async () => {
     const studentDoc = doc(db, "students", studentData[0].id);
-    await updateDoc(studentDoc, { profile_photo: "" });
+    await updateDoc(studentDoc, { image: "" });
     setUserImage("https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=");
   };
 
