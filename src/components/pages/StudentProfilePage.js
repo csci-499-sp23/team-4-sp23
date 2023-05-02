@@ -94,6 +94,7 @@ const StudentProfilePage = () => {
       return (
         <div>
           <div>{studentData[0].bio}</div>
+          <br></br>
           <button class="btn btn-primary" onClick={clearBio}>
             Clear Bio
           </button>
@@ -352,6 +353,7 @@ const StudentProfilePage = () => {
             <p className="card-text">Tell us a little more about yourself.</p>
             {user?.email}
             {displayBio()}
+            <br></br>
             <div class="button-container">
                     <a href="/survey" class="btn btn-primary">Take Survey</a>
             </div>
@@ -363,10 +365,13 @@ const StudentProfilePage = () => {
           <div className="card-body">
             <h5 className="card-title">Street Address</h5>
             {displayStreetAddress()}
+            <br></br>
             <h5 className="card-title">Date of Birth</h5>
             {displayDOB()}
+            <br></br>
             <h5 className="card-title">University</h5>
             {displayUniversity()}
+            <br></br>
             <a href="/ParentProfilePage" class="btn btn-primary" role="button">
               Switch to Parent
             </a>
