@@ -13,12 +13,15 @@ const Login = () => {
     e.preventDefault();
 
     signInWithEmailAndPassword(auth, email, password).then((authUser) => {
+      if(password.length < 6){
+        alert("Password must be at least 6 characters")
+      }
       if (authUser.user.emailVerified) {
         //This will return true or false
         navigate("/StudentProfilePage");
       } else {
         auth.signOut();
-        alert("email not verified");
+        alert("Email not verified");
       }
     });
   };
