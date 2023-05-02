@@ -60,7 +60,6 @@ function Survey() {
   }, [user]);
 
   useEffect(() => {
-    console.log("in");
     if (user?.email && studentData) {
       
       const surveyRef = query(collection(db, "question_answers"), where("user_id", "==", studentData[0].id));
@@ -115,6 +114,7 @@ function Survey() {
               }
             } 
             if(data[i].question_code === 308) {
+              surveyData.push(data[i]);
               if(data[i].answer_code === answersData[j].answer_code) {
                 answers.vehicleType = answersData[j].answer;
               }
@@ -216,11 +216,21 @@ function Survey() {
   };
 
   const clearSurvey = async () => {
-    setIsSubmitted(false);
     for(let i = 0; i < surveyData.length; i++) {
       const qaDoc = doc(db, "question_answers", surveyData[i].id)
       await deleteDoc(qaDoc);
     }
+
+      answers.hasLicense = null;
+      answers.vehicleType = null;
+      answers.universityYear = null;
+      answers.carSick = null;
+      answers.frequentStops = null;
+      answers.silentRide = null;
+      answers.roadsideClub = null;
+      answers.personalityTraits = [];
+
+    setIsSubmitted(false);
   };
   
   // Define handleChange function to update answers state
@@ -251,28 +261,28 @@ function Survey() {
     if(answers.vehicleType == 'A Sedan') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44416, user_id: studentData[0].id });
       // eslint-disable-next-line
-    } else if(answers.hasLicense == 'A SUV') {
+    } else if(answers.vehicleType == 'A SUV') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44413, user_id: studentData[0].id });
       // eslint-disable-next-line
-    } else if(answers.hasLicense == 'A Minivan') {
+    } else if(answers.vehicleType== 'A Minivan') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44415, user_id: studentData[0].id });
       // eslint-disable-next-line
-    } else if(answers.hasLicense == 'A Van') {
+    } else if(answers.vehicleType == 'A Van') {
       await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44414, user_id: studentData[0].id });
     }
 
     // eslint-disable-next-line
     if(answers.universityYear == 'Freshman') {
-      await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44406, user_id: studentData[0].id });
+      await addDoc(qaCollectionRef, { question_code: 302, answer_code: 44406, user_id: studentData[0].id });
       // eslint-disable-next-line
-    } else if(answers.hasLicense == 'Sophomore') {
-      await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44405, user_id: studentData[0].id });
+    } else if(answers.universityYear== 'Sophomore') {
+      await addDoc(qaCollectionRef, { question_code: 302, answer_code: 44405, user_id: studentData[0].id });
       // eslint-disable-next-line
-    } else if(answers.hasLicense == 'Junior') {
-      await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44403, user_id: studentData[0].id });
+    } else if(answers.universityYear == 'Junior') {
+      await addDoc(qaCollectionRef, { question_code: 302, answer_code: 44403, user_id: studentData[0].id });
       // eslint-disable-next-line
-    } else if(answers.hasLicense == 'Senior') {
-      await addDoc(qaCollectionRef, { question_code: 308, answer_code: 44404, user_id: studentData[0].id });
+    } else if(answers.universityYear == 'Senior') {
+      await addDoc(qaCollectionRef, { question_code: 302, answer_code: 44404, user_id: studentData[0].id });
     }
 
     // eslint-disable-next-line
