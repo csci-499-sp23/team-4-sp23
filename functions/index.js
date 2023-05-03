@@ -11,6 +11,26 @@ const {initializeApp} = require("firebase-admin/app");
 const {getStudentsList, getMatches, getGeoLoc} = require("./src/matches");
 initializeApp(functions.config().firestore);
 
+// const {FirebaseFunctionsRateLimiter} =
+//   require("firebase-functions-rate-limiter");
+const admin = require("firebase-admin");
+const {default: FirebaseFunctionsRateLimiter} =
+  require("@omgovich/firebase-functions-rate-limiter");
+
+// admin.initializeApp(functions.config().firestore);
+const database = admin.firestore();
+
+// rate limit to 5 call in 15 seconds
+const limiter = FirebaseFunctionsRateLimiter.withFirestoreBackend(
+    {
+      name: "rate_limiter_collection",
+      maxCalls: 5,
+      periodSeconds: 15,
+    },
+    database,
+);
+
+
 exports.getStudentAddresses = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     const addresses = await getStudentsList().then((students) =>
@@ -29,6 +49,10 @@ exports.getMatches = functions
       functions.logger.info("Hello from matches!", {
         structuredData: true,
       });
+
+      // will throw HttpsException with proper warning
+      await limiter.rejectOnQuotaExceededOrRecordUsage();
+
 
       // compute matches () [distance: 5, 10,20,50,100]
       // const matches = demoProfiles;
