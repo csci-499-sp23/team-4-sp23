@@ -54,9 +54,6 @@ hr {
   padding-bottom: 5%;
 }
 
-.feature-icons:hover {
-  color: #112d4e;
-}
 
 .feature-box {
   text-align: center;
@@ -103,6 +100,11 @@ hr {
 
 .social-icon {
   margin: 2% 1% 2%;
+  text-decoration: none;
+  color: white;
+}
+.social-icon:hover {
+  color:#3f72af;
 }
 
 #title-section {

@@ -34,10 +34,10 @@ const Home = () => {
         </div>
       </section>
       <footer id="footer">
-        <i className="fa-brands fa-twitter fa-lg social-icon"></i>
-        <i className="fa-brands fa-facebook fa-lg social-icon"></i>
-        <i className="fa-brands fa-instagram fa-lg social-icon"></i>
-        <i className="fa-solid fa-envelope fa-lg social-icon"></i>
+        <a className="fa-brands fa-twitter fa-lg social-icon" href="https://twitter.com/">_</a>
+        <a className="fa-brands fa-facebook fa-lg social-icon" href="https://www.facebook.com/">_</a>
+        <a className="fa-brands fa-instagram fa-lg social-icon" href="https://www.instagram.com/">_</a>
+        <a className="fa-solid fa-envelope fa-lg social-icon" href="https://accounts.google.com/InteractiveLogin/signinchooser?continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&osid=1&passive=1209600&service=mail&ifkv=Af_xneH91iebTo2phuGcuYggnQ8OY_UNx6NlQ3Mx0aqJt1BGg8Rr7mSIqwqZ3VQ5atZNjrPwvNPF&flowName=GlifWebSignIn&flowEntry=ServiceLogin">_</a>
         <p className="footer-text">© Copyright 2023 Wheel Call You</p>
       </footer>
     </div>
