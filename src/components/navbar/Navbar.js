@@ -25,18 +25,8 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav ms-auto">
           <li className="nav-item">
-            <NavLink className="nav-link" to="/match">
-              Match
-            </NavLink>
-          </li>
-          <li className="nav-item">
             <NavLink className="nav-link" to="/contact">
               Contact
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/rentalMap">
-              Map
             </NavLink>
           </li>
           <SignedOut>
@@ -52,6 +42,16 @@ const Navbar = () => {
             </li>
           </SignedOut>
           <SignedIn>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/match">
+                Match
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/rentalMap">
+                Map
+              </NavLink>
+            </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/survey">
                 Survey
