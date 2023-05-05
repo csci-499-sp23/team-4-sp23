@@ -3,6 +3,7 @@ import { db } from "../../firebase-config";
 import { useMessageReceiver, useUserSelector } from "../../services/selectors";
 // import SendMessage from './SendMessage';
 import { addDoc, collection, onSnapshot, query } from "@firebase/firestore";
+import { where, or, orderBy } from "firebase/firestore";
 
 const getMessageKeyPair = (...emails) => {
   const [email1, email2] = emails;
@@ -19,15 +20,20 @@ const fetchMessages = (guestEmail, hostEmail, cb) => {
 
   const messagesRef = collection(db, "messages");
 
-  // const filter = or(where("messageKey", "==", messageKeyPair[0]), where("messageKey", "==", messageKeyPair[1]));
-  const q = query(messagesRef);
+  const filter = or(where("messageKey", "==", messageKeyPair[0]), where("messageKey", "==", messageKeyPair[1]));
+  const q = query(messagesRef, filter, orderBy("timestamp"));
   // lisften for new messages
-  onSnapshot(q, (snapshots) => {
+  return onSnapshot(q, (snapshots) => {
     const newMessages = snapshots.docChanges().map(({ doc }) => doc.data());
     console.log("messages", { messages: newMessages });
-    cb((oldMessages) => [...oldMessages, ...newMessages]);
+    cb((oldMessages) => getUniqueMessages([...oldMessages, ...newMessages]));
   });
 };
+
+function getUniqueMessages(arr) {
+  const keyedMessages = arr.map((msg) => [msg.messageId, msg]);
+  return [...new Map(keyedMessages).values()];
+}
 
 //fetch the receivers i am chatting with
 // const fetchReceivers = (cb) => {
@@ -40,7 +46,7 @@ const fetchMessages = (guestEmail, hostEmail, cb) => {
 // };
 
 const makeMessage = (guestEmail, hostEmail, msg) => {
-  return { messageKey: [guestEmail, hostEmail], message: msg, timestamp: new Date().toISOString(), messageId: crypto.randomUUID() };
+  return { messageKey: [guestEmail, hostEmail], message: msg, timestamp: new Date().toISOString(), messageId: crypto.randomUUID(), read: false };
 };
 const sendMessage = async (/** @type {ReturnType <makeMessage>}*/ messageObject) => {
   console.log("sending new message", messageObject);
@@ -53,6 +59,7 @@ function Chat() {
   const [draft, setDraft] = useState(null);
   const guest = useMessageReceiver();
   const host = useUserSelector();
+  const [activeGuest, setActiveGuest] = useState(null);
 
   console.log({ guest, host });
 
@@ -64,15 +71,22 @@ function Chat() {
   const updatemessages = useCallback((msgs) => setMessages(msgs), [setMessages]);
 
   useEffect(() => {
-    //make sure to only run if messages is null
     console.log("component useEffect");
-    if (messages != null) return;
-    updatemessages([]); //initialize messages on first load, which will run once
+    const guestChanged = activeGuest?.email !== guest.email;
 
-    console.log("message listener active");
-    // fetchReceivers();
-    fetchMessages(guest.email, host.email, setMessages);
-  }, [host, guest, messages, updatemessages]);
+    //make sure to only run if the guest has changed
+    if (guestChanged) {
+      //clear messages
+      updatemessages([]); //initialize messages on first load, which will run once
+      //change guest
+      setActiveGuest(guest);
+      //load chats with guest
+      fetchMessages(guest.email, host.email, setMessages);
+
+      console.log("message listener active");
+      // fetchReceivers();
+    }
+  }, [host, guest, messages, updatemessages, activeGuest, setActiveGuest]);
 
   if (!messages) {
     return <div>loading...</div>;
@@ -81,8 +95,8 @@ function Chat() {
   return (
     <>
       <div className="messageBox card row">
-        <p className="col-12 fs-2">Messages with</p>
-        <h2>
+        <p className="col-12  d-flex">Messages {messages.length} with</p>
+        <h2 className="fs-5 d-flex">
           {guest.first_name} {guest.last_name}
         </h2>
 
@@ -90,12 +104,12 @@ function Chat() {
           {messages.map(({ messageKey, message, timestamp, messageId = Math.floor(Math.random() * 10_000) }) => (
             <div
               key={[...messageKey, timestamp, messageId].join("__")}
-              className={`msg-item border border-4 shadow  col-8   ${messageKey[1] === host.email ? "sent text-align-right offset-4" : "recieved"}`}
+              className={`msg-item border border-4 shadow  col-8  fs-6 ${messageKey[1] === host.email ? "sent text-align-right offset-4" : "recieved"}`}
             >
               {/* Construct the URL of the student's photo from the "students" collection */}
               <img src={""} alt="" />
-              <p className='m-0 p-1'>{message}</p>
-              <p className='m-0 p-1'>{messageKey[0]}</p>
+              <p className="m-0 p-1">{message}</p>
+              <p className="m-0 p-1">{messageKey[1]}</p>
             </div>
           ))}
         </div>
@@ -104,7 +118,7 @@ function Chat() {
 
         <div className="d-flex justify-content-end col-12">
           <button className="btn btn-primary mt-3 block" onClick={() => doSend()}>
-            Send
+            <i class="fa fa-send-o fs-3" aria-hidden="true"></i>
           </button>
         </div>
         {/* <SendMessage scroll={scroll} /> */}
