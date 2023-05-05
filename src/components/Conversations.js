@@ -17,9 +17,7 @@ const fetchLast20ConversationProfiles = (host) => {
     const q = query(messagesRef, where('messageKey', 'contains', [host.emaail]), limit(50))
 
     return onSnapshot(q, (snapshots) => {
-        snapshots.docChanges().map(msg => {
-
-        })
+        snapshots.docChanges().map(msg => ({}))
     })
 }
 
@@ -30,7 +28,7 @@ export default function Conversations() {
     useEffect(() => {
         fetchLast20ConversationProfiles(host)
     }, [host])
-    
+
     //return list of people  i am coversing with
     return <div className="conversations-container">
         <h2>Conversations</h2>

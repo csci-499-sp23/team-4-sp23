@@ -1,12 +1,11 @@
-import React, { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 //import { getProfiles } from "../../firebase";
 
+import { ErrorBoundary } from "react-error-boundary";
+import { useDispatch } from "react-redux";
 import { functionsApi } from "../../firebase";
 import { setMessageReceiver } from "../../services/appSlice";
-import { useDispatch } from "react-redux";
 import { useMessageReceiver } from "../../services/selectors";
-import Chat from "./Chat";
-import { ErrorBoundary } from "react-error-boundary";
 import Messages from "../Messages";
 
 // const getProfiles = () => demo_profiles;
