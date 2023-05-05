@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useMessageReceiver } from "../../services/selectors";
 import Chat from "./Chat";
 import { ErrorBoundary } from "react-error-boundary";
+import Messages from "../Messages";
 
 // const getProfiles = () => demo_profiles;
 const matchReducer = (state, action) => {
@@ -34,18 +35,25 @@ const Match = () => {
   const [profiles, setProfiles] = useState([]);
   const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm: 5, distanceUnit: "mi", loading: null });
 
-  const refreshMatchs = useCallback(() => {
-    dispatchLocal({ type: "isLoading" });
-    setProfiles([]);
-    functionsApi
-      .getMatches({ distanceInKm: matchFilters.distanceInKm * (/mi/i.test(matchFilters.distanceUnit) ? 1.6 : 1) })
-      .then((response) => {
-        const { data: matches } = response.data;
-        setProfiles(matches);
-      })
-      .catch(console.error)
-      .finally(() => dispatchLocal({ type: "loadingComplete" }));
-  }, [matchFilters]);
+  const refreshMatchs = useCallback(
+    (e) => {
+      if (e) {
+        e.preventDefault();
+      }
+
+      dispatchLocal({ type: "isLoading" });
+      setProfiles([]);
+      functionsApi
+        .getMatches({ distanceInKm: matchFilters.distanceInKm * (/mi/i.test(matchFilters.distanceUnit) ? 1.6 : 1) })
+        .then((response) => {
+          const { data: matches } = response.data;
+          setProfiles(matches);
+        })
+        .catch(console.error)
+        .finally(() => dispatchLocal({ type: "loadingComplete" }));
+    },
+    [matchFilters]
+  );
 
   const startMessaging = (profile) => {
     dispatchGlobal(setMessageReceiver(profile));
@@ -61,24 +69,8 @@ const Match = () => {
 
   return (
     <div className="row">
-      <div className="content row justify-content-center col-8 matches-containter">
-        <div className="col-6">Matches {profiles?.length}</div>
-
-        <div className="col-6 button-controls">
-          <button className="btn btn-primary" onClick={refreshMatchs}>
-            get matches
-          </button>
-
-          {messageReceiver && <div className="bg-orange"> chatting with {messageReceiver?.email}</div>}
-          {messageReceiver && (
-            <div className="bg-orange" onClick={() => dispatchGlobal(setMessageReceiver(null))}>
-              {" "}
-              closeChat{" "}
-            </div>
-          )}
-        </div>
-
-        <form className="col-12">
+      <div className="justify-content-center col-8 matches-containter gap-3">
+        <form className="col-12 d-flex flex-column gap-3" onSubmit={refreshMatchs}>
           <div className="form-group">
             <label htmlFor="">Unit</label>
             <select name="distanceUnit" id="" onChange={(e) => dispatchLocal({ type: "set_unit", payload: e.target.value })}>
@@ -92,29 +84,62 @@ const Match = () => {
             </label>
             <input type="range" min="1" max="30" value={matchFilters.distanceInKm} onChange={(e) => dispatchLocal({ type: "set_distance", payload: Number(e.target.value) })} />
           </div>
+
+          <button type="submit" className="btn btn-primary flex-none text-nowrap">
+            get matches
+          </button>
+
+          <div>{matchFilters.loading ? "Loading..." : <div>Matches {profiles?.length}</div>}</div>
         </form>
 
-        <div>{matchFilters.loading ? "Loading..." : "done"}</div>
-
-        <div className="profiles d-flex flex-column gap-5 col-md-6 col-xs-12">
+        <div className="profiles d-flex flex-column gap-5 col">
           {profiles?.map((profile) => (
-            <div className="d-flex h-300 bg-white text-align-left p-3 rounded-3" key={profile.id}>
-              <div className="profile-content flex-grow text-black w-100 d-flex flex-column align-items-start">
-                <h2 className="p-l-0">{profile.first_name + " " + profile.last_name}</h2>
+            <div className="d-flex profile-item h-300 bg-white text-align-left p-3 rounded-3" key={profile.id} style={{ minHeight: "300px" }}>
+              <div className="profile-content w-75 flex-grow text-black w-100 d-flex flex-column align-items-start">
+                <div className="profile-header">
+                  <h2 className="p-l-0 fs-5 d-inline">{profile.first_name + " " + profile.last_name} </h2>
+                  <button className="btn btn-fab  align-self-center ms-auto" onClick={() => startMessaging(profile)}>
+                    <i className="fa-regular fa-envelope fs-3"></i>
+                  </button>
+
+                  <button className="btn btn-fab">
+                    <i className="fa fa-truck fs-3" aria-hidden="true"></i>
+                  </button>
+                </div>
                 <span>{profile.age}.</span>
                 <span>{profile.bio}.</span>
                 <span>{profile.school?.name}</span>
-                <button className="btn btn-primary mt-3 align-self-center ms-auto" onClick={() => startMessaging(profile)}>
-                  Message
-                </button>
+
+                <div className="attributes d-flex gap-2 pt-3 flex-wrap">
+                  <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
+                  <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
+                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
+                    Lorem, ipsum dolor.
+                  </button>
+                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
+                    Lorem, ipsum dolor.
+                  </button>
+                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
+                    Lorem, ipsum dolor.
+                  </button>
+                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
+                    Lorem, ipsum dolor.
+                  </button>
+                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
+                    Lorem, ipsum dolor.
+                  </button>
+                  <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
+                  <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
+                </div>
               </div>
-              <img
-                src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"}
-                alt="profilee"
-                className="flex-none rounded"
-                width="150"
-                height="150"
-              />
+
+              <div className="profile-img w-25">
+                <img
+                  src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"}
+                  alt="profilee"
+                  className="flex-none rounded img-responsive w-100 h-100 object-fit-cover"
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -124,7 +149,7 @@ const Match = () => {
         <div className="col-4 chats-container">
           Chats
           <ErrorBoundary fallback={<p>Error occured with child component</p>}>
-            <Chat />
+            <Messages />
           </ErrorBoundary>
         </div>
       )}

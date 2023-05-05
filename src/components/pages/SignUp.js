@@ -57,22 +57,22 @@ const SignUp = () => {
     }
     return (
 
-        <div className="container-fluid">
+        <div className="container p-3 text-center">
             <h2>Sign Up!</h2>
             <form>
-                <div className="mb-3 fields">
+                <div className="mb-3">
                     <label for="first_name" className="form-label">First Name</label>
                     <input required type="text" className="form-control" value={firstName} onChange={(e) => setFirstName(e.target.value)}></input>
                 </div>
-                <div className="mb-3 fields">
+                <div className="mb-3">
                     <label for="last_name" className="form-label">Last Name</label>
                     <input required type="text" className="form-control" value={lastName} onChange={(e) => setLastName(e.target.value)}></input>
                 </div>
-                <div className="mb-3 fields">
+                <div className="mb-3">
                     <label for="email" className="form-label">Email address</label>
                     <input required type="email" className="form-control" id="exampleInputEmail1" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 </div>
-                <div className="mb-3 fields">
+                <div className="mb-3">
                     <label for="password" className="form-label">Password</label>
                     <input required type="password" className="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>

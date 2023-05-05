@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialAppState = {
   user: null,
   /** @type {"loading"|true|false} */ loggedIn: "loading",
-  messageReceiver: null
+  messageReceiver: null,
+  profilesInConversations: []
 };
 
 export const appSlice = createSlice({
@@ -22,12 +23,20 @@ export const appSlice = createSlice({
     },
     setMessageReceiver: (state, { payload, }) => {
       state.messageReceiver = payload
+    },
+    newProfileMessageNotification: (state, { payload }) => {
+      // {profiles,newConversation=false}
+      const profile = state.profilesInConversations[payload.email] ?? payload.timestamp
+      profile.newConversation = true;
+    },
+    clearProfileMessageNotification: (state, { payload }) => {
+      state.profilesInConversations[payload.email].notify = null
     }
   },
 });
 // Action creators are generated for each case of reducer function, 
 // call them inside dispatch to perform the desired action or change ijn the store
-export const { login, logout, setMessageReceiver } = appSlice.actions;
+export const { login, logout, setMessageReceiver, newProfileMessageNotification, clearProfileMessageNotification } = appSlice.actions;
 
 export default appSlice.reducer;
 
