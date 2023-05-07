@@ -9,10 +9,11 @@ const SignUp = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [password, setPassword] = useState('');
+    const [userType, setUserType] = useState('Student');
     let domainsJSON = [];
     let domains = [];
     const studentsCollectionRef = collection(db, "students");
-
+    const parentsCollectionRef = collection(db, "parents");
     const colRef = collection(db, 'auth_domains');
 
     getDocs(colRef).then((snapshot) => {
@@ -41,7 +42,7 @@ const SignUp = () => {
             alert("Password must be at least 6 characters.")
         }
 
-        else if (domains.includes((email.substring(email.indexOf('@'))).toLowerCase())) {
+        else if (domains.includes((email.substring(email.indexOf('@'))).toLowerCase()) && userType === "Student") {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await addDoc(studentsCollectionRef, { email: userCredential.user.email, first_name: firstName, last_name: lastName });
@@ -51,7 +52,19 @@ const SignUp = () => {
             } catch (error) {
                 console.error(error);
             }
-        } else {
+        }
+        else if (domains.includes((email.substring(email.indexOf('@'))).toLowerCase()) && (userType === 'Parent')) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await addDoc(parentsCollectionRef, { email: userCredential.user.email, first_name: firstName, last_name: lastName });
+                sendEmailVerification(userCredential.user);
+                auth.signOut();
+                navigate("/VerifSent");
+            } catch (error) {
+                console.error(error);
+            }
+        }  
+        else {
             alert("The email domain you are using is not authorized")
         }
     }
@@ -76,13 +89,13 @@ const SignUp = () => {
                     <label for="password" className="form-label">Password</label>
                     <input required type="password" className="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked></input>
-                <label class="form-check-label" for="flexRadioDefault1">
+                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={userType === 'Student'} value={'Student'} onChange={() => setUserType('Student')}></input>
+                <label className="form-check-label" for="flexRadioDefault1">
                     I'm a student
                 </label>
                 <br></br>
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"></input>
-                <label class="form-check-label" for="flexRadioDefault2">
+                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={userType === 'Parent'} value={'Parent'} onChange={() => setUserType('Parent')}></input>
+                <label className="form-check-label" for="flexRadioDefault2">
                     I'm a parent
                 </label>
                 <br></br>
