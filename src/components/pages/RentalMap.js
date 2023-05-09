@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, InfoWindow, LoadScript, Marker, DirectionsService, DirectionsRenderer } from "@react-google-maps/api";
+import { GoogleMap, InfoWindow, LoadScript, Marker, DirectionsRenderer } from "@react-google-maps/api";
 import { db } from '../../firebase-config.js';
 import { collection, getDocs } from 'firebase/firestore';
 
