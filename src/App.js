@@ -18,6 +18,7 @@ import ParentProfilePage from "./components/pages/ParentProfilePage.js";
 import Match from "./components/pages/Match";
 import { useDispatch } from "react-redux";
 import { login, logout } from "./services/appSlice";
+import VerifyLicense from "./components/pages/VerifyLicense.js";
 
 function App() {
   // const  = useSelector((store) => store.appStore);
@@ -77,6 +78,7 @@ function App() {
           <Route path="/survey" element={<Survey />} />
           <Route path="/match" element={<Match />} />
           <Route path="*" element={<Home />} />
+          <Route path="/verifyLicense" element={<VerifyLicense />} />
         </Routes>
       </Router>
     </div>

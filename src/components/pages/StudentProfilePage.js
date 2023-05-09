@@ -375,6 +375,7 @@ const StudentProfilePage = () => {
             <a href="/ParentProfilePage" class="btn btn-primary" role="button">
               Switch to Parent
             </a>
+            <a href="/verifyLicense" class="btn btn-primary" role="button">Verify Driver's License</a>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { initializeApp } from "@firebase/app";
 import { getAuth } from "@firebase/auth";
 import { getFirestore } from "@firebase/firestore";
 import { getStorage } from "firebase/storage";
-
+import "firebase/storage";
 //import cors from 'cors';
 
 //for cloud functions
