@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, InfoWindow, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, InfoWindow, LoadScript, Marker, DirectionsRenderer } from "@react-google-maps/api";
 import { db } from '../../firebase-config.js';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -11,9 +11,37 @@ const RentalMap = () => {
   const [location1, setLocation1] = useState("");
   const [location2, setLocation2] = useState("");
   const [radius, setRadius] = useState(0);
+  const [center, setCenter] = useState({ lat: 40.7678, lng: -73.9645 });
+
+  const [directionsRenderer, setDirectionsRenderer] = useState(null);
+
+  const handleMarkerClick = (marker) => {
+    const directionsService = new window.google.maps.DirectionsService();
+    const origin = new window.google.maps.LatLng(marker.position.lat(), marker.position.lng());
+    const destination = new window.google.maps.LatLng(40.7678, -73.9645); // replace with hardcoded coordinates
+
+    directionsService.route(
+      {
+        origin: origin,
+        destination: destination,
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      },
+      (result, status) => {
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          setDirectionsRenderer(
+            <DirectionsRenderer
+              options={{ directions: result }}
+            />
+          );
+        } else {
+          console.error(`error fetching directions ${result}`);
+        }
+      }
+    );
+};
+
 
   const containerStyle = { width: '100%', height: '900px' };
-  const center = { lat: 40.7678, lng: -73.9645 };
 
   const handleInfoWindowClose = () => setActiveInfoWindow(null);
   
@@ -54,6 +82,7 @@ const RentalMap = () => {
       });
   
       setMarkers(filteredMarkers);
+      setCenter(midpointLatLng);
   
     } catch (error) {
       console.error(error);
@@ -113,7 +142,11 @@ const RentalMap = () => {
               label={marker.label}
               icon={require('../img/marker.png')}
               draggable={false}
-              onClick={() => setActiveInfoWindow(marker)}
+              onClick={() => {
+                setActiveInfoWindow(marker);
+                setCenter(marker.position);
+                handleMarkerClick(marker);
+              }}
             >
               {activeInfoWindow === marker && (
                 <InfoWindow
@@ -129,7 +162,8 @@ const RentalMap = () => {
               )}
             </Marker>
           ))}
-        </GoogleMap>
+          {directionsRenderer}
+       </GoogleMap>
       </LoadScript>
     </div>
   );
