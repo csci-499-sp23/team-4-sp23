@@ -2,6 +2,7 @@ import { collection, limit, onSnapshot, query, where } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import { useUserSelector } from "../services/selectors"
 import { db } from "../firebase-config"
+import { MessageKey, docToJson } from "../jsonUtils"
 
 const Convo = ({ guest }) => {
     return <div>
@@ -14,10 +15,14 @@ const fetchLast20ConversationProfiles = (host) => {
     // fetch users i am chatting with
     const messagesRef = collection(db, 'messages')
 
-    const q = query(messagesRef, where('messageKey', 'contains', [host.emaail]), limit(50))
+    const q = query(messagesRef, where('messageKey', 'contains', [host.email]), limit(50))
 
     return onSnapshot(q, (snapshots) => {
-        snapshots.docChanges().map(msg => ({}))
+        //get last 20 message
+        //get the emails from those messages
+        const last20messages = snapshots.docChanges().map(msg => docToJson(msg))
+        const last20EmailGuests= last20messages.map((msg)=> msg.messageKey[MessageKey.GUEST_INDEX])
+        console.log({last20EmailGuests})
     })
 }
 
