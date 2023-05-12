@@ -31,7 +31,7 @@ const matchReducer = (state, action) => {
 const Match = () => {
   const dispatchGlobal = useDispatch();
   const messageReceiver = useMessageReceiver();
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState(/** @type {import('../../../index.d.ts').Student[]}*/ ([]));
   const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm: 5, distanceUnit: "mi", loading: null });
 
   const refreshMatchs = useCallback(
@@ -44,9 +44,13 @@ const Match = () => {
       setProfiles([]);
       functionsApi
         .getMatches({ distanceInKm: matchFilters.distanceInKm * (/mi/i.test(matchFilters.distanceUnit) ? 1.6 : 1) })
-        .then((response) => {
-          const { data: matches } = response.data;
-          setProfiles(matches);
+        .then(async (response) => {
+          let { data: matches } = response.data;
+          //fetch surveyResponses for this match
+          // matches = matches.map(async (match) => ({ ...match, survey_responses: await functionsApi.getStudentSurveyResponses(match.id) }));
+          const surveyResponses = await Promise.all(matches.map(async (match) => ({ ...match, survey: await functionsApi.getStudentSurveyResponses(match.id) })));
+          console.log({ sureveyResponses: surveyResponses });
+          setProfiles(surveyResponses);
         })
         .catch(console.error)
         .finally(() => dispatchLocal({ type: "loadingComplete" }));
@@ -110,23 +114,11 @@ const Match = () => {
                 <span>{profile.school?.name}</span>
 
                 <div className="attributes d-flex gap-2 pt-3 flex-wrap">
-                  <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
-                  <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
-                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
-                    Lorem, ipsum dolor.
-                  </button>
-                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
-                    Lorem, ipsum dolor.
-                  </button>
-                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
-                    Lorem, ipsum dolor.
-                  </button>
-                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
-                    Lorem, ipsum dolor.
-                  </button>
-                  <button className="btn btn-outline-primary rounded-5 fs-6 " disabled>
-                    Lorem, ipsum dolor.
-                  </button>
+                  {profile.survey?.responses?.map((res) => (
+                    <button className="btn btn-outline-primary rounded-5 fs-6 " title={profile.survey.questions[res.question_code].question}>
+                     {profile.survey.options[res.answer_code].answer}</button>
+                  ))}
+                 
                   <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
                   <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
                 </div>

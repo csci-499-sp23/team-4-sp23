@@ -1,19 +1,16 @@
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { auth, db, functions } from "./firebase-config";
+import { docToJson, makeDeferred } from "./jsonUtils";
+
+
 
 export const getProfiles = async (queryCollection = "student", filterFn = (ref) => ref.get()) => {
   try {
     const profilesRef = db.collection(queryCollection);
     // const profilesSnapshot = await (filterFn ? profilesRef.where(filterFn).get() : profilesRef.get());
     const profilesSnapshot = await filterFn(profilesRef);
-    const profiles = [];
-
-    profilesSnapshot.forEach((doc) => {
-      profiles.push({
-        id: doc.id,
-        ...doc.data(),
-      });
-    });
+    const profiles = profilesSnapshot.map(docToJson);
 
     return profiles;
   } catch (error) {
@@ -82,6 +79,90 @@ export const doesProfileExist = async ({ email }) => {
   });
 };
 
+async function getStudentInfo(email) {
+  //  return  getProfiles("students",)
+  const studentRef = collection(db, "students").where("email", "==", email);
+  const studentsSnapshot = await studentRef.get();
+
+  const students = []
+
+  studentsSnapshot.forEach((doc) => {
+    students.push({
+      id: doc.id,
+      ...doc.data(),
+    });
+  });
+
+  const [firstStudent] = students;
+
+  return firstStudent
+
+  // return
+
+  // const unsubscribe = getDocs(studentRef).then( (snapshot) => {
+  //   const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  //   setStudentData(data);
+  // });
+}
+
+
+async function getSurveyQuestions(questionIds) {
+  let deferred = makeDeferred()
+  const collectionRef = query(collection(db, 'surv_questions'), where('question_code', 'in', questionIds))
+  getDocs(collectionRef).then((snapshot) => {
+    const survey_questions = snapshot.docs.map(docToJson)
+    //pass the survey_questions to the deferred promise
+    deferred.res(survey_questions)
+  })
+  // deferred = convertSnapshotToJson(snapshotResponses)
+  return /** @type {Promise<import("./../index").Question[]>} */ (deferred.promise)
+}
+
+async function getSurveyAnswers(answerIds) {
+  let deferred = makeDeferred()
+
+  const collectionRef = query(collection(db, 'surv_answers'), where('answer_code', 'in', answerIds))
+  getDocs(collectionRef).then(snapshot => {
+    deferred.res(snapshot.docs.map(docToJson))
+  })
+  return deferred.promise
+}
+
+async function getQuestionAndAnswers(studentDocId) {
+
+  const collectionQuery = query(collection(db, 'question_answers'), where('user_id', '==', studentDocId))
+
+  const answers = await getDocs(collectionQuery).then((snapshot) => snapshot.docs.map(docToJson))
+  return answers
+
+}
+
+async function getStudentSurveyResponses(studentId) {
+  const user_id = studentId;
+
+
+  try {
+    let responses = await getQuestionAndAnswers(user_id)
+    let surveyQuestions = await getSurveyQuestions(responses.map(qa => qa.question_code))
+    let answerOptions = await getSurveyAnswers(responses.map(qa => qa.answer_code))
+    // Todo: use the studentEmail to retrieve questions and responses for this student
+    // return them as [{question:'some question', response:'some response'},....]
+    const result = {
+      responses,
+      questions: Object.fromEntries(surveyQuestions.map(res => [res.question_code, res])),
+      options: Object.fromEntries(answerOptions.map(res => [res.answer_code, res]))
+    };
+
+    return result;
+  } catch (error) {
+    console.error(error)
+  }
+
+
+
+
+}
+
 /**
  * @type {string} function name
  *
@@ -92,9 +173,11 @@ function getCallableFunction(functionName) {
 }
 
 export const functionsApi = {
-  getMatches: getCallableFunction("getMatches"),
+  getMatches: /** @type {Promise<{data: {data: import('./../index').Student[]}}>} */ (getCallableFunction("getMatches")),
   getStudentAddresses: getCallableFunction("getStudentAddresses"),
   dynamicFunction: (functionName) => getCallableFunction(functionName),
+  getStudentSurveyResponses,
+  getStudentInfo
 };
 
 //syncronous function
@@ -104,10 +187,10 @@ function getRandomNumbr() {
 console.log(getRandomNumbr());
 
 //async functions
-function promAsyncGeetRandomNumber() {
+function promAsyncGetRandomNumber() {
   return new Promise((res, rej) => {
     res(getRandomNumbr());
   });
 }
 
-promAsyncGeetRandomNumber().then((response) => console.log(response));
+promAsyncGetRandomNumber().then((response) => console.log(response));
