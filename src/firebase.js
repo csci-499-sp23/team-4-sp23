@@ -1,31 +1,16 @@
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { auth, db, functions } from "./firebase-config";
-import { collection, getDoc, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import { docToJson, makeDeferred } from "./jsonUtils";
 
-const convertSnapshotToJson = (snapshot) => {
-  const results = []
 
-  snapshot.forEach((doc) => {
-    results.push(docToJson(doc));
-  });
-
-  return results
-}
 
 export const getProfiles = async (queryCollection = "student", filterFn = (ref) => ref.get()) => {
   try {
     const profilesRef = db.collection(queryCollection);
     // const profilesSnapshot = await (filterFn ? profilesRef.where(filterFn).get() : profilesRef.get());
     const profilesSnapshot = await filterFn(profilesRef);
-    const profiles = [];
-
-    profilesSnapshot.forEach((doc) => {
-      profiles.push({
-        id: doc.id,
-        ...doc.data(),
-      });
-    });
+    const profiles = profilesSnapshot.map(docToJson);
 
     return profiles;
   } catch (error) {
@@ -149,7 +134,7 @@ async function getQuestionAndAnswers(studentDocId) {
 
   const answers = await getDocs(collectionQuery).then((snapshot) => snapshot.docs.map(docToJson))
   return answers
- 
+
 }
 
 async function getStudentSurveyResponses(studentId) {
