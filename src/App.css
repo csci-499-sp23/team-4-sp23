@@ -222,3 +222,39 @@ hr {
   .recieved {
   }
 }
+
+.icon-container .btn {
+  margin-left: 10px;
+}
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+
+.icon-container .bio-text {
+  margin-right: 10px;
+}
+
+.icon-container .icon-wrapper {
+  cursor: pointer;
+}
+
+@media (max-width: 775px) {
+  .icon-container .btn {
+    margin-left: 10px;
+  }
+}
+
+.input-field {
+  margin-bottom: 10px !important;
+}
+
+.bio-text {
+  word-wrap: break-word;
+  width: 100%;
+}

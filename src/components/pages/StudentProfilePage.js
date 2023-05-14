@@ -5,6 +5,8 @@ import { storage } from '../../firebase-config';
 import { useUserSelector } from "../../services/selectors";
 import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faCheckCircle } from '@fortawesome/fontawesome-free-solid'
 
 const StudentProfilePage = () => {
   const user = useUserSelector();
@@ -23,7 +25,6 @@ const StudentProfilePage = () => {
  
   const imageListRef = ref(storage, "/profile_photos")
   useEffect(() => {
-    console.log("in");
     const fetchSchools = async () => {
       const schoolsRef = collection(db, "schools");
       try {
@@ -66,7 +67,7 @@ const StudentProfilePage = () => {
   useEffect(() => {
     listAll(imageListRef).then((response) => {
       response.items.forEach((item) => {
-        if(`profile_photos/${item.name}` === studentData[0].image) {
+        if(`profile_photos/${item.name}` === studentData[0]?.image) {
           getDownloadURL(item).then((url) => {
             setUserImage(url);
           })
@@ -89,26 +90,38 @@ const StudentProfilePage = () => {
     await updateDoc(studentDoc, { image: imageName });
   };
 
+  
   const displayBio = () => {
     if (user?.email && studentData && studentData[0].bio !== undefined && studentData[0].bio !== "") {
       return (
-        <div>
-          <div>{studentData[0].bio}</div>
-          <br></br>
-          <button class="btn btn-primary" onClick={clearBio}>
-            Clear Bio
-          </button>
+        <div className="d-flex flex-column">
+          <div className="bio-text">{studentData[0].bio}</div>
+          <div className="d-flex justify-content-end">
+            <div className="icon-wrapper" onClick={clearBio}>
+              <FontAwesomeIcon
+                className="icon-pointer"
+                icon={faEdit}
+                size="lg"
+                style={{ color: "#2685df", cursor: "pointer" }}
+              />
+            </div>
+          </div>
         </div>
       );
     } else {
       return (
-        <div>
-          <div className="mb-3 fields">
-              <textarea className="form-control" id="exampleFormControlTextarea1" rows="5" name="issue" onChange={(e) => setBio(e.target.value)}></textarea>
+        <div className="d-flex flex-column">
+          <textarea className="form-control mb-3" id="exampleFormControlTextarea1" rows="5" name="issue" onChange={(e) => setBio(e.target.value)}></textarea>
+          <div className="d-flex justify-content-end">
+            <div className="icon-wrapper" onClick={updateBio}>
+              <FontAwesomeIcon
+                className="icon-pointer"
+                icon={faCheckCircle}
+                size="lg"
+                style={{ color: "#38ab07", cursor: "pointer" }}
+              />
+            </div>
           </div>
-          <button class="btn btn-primary" onClick={updateBio}>
-            Update Bio
-          </button>
         </div>
       );
     }
@@ -183,73 +196,106 @@ const StudentProfilePage = () => {
       studentData[0].street_add !== "" &&
       studentData[0].state !== undefined &&
       studentData[0].state !== "" &&
-      studentData[0].state !== undefined &&
-      studentData[0].state !== "" &&
       studentData[0].city !== undefined &&
       studentData[0].city !== "" &&
       studentData[0].zip !== undefined &&
       studentData[0].zip !== ""
     ) {
       return (
-        <div>
-          <div>{studentData[0].street_add}</div>
-          <div>{studentData[0].city}</div>
-          <div>{studentData[0].state}</div>
-          <div>{studentData[0].zip}</div>
-          <button class="btn btn-primary" onClick={clearAddress}>
-            Clear Address
-          </button>
+        <div className="d-flex flex-column">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>{studentData[0].street_add}</div>
+          </div>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>{studentData[0].state}</div>
+          </div>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>{studentData[0].city}</div>
+          </div>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>{studentData[0].zip}</div>
+          </div>
+          <div className="d-flex justify-content-end">
+            <div className="icon-wrapper" onClick={clearAddress}>
+              <FontAwesomeIcon
+                className="icon-pointer"
+                icon={faEdit}
+                size="lg"
+                style={{ color: "#2685df", cursor: "pointer" }}
+              />
+            </div>
+          </div>
         </div>
       );
     } else {
       return (
-        <div>
-          <input required type="text" className="form-control" onChange={(e) => setLocation(e.target.value)}></input>
-          <p class="card-text">Please enter your street address: {location}</p>
-          <h5 class="card-title">State</h5>
-          <select class="form-select" aria-label="Default select example" onChange={(e) => setUSState(e.target.value)}>
+        <div className="d-flex flex-column">
+          <label>Street Address</label>
+          <input required type="text" className="form-control input-field mb-3" onChange={(e) => setLocation(e.target.value)}></input>
+          <label>State</label>
+          <select class="form-select input-field mb-3" aria-label="Default select example" onChange={(e) => setUSState(e.target.value)}>
             <option selected>Please select your state</option>
             <option value="MA">MA</option>
             <option value="NJ">NJ</option>
             <option value="NY">NY</option>
           </select>
-          <p class="card-text">Please select your state: {USState}</p>
-          <h5 class="card-title">City</h5>
-          <input required type="text" className="form-control" onChange={(e) => setCity(e.target.value)}></input>
-          <p class="card-text">Please enter your city: {city}</p>
-          <h5 class="card-title">ZIP</h5>
-          <input required type="text" className="form-control" onChange={(e) => setZip(e.target.value)}></input>
-          <p class="card-text">Please enter your ZIP code: {zip}</p>
-          <button class="btn btn-primary" onClick={updateStreetAddress}>
-            Update Address
-          </button>
+          <label>City</label>
+          <input required type="text" className="form-control input-field mb-3" onChange={(e) => setCity(e.target.value)}></input>
+          <label>ZIP</label>
+          <input required type="text" className="form-control input-field mb-3" onChange={(e) => setZip(e.target.value)}></input>
+          <div className="d-flex justify-content-end">
+            <div className="icon-wrapper" onClick={updateStreetAddress}>
+              <FontAwesomeIcon
+                className="icon-pointer"
+                icon={faCheckCircle}
+                size="lg"
+                style={{ color: "#38ab07", cursor: "pointer" }}
+              />
+            </div>
+          </div>
         </div>
       );
     }
   };
+  
+  
 
   const displayDOB = () => {
     if (user?.email && studentData && studentData[0].dob !== undefined && studentData[0].dob !== "") {
       return (
-        <div>
+        <div className="d-flex flex-column">
           <div>{studentData[0].dob}</div>
-          <button class="btn btn-primary" onClick={clearDOB}>
-            Clear DOB
-          </button>
+          <div className="d-flex justify-content-end">
+            <div className="icon-wrapper" onClick={clearDOB}>
+              <FontAwesomeIcon
+                className="icon-pointer"
+                icon={faEdit}
+                size="lg"
+                style={{ color: "#2685df", cursor: "pointer" }}
+              />
+            </div>
+          </div>
         </div>
       );
     } else {
       return (
-        <div>
-          <input required type="date" className="form-control" onChange={(e) => setDOB(e.target.value)}></input>
-          <p class="card-text">Input your date of birth: {dob}</p>
-          <button class="btn btn-primary" onClick={updateDOB}>
-            Update DOB
-          </button>
+        <div className="d-flex flex-column">
+          <input required type="date" className="form-control input-field" onChange={(e) => setDOB(e.target.value)}></input>
+          <div className="icon-wrapper" onClick={updateDOB}>
+            <div className="d-flex justify-content-end">
+              <FontAwesomeIcon
+                className="icon-pointer"
+                icon={faCheckCircle}
+                size="lg"
+                style={{ color: "#38ab07", cursor: "pointer" }}
+              />
+            </div>
+          </div>
         </div>
       );
     }
   };
+  
 
   const updateStreetAddress = async () => {
     const studentDoc = doc(db, "students", studentData[0].id);
@@ -296,39 +342,59 @@ const StudentProfilePage = () => {
       user?.email &&
       studentData &&
       studentData[0].university !== undefined &&
-      studentData[0].university !== "" 
+      studentData[0].university !== ""
     ) {
       return (
-        <div>
+        <div className="d-flex flex-column">
           <div>{university}</div>
-          <button class="btn btn-primary" onClick={clearUniversity}>
-            Clear University
-          </button>
+          <div className="d-flex justify-content-end">
+            <div className="icon-wrapper" onClick={clearUniversity}>
+              <FontAwesomeIcon
+                className="icon-pointer"
+                icon={faEdit}
+                size="lg"
+                style={{ color: "#2685df", cursor: "pointer" }}
+              />
+            </div>
+          </div>
         </div>
       );
     } else {
       return (
-        <div>
-          <select className="form-select" aria-label="Default select example" onChange={(e) => {
-            const selectedSchool = schoolsList.find((school) => school.id === e.target.value);
-            setSelectedUniversity(selectedSchool.id, selectedSchool.name);
-          }}>
-              <option selected>Please select your university</option>
-              {schoolsList.map((school) => (
-                <option key={school.id} value={school.id}>
-                  {school.name}
-                </option>
-              ))}
-          </select>
-          <p className="card-text">Please let us know what university you go to: {university}</p>
-          <button class="btn btn-primary" onClick={updateUniversity}>
-            Update University
-          </button>
+        <div className="d-flex flex-column">
+          <div className="position-relative">
+            <div className="university-wrapper">
+              <select
+                className="form-select input-field"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  const selectedSchool = schoolsList.find((school) => school.id === e.target.value);
+                  setSelectedUniversity(selectedSchool.id, selectedSchool.name);
+                }}
+              >
+                <option selected>Please select your university</option>
+                {schoolsList.map((school) => (
+                  <option key={school.id} value={school.id}>
+                    {school.name}
+                  </option>
+                ))}
+              </select>
+              <div className="d-flex justify-content-end">
+                <div className="edit-icon-wrapper" onClick={updateUniversity}>
+                  <FontAwesomeIcon
+                    className="icon-pointer"
+                    icon={faCheckCircle}
+                    size="lg"
+                    style={{ color: "#38ab07", cursor: "pointer" }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      )
-      
+      );
     }
-  };
+  };  
 
   const updateUniversity = async () => {
     const studentDoc = doc(db, "students", studentData[0].id);
