@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-const useAppSelector = () => useSelector((store) => store.appStore);
+const useAppSelector = () => useSelector((/** @type {import("./appStore").RootState}*/ store) => store.appStore);
 
 export const useUserSelector = () => {
   const { user } = useAppSelector();
@@ -7,7 +7,7 @@ export const useUserSelector = () => {
 };
 
 export const useMessageReceiver = () => {
-  const { messageReceiver } = useAppSelector()
+  const { messageReceiver, } = useAppSelector()
   return messageReceiver;
 }
 

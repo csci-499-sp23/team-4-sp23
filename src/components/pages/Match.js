@@ -1,43 +1,52 @@
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 //import { getProfiles } from "../../firebase";
 
+import { Card, Col, Row, Stack, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { ErrorBoundary } from "react-error-boundary";
 import { useDispatch } from "react-redux";
 import { functionsApi } from "../../firebase";
 import { setMessageReceiver } from "../../services/appSlice";
 import { useMessageReceiver } from "../../services/selectors";
-import Messages from "../Messages";
 import { MatchFilter } from "../MatchFilter";
+import Messages from "../Messages";
 
 // const getProfiles = () => demo_profiles;
 const matchReducer = (state, action) => {
+  let result;
   console.log({ action, state });
   switch (action.type) {
     case "set_distance":
-      return { ...state, distanceInKm: action.payload };
+      result = { ...state, distanceInKm: action.payload };
+      break;
     case "set_unit":
-      return { ...state, distanceUnit: action.payload };
+      result = { ...state, distanceUnit: action.payload };
+      break;
     case "isLoading":
-      return {
+      result = {
         ...state,
         loading: true,
       };
+      break;
     case "loadingComplete": {
-      return { ...state, loading: false };
+      result = { ...state, loading: false };
+      break;
     }
-    default:
-      return;
   }
+  localStorage.setItem("match.store", JSON.stringify(result));
+  return result;
 };
+
+const distanceInKm = parseInt(JSON.parse(localStorage.getItem("match.store") ?? "{}")?.distanceInKm ?? 5);
+
 const Match = () => {
   const dispatchGlobal = useDispatch();
   const messageReceiver = useMessageReceiver();
   const [profiles, setProfiles] = useState(/** @type {import('../../../index.d.ts').Student[]}*/ ([]));
-  const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm: 5, distanceUnit: "mi", loading: null });
+  const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm, distanceUnit: "mi", loading: null });
   const [filterPairs, setFilterPairs] = useState([]);
 
   const refreshMatchs = useCallback(
-    (e) => {
+    (e = null) => {
       if (e) {
         e.preventDefault();
       }
@@ -66,7 +75,7 @@ const Match = () => {
     dispatchGlobal(setMessageReceiver(profile));
   };
 
-  const passesFilter = (/** @type {import("../../../index.d.ts").QuestionAnswer} */ response, presentable) => {
+  const passesFilter = (/** @type {import("../../../index.d.ts").QuestionAnswer} */ response, presentable = false) => {
     const result = {};
     //add disabled tot he result object if question_code:answer_code not in filter pairs
     const testKey = `${response.question_code}:${response.answer_code}`;
@@ -115,49 +124,63 @@ const Match = () => {
 
         <div className="profiles d-flex flex-column gap-5 col">
           {profiles?.map((profile) => (
-            <div className="d-flex profile-item h-300 bg-white text-align-left p-3 rounded-3" key={profile.id} style={{ minHeight: "300px" }}>
-              <div className="profile-content w-75 flex-grow text-black w-100 d-flex flex-column align-items-start">
-                <div className="profile-header">
-                  <h2 className="p-l-0 fs-5 d-inline">{profile.first_name + " " + profile.last_name} </h2>
-                  <button className="btn btn-fab  align-self-center ms-auto" onClick={() => startMessaging(profile)}>
-                    <i className="fa-regular fa-envelope fs-3"></i>
-                  </button>
+            <Card className="d-flex profile-item h-300 bg-white text-align-left p-3 rounded-3" key={profile.id} style={{ minHeight: "300px" }}>
+              <Card.Body>
+                <Row className="p-0">
+                  <Col xs={12} md={6} className="profile-img position-relative">
+                    <div className="profile-header p-2">
+                      <h2 className="p-l-0 fs-5 d-inline">{profile.first_name + " " + profile.last_name} </h2>
+                      <button className="btn btn-fab  align-self-center ms-auto" onClick={() => startMessaging(profile)}>
+                        <i className="fa-regular fa-envelope fs-3"></i>
+                      </button>
 
-                  <button className="btn btn-fab">
-                    <i className="fa fa-truck fs-3" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <span>{profile.age}.</span>
-                <span>{profile.bio}.</span>
-                <span>{profile.school?.name}</span>
-
-                <div className="attributes d-flex gap-2 pt-3 flex-wrap">
-                  {getSurvey(profile)?.responses?.map((res) => (
-                    <button
-                      className={
-                        passesFilter(res)?.classes +
-                        " btn btn-outline-primary rounded-5 fs-6 btn-xs text-align-left text-left" +
-                        (getSurvey(profile).questions[res.question_code].presentable ? "show bg-primary text-white" : "d-nones")
+                      <button className="btn btn-fab">
+                        <i className="fa fa-truck fs-3" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <div className="profile-img-container" style={{ height: "calc( 100% - 45px )" }}>
+                      <img
+                        src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"}
+                        alt="profilee"
+                        className="flex-none rounded img-responsive w-100 h-100 object-fit-cover"
+                      />
+                    </div>
+                  </Col>
+                  <Col md={6} className="profile-content flex-grow text-black d-flex flex-column align-items-start">
+                    <BioSurveyView
+                      bio={
+                        <div className="profile-bio">
+                          <span>{profile.age}.</span>
+                          <span>{profile.bio}.</span>
+                          <span>{profile.school?.name}</span>
+                        </div>
                       }
-                      title={getSurvey(profile).questions[res.question_code].question}
-                      {...passesFilter(res, getSurvey(profile).questions[res.question_code].presentable)}
-                    >
-                      <span>
-                        {getSurvey(profile).options[res.answer_code].answer}: {getSurvey(profile).questions[res.question_code].question}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="profile-img w-25">
-                <img
-                  src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"}
-                  alt="profilee"
-                  className="flex-none rounded img-responsive w-100 h-100 object-fit-cover"
-                />
-              </div>
-            </div>
+                      survey={
+                        <Stack direction="vertical">
+                          <div className="profile-survey-responses attributes d-flex gap-2 pt-3 flex-wrap">
+                            {getSurvey(profile)?.responses?.map((res) => (
+                              <button
+                                className={
+                                  passesFilter(res)?.classes +
+                                  " btn btn-outline-primary rounded-5 fs-6 btn-xs text-align-left text-left" +
+                                  (getSurvey(profile).questions[res.question_code].presentable ? "show bg-primary text-white" : "d-nones")
+                                }
+                                title={getSurvey(profile).questions[res.question_code].question}
+                                {...passesFilter(res, getSurvey(profile).questions[res.question_code].presentable)}
+                              >
+                                <span>
+                                  {getSurvey(profile).options[res.answer_code].answer}: {getSurvey(profile).questions[res.question_code].question}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </Stack>
+                      }
+                    />
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
           ))}
         </div>
       </div>
@@ -175,3 +198,30 @@ const Match = () => {
 };
 
 export default Match;
+
+function BioSurveyView({ bio, survey }) {
+  const [selectedView, setSelectedView] = useState(bio);
+
+  // const views = useMemo(() => ({ bio, survey }), [bio, survey]);
+  // const viewTemplate = views[selectedView];
+
+  const doChange = (val) => setSelectedView(val);
+  const randomTag = useMemo(() => crypto.randomUUID(), []);
+
+  return (
+    <Stack direction="vertical">
+      <div className="toggle-buttons rounded-5 d-flex justify-content-center bg-primary">
+        <ToggleButtonGroup type="radio" name="selectView" value={selectedView} onChange={doChange}>
+          <ToggleButton id={"bio-btn" + randomTag} value={bio}>
+            Bio
+          </ToggleButton>
+          <ToggleButton id={"survey-btn" + randomTag} value={survey}>
+            Survey
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </div>
+
+      {selectedView}
+    </Stack>
+  );
+}
