@@ -142,8 +142,8 @@ const Match = () => {
                     </div>
                     <div className="profile-img-container" style={{ height: "calc( 100% - 45px )" }}>
                       <img
-                        src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"}
-                        alt="profilee"
+                        src={(profile.image?.length && profile.image) ?? "https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8="}
+                        alt="profile"
                         className="flex-none rounded img-responsive w-100 h-100 object-fit-cover"
                       />
                     </div>
