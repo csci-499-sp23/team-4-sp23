@@ -19,3 +19,7 @@ Ranako Holder
 - cors: resolved
 fixed by adding a iam user (allusers) with role (cloud function > cloud functions invoker) to the project
 https://github.com/firebase/firebase-js-sdk/issues/6182
+
+
+## Other
+- who / what is a match  

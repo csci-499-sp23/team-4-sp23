@@ -3,9 +3,11 @@ import Question from './Questions';
 import { collection, onSnapshot, query, where, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useUserSelector } from "../../services/selectors";
+import { useQuestions } from '../../services/question.service';
 
 function Survey() {
   const user = useUserSelector();
+  const { questions: _questions, options: _options } = useQuestions()
   const [studentData, setStudentData] = useState(null);
   const [answersData, setAnswersData] = useState([]);
   const qaCollectionRef = collection(db, "question_answers");
@@ -34,11 +36,11 @@ function Survey() {
           ...doc.data(), id: doc.id
         }));
         setAnswersData(filteredData);
-      } catch(err) {
+      } catch (err) {
         console.error(err);
       }
     };
-    
+
     fetchAnswers();
   }, []);
 
@@ -46,7 +48,7 @@ function Survey() {
     setSurveyData([]);
     if (user?.email) {
       const studentRef = query(collection(db, "students"), where("email", "==", user.email));
-      
+
 
       const unsubscribe = onSnapshot(studentRef, (snapshot) => {
         const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -62,88 +64,88 @@ function Survey() {
   useEffect(() => {
     if (user?.email && studentData && surveyData.length === 0) {
       const surveyRef = query(collection(db, "question_answers"), where("user_id", "==", studentData[0].id));
-    
+
       const unsubscribe = onSnapshot(surveyRef, (snapshot) => {
         const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        if(data.length > 0) {
+        if (data.length > 0) {
           setIsSubmitted(true);
         } else {
           setIsSubmitted(false);
         }
-        for(let j = 0; j < data.length; j++) {
-          for(let i = 0; i < answersData.length; i++) {
-            if(data[j].question_code === 309) {
-              if(data[j].answer_code === answersData[i].answer_code) {
+        for (let j = 0; j < data.length; j++) {
+          for (let i = 0; i < answersData.length; i++) {
+            if (data[j].question_code === 309) {
+              if (data[j].answer_code === answersData[i].answer_code) {
                 surveyData.push(data[j]);
                 answers.hasLicense = answersData[i].answer;
               }
-            } 
-            if(data[j].question_code === 301) {
-              if(data[j].answer_code === answersData[i].answer_code) {
+            }
+            if (data[j].question_code === 301) {
+              if (data[j].answer_code === answersData[i].answer_code) {
                 surveyData.push(data[j]);
                 answers.carSick = answersData[i].answer;
               }
-            } 
-            if(data[j].question_code === 302) {
-              if(data[j].answer_code === answersData[i].answer_code) {
+            }
+            if (data[j].question_code === 302) {
+              if (data[j].answer_code === answersData[i].answer_code) {
                 surveyData.push(data[j]);
                 answers.universityYear = answersData[i].answer;
               }
             }
-            if(data[j].question_code === 304) {
-              if(data[j].answer_code === answersData[i].answer_code) {
+            if (data[j].question_code === 304) {
+              if (data[j].answer_code === answersData[i].answer_code) {
                 surveyData.push(data[j]);
                 answers.silentRide = answersData[i].answer;
               }
             }
-            if(data[j].question_code === 305) {
-              if(data[j].answer_code === answersData[i].answer_code) {
+            if (data[j].question_code === 305) {
+              if (data[j].answer_code === answersData[i].answer_code) {
                 surveyData.push(data[j]);
                 answers.roadsideClub = answersData[i].answer;
               }
             }
-            if(data[j].question_code === 306) {
-              if(data[j].answer_code === answersData[i].answer_code) {
+            if (data[j].question_code === 306) {
+              if (data[j].answer_code === answersData[i].answer_code) {
                 surveyData.push(data[j]);
                 answers.frequentStops = answersData[i].answer;
               }
             }
-            if(data[j].question_code === 310) {
-              if(data[j].answer_code === answersData[i].answer_code && answers.personalityTraits.length < 3) {
+            if (data[j].question_code === 310) {
+              if (data[j].answer_code === answersData[i].answer_code && answers.personalityTraits.length < 3) {
                 surveyData.push(data[j]);
                 answers.personalityTraits.push(answersData[i].answer);
               }
-            } 
-            if(data[j].question_code === 308) {
-              if(data[j].answer_code === answersData[i].answer_code) {
+            }
+            if (data[j].question_code === 308) {
+              if (data[j].answer_code === answersData[i].answer_code) {
                 surveyData.push(data[j]);
                 answers.vehicleType = answersData[i].answer;
               }
             }
           }
         }
-        
+
       });
-  
+
       return () => {
         unsubscribe();
       };
     }
-  
-  }, [user, studentData, answersData, answers, surveyData]);
-  
 
-  const displaySurvey = () => {  
+  }, [user, studentData, answersData, answers, surveyData]);
+
+
+  const displaySurvey = () => {
     if (isSubmitted && (user?.email) &&
       (answers.hasLicense !== null ||
-      answers.vehicleType !== null ||
-      answers.universityYear !== null ||
-      answers.carSick !== null ||
-      answers.frequentStops !== null ||
-      answers.silentRide !== null ||
-      answers.roadsideClub !== null ||
-      answers.personalityTraits.length !== 0)
-     ) {
+        answers.vehicleType !== null ||
+        answers.universityYear !== null ||
+        answers.carSick !== null ||
+        answers.frequentStops !== null ||
+        answers.silentRide !== null ||
+        answers.roadsideClub !== null ||
+        answers.personalityTraits.length !== 0)
+    ) {
       return (
         <div>
           <div><p>Do you have a driver's license? {answers.hasLicense}</p></div>
@@ -156,9 +158,9 @@ function Survey() {
           <div>
             <p>Which of the following describe you best? (Select up to 3)
             </p>
-              {answers.personalityTraits.map((trait) => (
-                  <p>{trait}</p>
-              ))}
+            {answers.personalityTraits.map((trait) => (
+              <p>{trait}</p>
+            ))}
           </div>
           <button class="btn btn-primary" onClick={clearSurvey}>
             Redo Survey
@@ -179,7 +181,7 @@ function Survey() {
             />
             <Question
               question="What type of vehicle are you interested in renting?"
-              options={['Sedan', 'SUV', 'Minivan', 'Van', ]}
+              options={['Sedan', 'SUV', 'Minivan', 'Van',]}
               handleChange={(answer) => handleChange('vehicleType', answer)}
             />
             <Question
@@ -209,7 +211,7 @@ function Survey() {
             />
             <Question
               question="Which of the following describe you best? (Select up to 3)"
-              options={[  "Adventurous", "Artistic",  "Assertive",  "Charismatic",  "Confident",  "Creative",  "Curious",  "Dependable",  "Determined",  "Efficient",  "Empathetic",  "Energetic",  "Enthusiastic", "Generous", "Humorous", "Intelligent", "Motivated",  "Organized",  "Outgoing",  "Patient", "Proactive",  "Reliable", "Responsible", "Spontaneous", "Trustworthy"]}
+              options={["Adventurous", "Artistic", "Assertive", "Charismatic", "Confident", "Creative", "Curious", "Dependable", "Determined", "Efficient", "Empathetic", "Energetic", "Enthusiastic", "Generous", "Humorous", "Intelligent", "Motivated", "Organized", "Outgoing", "Patient", "Proactive", "Reliable", "Responsible", "Spontaneous", "Trustworthy"]}
               handleChange={(answer) => handleChange('personalityTraits', answer)}
               maxOptions={3}
             />
@@ -225,7 +227,7 @@ function Survey() {
       qaCollectionRef,
       where('user_id', '==', studentData[0].id)
     );
-  
+
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((docSnapshot) => {
       deleteDoc(doc(qaCollectionRef, docSnapshot.id));
@@ -241,13 +243,13 @@ function Survey() {
     answers.personalityTraits = [];
     setIsSubmitted(false);
   };
-  
+
   // Define handleChange function to update answers state
   const handleChange = (question, answer) => {
     if (question === 'personalityTraits' && answer.length !== 3) {
       return;
     }
-    
+
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
       [question]: answer,
@@ -268,7 +270,7 @@ function Survey() {
       'Junior': 44403,
       'Senior': 44404,
     };
-  
+
     const personalityTraitsCodes = {
       'Adventurous': 44417,
       'Artistic': 44418,
@@ -295,7 +297,7 @@ function Survey() {
       'Responsible': 44439,
       'Spontaneous': 44440,
       'Trustworthy': 44441
-    } 
+    }
 
     // Loop through the answers object
     for (const [key, value] of Object.entries(answers)) {
@@ -314,18 +316,22 @@ function Survey() {
           silentRide: 304,
           roadsideClub: 305,
         };
-  
+
         const questionCode = questionCodeMapping[key];
         const answerCode = answerCodes[value];
-  
+
         if (questionCode && answerCode) {
           await addDoc(qaCollectionRef, { question_code: questionCode, answer_code: answerCode, user_id: studentData[0].id });
         }
       }
     }
-  
+
     setIsSubmitted(true);
   };
+
+  if (!_questions?.length || !_options?.length) {
+    return <div>loading...</div>
+  }
 
   return (
     <div className="survey-container">

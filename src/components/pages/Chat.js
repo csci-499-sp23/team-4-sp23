@@ -4,6 +4,9 @@ import { useMessageReceiver, useUserSelector } from "../../services/selectors";
 // import SendMessage from './SendMessage';
 import { addDoc, collection, onSnapshot, query } from "@firebase/firestore";
 import { where, or, orderBy } from "firebase/firestore";
+import { Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { setMessageReceiver } from "../../services/appSlice";
 
 const getMessageKeyPair = (...emails) => {
   const [email1, email2] = emails;
@@ -60,6 +63,7 @@ function Chat() {
   const guest = useMessageReceiver();
   const host = useUserSelector();
   const [activeGuest, setActiveGuest] = useState(null);
+  const dispatch = useDispatch();
 
   console.log({ guest, host });
 
@@ -67,6 +71,8 @@ function Chat() {
     await sendMessage(makeMessage(guestEmail, hostEmail, message));
     setDraft(null); //clear last input
   };
+
+  const dismissChat = () => dispatch(setMessageReceiver(null));
 
   const updatemessages = useCallback((msgs) => setMessages(msgs), [setMessages]);
 
@@ -95,10 +101,15 @@ function Chat() {
   return (
     <>
       <div className="messageBox card row">
-        <p className="col-12  d-flex">Messages {messages.length} with</p>
-        <h2 className="fs-5 d-flex">
-          {guest.first_name} {guest.last_name}
-        </h2>
+        <div className="messages-header position-relative">
+          <p className="col-12  d-flex p-0">Messages {messages.length} with</p>
+          <h2 className="fs-5 d-flex p-0">
+            {guest.first_name} {guest.last_name}
+          </h2>
+          <Button className="position-absolute right-0 top-0 rounded-5" variant="light" style={{ right: 0 }} onClick={dismissChat}>
+            <i className="fa fa-close"></i>
+          </Button>
+        </div>
 
         <div className="msgs-list overflow-scroll col-12 bg-grey row" style={{ height: "80vh" }}>
           {messages.map(({ messageKey, message, timestamp, messageId = Math.floor(Math.random() * 10_000) }) => (

@@ -4,7 +4,11 @@ import { auth, db, functions } from "./firebase-config";
 import { docToJson, makeDeferred } from "./jsonUtils";
 
 
-
+const cachedQuery = (collection, ...filters) => {
+  // const CACHE_WINDOW = 10 * 1_000;//cache for 10 seconds
+  return query(collection, ...filters)
+  // .cache(CACHE_WINDOW)
+}
 export const getProfiles = async (queryCollection = "student", filterFn = (ref) => ref.get()) => {
   try {
     const profilesRef = db.collection(queryCollection);
@@ -108,7 +112,7 @@ async function getStudentInfo(email) {
 
 async function getSurveyQuestions(questionIds) {
   let deferred = makeDeferred()
-  const collectionRef = query(collection(db, 'surv_questions'), where('question_code', 'in', questionIds))
+  const collectionRef = cachedQuery(collection(db, 'surv_questions'), where('question_code', 'in', questionIds))
   getDocs(collectionRef).then((snapshot) => {
     const survey_questions = snapshot.docs.map(docToJson)
     //pass the survey_questions to the deferred promise
@@ -121,7 +125,7 @@ async function getSurveyQuestions(questionIds) {
 async function getSurveyAnswers(answerIds) {
   let deferred = makeDeferred()
 
-  const collectionRef = query(collection(db, 'surv_answers'), where('answer_code', 'in', answerIds))
+  const collectionRef = cachedQuery(collection(db, 'surv_answers'), where('answer_code', 'in', answerIds))
   getDocs(collectionRef).then(snapshot => {
     deferred.res(snapshot.docs.map(docToJson))
   })
@@ -130,7 +134,7 @@ async function getSurveyAnswers(answerIds) {
 
 async function getQuestionAndAnswers(studentDocId) {
 
-  const collectionQuery = query(collection(db, 'question_answers'), where('user_id', '==', studentDocId))
+  const collectionQuery = cachedQuery(collection(db, 'question_answers'), where('user_id', '==', studentDocId))
 
   const answers = await getDocs(collectionQuery).then((snapshot) => snapshot.docs.map(docToJson))
   return answers

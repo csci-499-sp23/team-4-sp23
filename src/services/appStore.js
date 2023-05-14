@@ -12,5 +12,5 @@ export const appStore = configureStore({
 
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 // export type AppDispatch = typeof store.dispatch;
-/** @typedef { ReturnType<typeof store.getState>} RootState */
-/** @typedef { typeof store.dispatch} AppDispatch */
+/** @typedef { ReturnType<typeof appStore.getState>} RootState */
+/** @typedef { typeof appStore.dispatch} AppDispatch */

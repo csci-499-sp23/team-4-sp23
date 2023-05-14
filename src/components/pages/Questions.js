@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function Question(props) {
   const { question, options, handleChange, maxOptions = 1 } = props;
   const [selectedOptions, setSelectedOptions] = useState([]);
+
+
+
 
   const handleOptionChange = (option) => {
     let newSelectedOptions;
@@ -23,6 +26,8 @@ export default function Question(props) {
   const handleOptionClick = (option) => {
     handleOptionChange(option);
   };
+
+
 
   return (
     <div className="question-container">
@@ -46,6 +51,7 @@ export default function Question(props) {
             </div>
           );
         })}
+
       </div>
     </div>
   );
