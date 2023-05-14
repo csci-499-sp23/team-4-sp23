@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { useQuestions } from '../../services/question.service';
+import { useState } from 'react';
 
 export default function Question(props) {
   const { question, options, handleChange, maxOptions = 1 } = props;
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const { pair } = useQuestions()
+
 
 
 
@@ -28,7 +27,7 @@ export default function Question(props) {
     handleOptionChange(option);
   };
 
- 
+
 
   return (
     <div className="question-container">
@@ -52,7 +51,7 @@ export default function Question(props) {
             </div>
           );
         })}
-        
+
       </div>
     </div>
   );

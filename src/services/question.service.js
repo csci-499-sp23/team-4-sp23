@@ -27,9 +27,7 @@ export const useQuestions = () => {
         setOptions(_options)
     }, [setOptions])
 
-    const getOptions = (question_code) => {
 
-    }
 
     const pair = useCallback(async (questionValue, /** @type {[]} */ optionValues) => {
         const updatedQuestion = questions.find(q => new RegExp(questionValue, 'i').test(q.question) || questionValue === q.question)

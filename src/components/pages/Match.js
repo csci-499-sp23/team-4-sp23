@@ -31,6 +31,8 @@ const matchReducer = (state, action) => {
       result = { ...state, loading: false };
       break;
     }
+    default: {
+    }
   }
   localStorage.setItem("match.store", JSON.stringify(result));
   return result;

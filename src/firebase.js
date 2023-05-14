@@ -5,7 +5,7 @@ import { docToJson, makeDeferred } from "./jsonUtils";
 
 
 const cachedQuery = (collection, ...filters) => {
-  const CACHE_WINDOW = 10 * 1_000;//cache for 10 seconds
+  // const CACHE_WINDOW = 10 * 1_000;//cache for 10 seconds
   return query(collection, ...filters)
   // .cache(CACHE_WINDOW)
 }

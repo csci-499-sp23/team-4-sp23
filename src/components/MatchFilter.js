@@ -1,14 +1,10 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useQuestions } from "../services/question.service";
 
 //show preseentable questions with select/multi select options to allow 
 export function MatchFilter(/** @type {{responses: import("../..").QuestionAnswer[],onChange:(args=null)=>void} */ { responses, onChange }) {
-    // if (!responses) {
-    //     {
-    //         throw Error("Error: responses invalid")
-    //     }
-    // }
+
     const [showFilters, setShowFilters] = useState(false)
     const { questions, getQuestionOptions, options } = useQuestions()
 
@@ -21,11 +17,6 @@ export function MatchFilter(/** @type {{responses: import("../..").QuestionAnswe
     const presentableQuestions = questions?.filter((q) => !q.presentable)
     console.log({ questions, presentableQuestions })
 
-    const getAnswer = (/** @type {import("../..").Question} */ question) => {
-        const response = responses.find(res => res.question_code === question.question_code)
-        const answer = options.find(opt => opt.answer_code === response.answer_code)
-        return answer
-    }
 
     const updateFilterPairs = (question_code, answer_code) => {
         onChange(oldFilters => {
