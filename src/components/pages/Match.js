@@ -7,6 +7,7 @@ import { functionsApi } from "../../firebase";
 import { setMessageReceiver } from "../../services/appSlice";
 import { useMessageReceiver } from "../../services/selectors";
 import Messages from "../Messages";
+import { MatchFilter } from "../MatchFilter";
 
 // const getProfiles = () => demo_profiles;
 const matchReducer = (state, action) => {
@@ -33,6 +34,7 @@ const Match = () => {
   const messageReceiver = useMessageReceiver();
   const [profiles, setProfiles] = useState(/** @type {import('../../../index.d.ts').Student[]}*/ ([]));
   const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm: 5, distanceUnit: "mi", loading: null });
+  const [filterPairs, setFilterPairs] = useState([]);
 
   const refreshMatchs = useCallback(
     (e) => {
@@ -58,8 +60,23 @@ const Match = () => {
     [matchFilters]
   );
 
+  const getSurvey = (profile) => /** @type {import('../../../index').ProfileSurvey} */ (profile?.survey);
+
   const startMessaging = (profile) => {
     dispatchGlobal(setMessageReceiver(profile));
+  };
+
+  const passesFilter = (/** @type {import("../../../index.d.ts").QuestionAnswer} */ response, presentable) => {
+    const result = {};
+    //add disabled tot he result object if question_code:answer_code not in filter pairs
+    const testKey = `${response.question_code}:${response.answer_code}`;
+    const foundPair = filterPairs.find((fp) => fp === testKey);
+    if (!presentable && !foundPair) {
+      result["disabled"] = true;
+    } else {
+      result["classes"] = "bg-primary text-white";
+    }
+    return result;
   };
 
   useEffect(() => {
@@ -93,6 +110,7 @@ const Match = () => {
           </button>
 
           <div>{matchFilters.loading ? "Loading..." : <div>Matches {profiles?.length}</div>}</div>
+          <MatchFilter onChange={setFilterPairs} />
         </form>
 
         <div className="profiles d-flex flex-column gap-5 col">
@@ -114,13 +132,21 @@ const Match = () => {
                 <span>{profile.school?.name}</span>
 
                 <div className="attributes d-flex gap-2 pt-3 flex-wrap">
-                  {profile.survey?.responses?.map((res) => (
-                    <button className="btn btn-outline-primary rounded-5 fs-6 " title={profile.survey.questions[res.question_code].question}>
-                     {profile.survey.options[res.answer_code].answer}</button>
+                  {getSurvey(profile)?.responses?.map((res) => (
+                    <button
+                      className={
+                        passesFilter(res)?.classes +
+                        " btn btn-outline-primary rounded-5 fs-6 btn-xs text-align-left text-left" +
+                        (getSurvey(profile).questions[res.question_code].presentable ? "show bg-primary text-white" : "d-nones")
+                      }
+                      title={getSurvey(profile).questions[res.question_code].question}
+                      {...passesFilter(res, getSurvey(profile).questions[res.question_code].presentable)}
+                    >
+                      <span>
+                        {getSurvey(profile).options[res.answer_code].answer}: {getSurvey(profile).questions[res.question_code].question}
+                      </span>
+                    </button>
                   ))}
-                 
-                  <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
-                  <button className="btn btn-outline-primary rounded-5 fs-6 ">Lorem, ipsum dolor.</button>
                 </div>
               </div>
 
