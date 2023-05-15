@@ -2,16 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { GoogleMap, InfoWindow, LoadScript, Marker, DirectionsRenderer } from "@react-google-maps/api";
 import { db } from '../../firebase-config.js';
 import { collection, getDocs } from 'firebase/firestore';
+import { Button, Col, Row, Stack } from 'react-bootstrap';
 
-const aLibraries = ['geometry'];
-const RentalMap = ({ guestStudent, hostStudent }) => {
+const getAddress = ({ state = null, zip = null, street_add = null }) => {
+  const values = [state, zip, street_add].filter(item => item)
+  return !values.length ? null : values.join(' ')
+}
+
+const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
 
   const [activeInfoWindow, setActiveInfoWindow] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [allMarkers, setAllMarkers] = useState([]);
-  const [location1, setLocation1] = useState(guestStudent.address);
-  const [location2, setLocation2] = useState(hostStudent.address);
-  const [radius, setRadius] = useState(0);
+  const [location1, setLocation1] = useState(getAddress(hostStudent));
+  const [location2, setLocation2] = useState(getAddress(guestStudent));
+  const [radius, setRadius] = useState(initialRadius);
   const [center, setCenter] = useState({ lat: 40.7678, lng: -73.9645 });
 
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
@@ -121,20 +126,22 @@ const RentalMap = ({ guestStudent, hostStudent }) => {
 
   return (
     <div>
-      <div>
-        <label htmlFor="location1">Location 1:</label>
-        <input type="text" id="location1" value={location1} onChange={handleLocation1Change} />
-      </div>
-      <div>
-        <label htmlFor="location2">Location 2:</label>
-        <input type="text" id="location2" value={location2} onChange={handleLocation2Change} />
-      </div>
-      <div>
-        <label htmlFor="radius">Radius:</label>
-        <input type="number" id="radius" value={radius} onChange={handleRadiusChange} />
-      </div>
-      <button onClick={handleClick}>Submit</button>
-      <LoadScript googleMapsApiKey='AIzaSyDhz3m22jJJjC6BOX83Qbjdm2FaQiXVK4A' libraries={aLibraries}>
+      <Row >
+        <Col>
+          <label className="w-25 text-dark" htmlFor="location1"> My Address:</label>
+          <input type="text" className="w-70" id="location1" value={location1} onChange={handleLocation1Change} />
+        </Col>
+        <Col>
+          <label className="w-25 text-dark" htmlFor="location2"> Your Match:</label>
+          <input type="text" className="w-70" id="location2" value={location2} onChange={handleLocation2Change} />
+        </Col>
+        <Col>
+          <label className="w-25 text-dark" htmlFor="radius">Rdius:</label>
+          <input type="number" className="w-70" id="radius" value={radius} onChange={handleRadiusChange} />
+        </Col>
+        <Button onClick={handleClick}>Submit</Button>
+      </Row>
+
         <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15}>
           {markers.map((marker, index) => (
             <Marker
@@ -165,7 +172,7 @@ const RentalMap = ({ guestStudent, hostStudent }) => {
           ))}
           {directionsRenderer}
         </GoogleMap>
-      </LoadScript>
+    
     </div>
   );
 };

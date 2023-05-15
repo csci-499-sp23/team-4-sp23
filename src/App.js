@@ -18,7 +18,8 @@ import Survey from "./components/pages/Survey";
 import VerifSent from "./components/pages/VerifSent.js";
 import { auth } from "./firebase-config";
 import { getAccountInfo as getProfileInfo } from "./services/accountService";
-import { login, logout, setProfile } from "./services/appSlice";
+import { login, logout, setHostProfile } from "./services/appSlice";
+import { LoadScript } from "@react-google-maps/api";
 
 function App() {
   // const  = useSelector((store) => store.appStore);
@@ -38,9 +39,9 @@ function App() {
 
             if (profileResponse) {
               const [profile, subscribe] = profileResponse
-              unsubscribe = subscribe((profileChange) => dispatch(setProfile(profileChange)))
+              unsubscribe = subscribe((profileChange) => dispatch(setHostProfile(profileChange)))
 
-              dispatch(setProfile(profile))
+              dispatch(setHostProfile(profile))
             }
           })
         } catch (error) {
@@ -70,7 +71,7 @@ function App() {
   // });
 
   // exports.app = functions.https.onRequest(app);
-
+  const aLibraries = ['geometry'];
   return (
     <div className="App">
       <Router>
@@ -93,10 +94,13 @@ function App() {
           <Route path="/parentProfilePage" element={<ParentProfilePage />} />
           <Route path="/verifSent" element={<VerifSent />} />
           <Route path="/survey" element={<Survey />} />
-          <Route path="/match" element={<Match />} />
+          <Route path="/match" element={
+            <Match />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </Router>
+      <LoadScript googleMapsApiKey='AIzaSyDhz3m22jJJjC6BOX83Qbjdm2FaQiXVK4A' libraries={aLibraries}>
+      </LoadScript>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { Button, Card, Col, Modal, Row, Stack, ToggleButton, ToggleButtonGroup }
 import { ErrorBoundary } from "react-error-boundary";
 import { useDispatch } from "react-redux";
 import { functionsApi } from "../../firebase";
-import { setMessageReceiver } from "../../services/appSlice";
+import { setMessageReceiver, setHostProfile } from "../../services/appSlice";
 import useAppSelector, { useMessageReceiver } from "../../services/selectors";
 import { MatchFilter } from "../MatchFilter";
 import Messages from "../Messages";
@@ -45,13 +45,13 @@ const distanceInKm = parseInt(JSON.parse(localStorage.getItem("match.store") ?? 
 
 const Match = () => {
   const dispatchGlobal = useDispatch();
-  const { profile: hostProfile } = useAppSelector();
+  const { hostProfile: hostProfile } = useAppSelector();
   const messageReceiver = useMessageReceiver();
   const [profiles, setProfiles] = useState(/** @type {import('../../../index.d.ts').Student[]}*/ ([]));
   const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm, distanceUnit: "mi", loading: null });
   const [rentalMapGuestProfile, setRentalMapGuestProfile] = useState(null);
   const [filterPairs, setFilterPairs] = useState([]);
-  const { profile } = useAppSelector();
+  const { hostProfile: profile } = useAppSelector();
 
   const refreshMatchs = useCallback(
     (e = null) => {
@@ -102,6 +102,7 @@ const Match = () => {
   useEffect(() => {
     if (matchFilters.loading === null) {
       refreshMatchs();
+      dispatchGlobal(setHostProfile({ street_add: "wall street", state: "ny", zip: 10467 }));
     }
     console.log("tintin");
   }, [matchFilters, refreshMatchs]);
@@ -214,7 +215,7 @@ const Match = () => {
               </Modal.Header>
               <Modal.Body>
                 <ErrorBoundary fallback={<p>RentalMap faialed to load</p>}>
-                  <RentalMap guestStudent={rentalMapGuestProfile} hostStudent={hostProfile} />
+                  <RentalMap initialRadius={distanceInKm} guestStudent={rentalMapGuestProfile} hostStudent={hostProfile} />
                 </ErrorBoundary>
               </Modal.Body>
             </Modal>
