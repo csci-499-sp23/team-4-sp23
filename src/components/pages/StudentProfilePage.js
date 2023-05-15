@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { storage } from '../../firebase-config';
 import { useUserSelector } from "../../services/selectors";
-import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faCheckCircle } from '@fortawesome/fontawesome-free-solid'
@@ -23,7 +23,6 @@ const StudentProfilePage = () => {
   const [studentData, setStudentData] = useState(null);
   const [imageUpload, setImageUpload] = useState(null);
  
-  const imageListRef = ref(storage, "/profile_photos")
   useEffect(() => {
     const fetchSchools = async () => {
       const schoolsRef = collection(db, "schools");
@@ -65,16 +64,18 @@ const StudentProfilePage = () => {
   }, [user]);
 
   useEffect(() => {
-    listAll(imageListRef).then((response) => {
-      response.items.forEach((item) => {
-        if(`profile_photos/${item.name}` === studentData[0]?.image) {
-          getDownloadURL(item).then((url) => {
-            setUserImage(url);
-          })
+    const fetchImage = async () => {
+      if (studentData && studentData[0]?.image) {
+        try {
+          setUserImage(studentData[0].image);
+        } catch (error) {
+          console.error("Error fetching image: ", error);
         }
-      })
-    });
-  }, [imageListRef, studentData]);
+      }
+    };
+  
+    fetchImage();
+  }, [studentData]);
 
   const uploadImage = async () => {
     if(imageUpload == null) return;
