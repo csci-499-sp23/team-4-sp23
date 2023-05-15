@@ -3,14 +3,15 @@
 
 /* make the customizations */
 $theme-colors: (
-  'info': tomato,
-  'danger': teal,
-  'primary':#212529,
-  'secondary': #2C3333,
+  "info": tomato,
+  "danger": teal,
+  "primary": #212529,
+  "secondary": #2c3333,
+  "success": #0075ff,
 );
 
 /* import bootstrap to set changes */
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 // Import Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap.scss';
+@import "~bootstrap/scss/bootstrap.scss";

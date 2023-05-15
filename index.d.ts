@@ -36,3 +36,11 @@ export interface ProfileSurvey {
     options: Record<number,SurveyAnswer>
     questions: Record<number,Question>
 }
+
+
+export interface Profile {
+  first_name
+  last_name
+  can_match:boolean
+  email
+}
