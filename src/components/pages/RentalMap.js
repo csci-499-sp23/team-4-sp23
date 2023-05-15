@@ -4,12 +4,13 @@ import { db } from '../../firebase-config.js';
 import { collection, getDocs } from 'firebase/firestore';
 
 const aLibraries = ['geometry'];
-const RentalMap = () => {
+const RentalMap = ({ guestStudent, hostStudent }) => {
+
   const [activeInfoWindow, setActiveInfoWindow] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [allMarkers, setAllMarkers] = useState([]);
-  const [location1, setLocation1] = useState("");
-  const [location2, setLocation2] = useState("");
+  const [location1, setLocation1] = useState(guestStudent.address);
+  const [location2, setLocation2] = useState(hostStudent.address);
   const [radius, setRadius] = useState(0);
   const [center, setCenter] = useState({ lat: 40.7678, lng: -73.9645 });
 
@@ -38,58 +39,58 @@ const RentalMap = () => {
         }
       }
     );
-};
+  };
 
 
   const containerStyle = { width: '100%', height: '900px' };
 
   const handleInfoWindowClose = () => setActiveInfoWindow(null);
-  
+
   const handleLocation1Change = (event) => {
     setLocation1(event.target.value);
   }
-  
+
   const handleLocation2Change = (event) => {
     setLocation2(event.target.value);
   }
-  
+
   const handleRadiusChange = (event) => {
     setRadius(parseInt(event.target.value));
   }
-  
+
   const handleClick = async () => {
     try {
       const geocoder = new window.google.maps.Geocoder();
       const location1Results = await geocoder.geocode({ address: location1 });
       const location2Results = await geocoder.geocode({ address: location2 });
-  
+
       if (location1Results.length === 0 || location2Results.length === 0) {
         console.error("One or both locations could not be geocoded");
         return;
       }
-  
+
       const location1LatLng = location1Results.results[0].geometry.location;
       const location2LatLng = location2Results.results[0].geometry.location;
-  
+
       const midpointLatLng = new window.google.maps.LatLng(
         (location1LatLng.lat() + location2LatLng.lat()) / 2,
         (location1LatLng.lng() + location2LatLng.lng()) / 2
       );
-  
+
       const filteredMarkers = allMarkers.filter((marker) => {
         const distance = window.google.maps.geometry.spherical.computeDistanceBetween(midpointLatLng, marker.position);
-        return distance <= radius * 1000; 
+        return distance <= radius * 1000;
       });
-  
+
       setMarkers(filteredMarkers);
       setCenter(midpointLatLng);
-  
+
     } catch (error) {
       console.error(error);
     }
   };
-  
-  
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,13 +98,13 @@ const RentalMap = () => {
 
       const newMarkers = await Promise.all(
         querySnapshot.docs.map(async (doc) => {
-          const { name, address, lat, lng, links  } = doc.data();
+          const { name, address, lat, lng, links } = doc.data();
           const tLat = parseFloat(lat);
           const tLng = parseFloat(lng);
-      
-          const latLng = new window.google.maps.LatLng( {lat:tLat, lng:tLng} )
+
+          const latLng = new window.google.maps.LatLng({ lat: tLat, lng: tLng })
           return {
-            position: latLng ,
+            position: latLng,
             label: { color: 'black', text: ' ' },
             link: links,
             location: name,
@@ -163,7 +164,7 @@ const RentalMap = () => {
             </Marker>
           ))}
           {directionsRenderer}
-       </GoogleMap>
+        </GoogleMap>
       </LoadScript>
     </div>
   );
@@ -171,4 +172,4 @@ const RentalMap = () => {
 
 export default RentalMap;
 
-  
+

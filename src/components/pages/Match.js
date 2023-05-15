@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 //import { getProfiles } from "../../firebase";
 
-import { Card, Col, Row, Stack, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import { Button, Card, Col, Modal, Row, Stack, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { ErrorBoundary } from "react-error-boundary";
 import { useDispatch } from "react-redux";
 import { functionsApi } from "../../firebase";
 import { setMessageReceiver } from "../../services/appSlice";
-import { useMessageReceiver } from "../../services/selectors";
+import useAppSelector, { useMessageReceiver } from "../../services/selectors";
 import { MatchFilter } from "../MatchFilter";
 import Messages from "../Messages";
+import RentalMap from "./RentalMap";
 
 // const getProfiles = () => demo_profiles;
 const matchReducer = (state, action) => {
@@ -42,9 +43,11 @@ const distanceInKm = parseInt(JSON.parse(localStorage.getItem("match.store") ?? 
 
 const Match = () => {
   const dispatchGlobal = useDispatch();
+  const { profile: hostProfile } = useAppSelector();
   const messageReceiver = useMessageReceiver();
   const [profiles, setProfiles] = useState(/** @type {import('../../../index.d.ts').Student[]}*/ ([]));
   const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm, distanceUnit: "mi", loading: null });
+  const [rentalMapGuestProfile, setRentalMapGuestProfile] = useState(null);
   const [filterPairs, setFilterPairs] = useState([]);
 
   const refreshMatchs = useCallback(
@@ -89,6 +92,8 @@ const Match = () => {
     }
     return result;
   };
+
+  const clearRentalMapGuestProfile = () => setRentalMapGuestProfile(null);
 
   useEffect(() => {
     if (matchFilters.loading === null) {
@@ -136,7 +141,7 @@ const Match = () => {
                         <i className="fa-regular fa-envelope fs-3"></i>
                       </button>
 
-                      <button className="btn btn-fab">
+                      <button className="btn btn-fab" onClick={() => setRentalMapGuestProfile(profile)}>
                         <i className="fa fa-truck fs-3" aria-hidden="true"></i>
                       </button>
                     </div>
@@ -184,6 +189,21 @@ const Match = () => {
               </Card.Body>
             </Card>
           ))}
+
+          {rentalMapGuestProfile && (
+            <Modal show={rentalMapGuestProfile !== null} onClose={clearRentalMapGuestProfile}>
+              <Modal.Header>
+                <Button onClick={clearRentalMapGuestProfile}>
+                  <i className="fa fa-close"></i>
+                </Button>
+              </Modal.Header>
+              <Modal.Body>
+                <ErrorBoundary fallback={<p>RentalMap faialed to load</p>}>
+                  <RentalMap guestStudent={rentalMapGuestProfile} hostStudent={hostProfile} />
+                </ErrorBoundary>
+              </Modal.Body>
+            </Modal>
+          )}
         </div>
       </div>
 

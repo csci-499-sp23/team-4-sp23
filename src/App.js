@@ -1,22 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
-import { auth } from "./firebase-config";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Protected from "./Protected";
 import Navbar from "./components/navbar/Navbar.js";
+import BrowseStudents from "./components/pages/BrowseStudents.js";
+import Contact from "./components/pages/Contact.js";
 import Home from "./components/pages/Home.js";
 import Login from "./components/pages/Login.js";
-import Contact from "./components/pages/Contact.js";
-import SignUp from "./components/pages/SignUp.js";
-import RentalMap from "./components/pages/RentalMap.js";
-import BrowseStudents from "./components/pages/BrowseStudents.js";
-import VerifSent from "./components/pages/VerifSent.js";
-import Survey from "./components/pages/Survey";
-import StudentProfilePage from "./components/pages/StudentProfilePage.js";
-import ParentProfilePage from "./components/pages/ParentProfilePage.js";
 import Match from "./components/pages/Match";
-import { useDispatch } from "react-redux";
+import ParentProfilePage from "./components/pages/ParentProfilePage.js";
+import RentalMap from "./components/pages/RentalMap.js";
+import SignUp from "./components/pages/SignUp.js";
+import StudentProfilePage from "./components/pages/StudentProfilePage.js";
+import Survey from "./components/pages/Survey";
+import VerifSent from "./components/pages/VerifSent.js";
+import { auth } from "./firebase-config";
 import { login, logout } from "./services/appSlice";
 
 function App() {
@@ -72,7 +72,6 @@ function App() {
             }
           />
           <Route path="/parentProfilePage" element={<ParentProfilePage />} />
-          <Route path="/rentalMap" element={<RentalMap />} />
           <Route path="/verifSent" element={<VerifSent />} />
           <Route path="/survey" element={<Survey />} />
           <Route path="/match" element={<Match />} />
