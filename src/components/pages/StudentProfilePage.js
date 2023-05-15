@@ -79,15 +79,20 @@ const StudentProfilePage = () => {
   const uploadImage = async () => {
     if(imageUpload == null) return;
     const imageName = `profile_photos/${imageUpload.name + v4()}`;
-
+  
     const imageRef = ref(storage, imageName)
-
-    uploadBytes(imageRef, imageUpload).then(() => {
+  
+    uploadBytes(imageRef, imageUpload).then(async () => {
+      // get the download URL after the upload is complete
+      const url = await getDownloadURL(imageRef);
+      
+      const studentDoc = doc(db, "students", studentData[0].id);
+      
+      // save the URL to Firestore
+      await updateDoc(studentDoc, { image: url });
+  
       alert("Image Uploaded");
     });
-
-    const studentDoc = doc(db, "students", studentData[0].id);
-    await updateDoc(studentDoc, { image: imageName });
   };
 
   
