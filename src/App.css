@@ -31,10 +31,12 @@ hr {
   width: 5%;
   color: #dbe2ef;
 }
+
 /*Other Section*/
 .App {
   /* text-align: center; */
 }
+
 .card-text {
   color: black;
 }
@@ -64,10 +66,16 @@ hr {
   margin: 0 20%;
 }
 
+#footer {
+  text-align: center;
+}
 .footer-text {
   margin: 0;
 }
-
+.home-text {
+  line-height: 1.5;
+  font-size: 3rem;
+}
 .home-button {
   margin: 5% 0 0 0;
 }
@@ -103,12 +111,20 @@ hr {
   text-decoration: none;
   color: white;
 }
-.social-icon:hover {
-  color:#3f72af;
-}
 
+.social-icon:hover {
+  color: #3f72af;
+}
+.survey-container {
+  text-align: center;
+  line-height: 2;
+}
 #title-section {
-  background-color: #3f72af;
+  background-image: url(https://www.hennepin.us/choose-to-reuse/-/media/choose-to-reuse/join-the-circle/2022-sustainable-dorm-move-in-910x400.jpg?h=400&w=910&hash=6E7A86FE248BC748781AB95162099420);
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-shadow: 1px 1px 2px black;
+  text-align: center;
   padding: 0 0 0% 0;
 }
 
@@ -213,19 +229,21 @@ hr {
 }
 
 @media (max-width: 775px) {
+
   /* p{
     font-size: 20px;
   } */
   .sent {
     padding: 10px 10px 0 10px;
   }
-  .recieved {
-  }
+
+  .recieved {}
 }
 
 .icon-container .btn {
   margin-left: 10px;
 }
+
 .icon-container {
   display: flex;
   align-items: center;
@@ -257,4 +275,8 @@ hr {
 .bio-text {
   word-wrap: break-word;
   width: 100%;
+}
+
+.map {
+  text-align: center;
 }

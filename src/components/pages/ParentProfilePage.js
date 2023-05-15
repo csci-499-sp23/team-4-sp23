@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from "react-dom/client";
 import { useState } from 'react';
 const ParentProfilePage = () => {
     const [email, setEmail] = useState("");
@@ -17,6 +16,4 @@ const ParentProfilePage = () => {
         </div>
     )
 }
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<ParentProfilePage />);
 export default ParentProfilePage;

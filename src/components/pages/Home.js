@@ -9,7 +9,7 @@ const Home = () => {
             <img src={sitelogo} alt="logo" className="site-logo"></img>
           </div>
           <div className="col-lg-6">
-            <h1>Nervous about moving out for the first time? Wheel Call You has got your back!</h1>
+            <h1 className="home-text">Nervous about moving out for the first time? Wheel Call You has got your back!</h1>
             <a className="btn btn-primary btn-lg home-button" href="signup">Sign Up Now!</a>
           </div>
         </div>
