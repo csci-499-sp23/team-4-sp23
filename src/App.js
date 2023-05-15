@@ -17,7 +17,7 @@ import StudentProfilePage from "./components/pages/StudentProfilePage.js";
 import Survey from "./components/pages/Survey";
 import VerifSent from "./components/pages/VerifSent.js";
 import { auth } from "./firebase-config";
-import { getAccountInfo as getProfileInfo } from "./services/accountService";
+import { useHostProfileInitialize as getProfileInfo } from "./services/accountService";
 import { login, logout, setHostProfile } from "./services/appSlice";
 import { LoadScript } from "@react-google-maps/api";
 
@@ -33,20 +33,6 @@ function App() {
         setIsLoggedIn(true);
         dispatch(login(user.toJSON()));
 
-        try {
-
-          getProfileInfo({ user }).then(profileResponse => {
-
-            if (profileResponse) {
-              const [profile, subscribe] = profileResponse
-              unsubscribe = subscribe((profileChange) => dispatch(setHostProfile(profileChange)))
-
-              dispatch(setHostProfile(profile))
-            }
-          })
-        } catch (error) {
-          console.error(error)
-        }
       } else {
         setIsLoggedIn(false);
         dispatch(logout());

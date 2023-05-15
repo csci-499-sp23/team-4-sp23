@@ -6,7 +6,7 @@ const initialAppState = {
   /** @type {"loading"|true|false} */ loggedIn: "loading",
   messageReceiver: null,
   profilesInConversations: [],
-  /** @type {import('../..').Profile} */
+  /** @type {import('../..').HostProfile} */
   hostProfile: null
 };
 

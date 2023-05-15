@@ -12,6 +12,7 @@ import Messages from "../Messages";
 import RentalMap from "./RentalMap";
 import Form from "react-bootstrap/Form";
 import FormCheckLabel from "react-bootstrap/esm/FormCheckLabel";
+import { useHostProfileInitialize } from "../../services/accountService";
 
 // const getProfiles = () => demo_profiles;
 const matchReducer = (state, action) => {
@@ -45,22 +46,26 @@ const distanceInKm = parseInt(JSON.parse(localStorage.getItem("match.store") ?? 
 
 const Match = () => {
   const dispatchGlobal = useDispatch();
-  const { hostProfile: hostProfile } = useAppSelector();
+  const { hostProfile } = useAppSelector();
+  const { updateProfile } = useHostProfileInitialize();
   const messageReceiver = useMessageReceiver();
   const [profiles, setProfiles] = useState(/** @type {import('../../../index.d.ts').Student[]}*/ ([]));
   const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm, distanceUnit: "mi", loading: null });
   const [rentalMapGuestProfile, setRentalMapGuestProfile] = useState(null);
   const [filterPairs, setFilterPairs] = useState([]);
-  const { hostProfile: profile } = useAppSelector();
 
   const refreshMatchs = useCallback(
     (e = null) => {
       if (e) {
         e.preventDefault();
       }
+      setProfiles([]);
+
+      if (!hostProfile?.value?.can_match) {
+        return;
+      }
 
       dispatchLocal({ type: "isLoading" });
-      setProfiles([]);
       functionsApi
         .getMatches({ distanceInKm: matchFilters.distanceInKm * (/mi/i.test(matchFilters.distanceUnit) ? 1.6 : 1) })
         .then(async (response) => {
@@ -74,7 +79,7 @@ const Match = () => {
         .catch(console.error)
         .finally(() => dispatchLocal({ type: "loadingComplete" }));
     },
-    [matchFilters]
+    [matchFilters,hostProfile]
   );
 
   const getSurvey = (profile) => /** @type {import('../../../index').ProfileSurvey} */ (profile?.survey);
@@ -97,12 +102,13 @@ const Match = () => {
   };
 
   const clearRentalMapGuestProfile = () => setRentalMapGuestProfile(null);
-  const setCanMatch = (value) => {};
+
+  const setCanMatch = (value) => updateProfile("can_match", value);
 
   useEffect(() => {
     if (matchFilters.loading === null) {
       refreshMatchs();
-      dispatchGlobal(setHostProfile({ street_add: "wall street", state: "ny", zip: 10467 }));
+      // dispatchGlobal(setHostProfile({ street_add: "wall street", state: "ny", zip: 10467 }));
     }
     console.log("tintin");
   }, [matchFilters, refreshMatchs]);
@@ -125,7 +131,7 @@ const Match = () => {
 
             <input type="range" min="1" max="30" value={matchFilters.distanceInKm} onChange={(e) => dispatchLocal({ type: "set_distance", payload: Number(e.target.value) })} />
 
-            <button type="submit" className="btn btn-primary flex-none text-nowrap" style={{ width: "140px" }}>
+            <button type="submit" className="btn btn-primary flex-none text-nowrap" style={{ width: "140px" }} disabled={!hostProfile?.value?.can_match}>
               View Matches
             </button>
           </div>
@@ -137,7 +143,7 @@ const Match = () => {
               <div className="d-flex gap-3 align-items-center pb-3">
                 Matches {profiles?.length} <MatchFilter onChange={setFilterPairs} />
                 <Form>
-                  <Form.Switch checked={profile?.can_match} name="can_match" label={"Can Match" + profile?.can_match} onChange={(e) => setCanMatch(e.target.checked)}></Form.Switch>
+                  <Form.Switch checked={hostProfile?.value?.can_match} name="can_match" label={"Can Match"} onChange={(e) => setCanMatch(e.target.checked)}></Form.Switch>
                 </Form>
               </div>
             )}
@@ -145,68 +151,69 @@ const Match = () => {
         </form>
 
         <div className="profiles d-flex flex-column gap-5 col">
-          {profiles?.map((profile) => (
-            <Card className="d-flex profile-item h-300 bg-white text-align-left p-3 rounded-3" key={profile.id} style={{ minHeight: "300px" }}>
-              <Card.Body>
-                <Row className="p-0">
-                  <Col xs={12} md={6} className="profile-img position-relative">
-                    <div className="profile-header p-2">
-                      <h2 className="p-l-0 fs-5 d-inline">{profile.first_name + " " + profile.last_name} </h2>
-                      <button className="btn btn-fab  align-self-center ms-auto" onClick={() => startMessaging(profile)}>
-                        <i className="fa-regular fa-envelope fs-3"></i>
-                      </button>
+          {hostProfile?.value?.can_match &&
+            profiles?.map((profile) => (
+              <Card className="d-flex profile-item h-300 bg-white text-align-left p-3 rounded-3" key={profile.id} style={{ minHeight: "300px" }}>
+                <Card.Body>
+                  <Row className="p-0">
+                    <Col xs={12} md={6} className="profile-img position-relative">
+                      <div className="profile-header p-2">
+                        <h2 className="p-l-0 fs-5 d-inline">{profile.first_name + " " + profile.last_name} </h2>
+                        <button className="btn btn-fab  align-self-center ms-auto" onClick={() => startMessaging(profile)}>
+                          <i className="fa-regular fa-envelope fs-3"></i>
+                        </button>
 
-                      <button className="btn btn-fab" onClick={() => setRentalMapGuestProfile(profile)}>
-                        <i className="fa fa-truck fs-3" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                    <div className="profile-img-container" style={{ height: "calc( 100% - 45px )" }}>
-                      <img
-                        height="400px"
-                        src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"}
-                        alt="profilee"
-                        className="flex-none rounded img-responsive w-100 h-100 object-fit-cover"
-                      />
-                    </div>
-                  </Col>
-                  <Col md={6} className="profile-content flex-grow text-black d-flex flex-column align-items-start">
-                    <BioSurveyView
-                      bio={
-                        <div className="profile-bio">
-                          <span>{profile.age}.</span>
-                          <span>{profile.bio}.</span>
-                          <span>{profile.school?.name}</span>
-                        </div>
-                      }
-                      survey={
-                        <Stack direction="vertical">
-                          <div className="profile-survey-responses attributes d-flex gap-2 pt-3 flex-wrap">
-                            {getSurvey(profile)?.responses?.map((res) => (
-                              <button
-                                className={
-                                  passesFilter(res)?.classes +
-                                  " btn btn-outline-primary rounded-5 fs-6 btn-xs text-align-left text-left" +
-                                  (getSurvey(profile).questions[res.question_code].presentable ? "show bg-primary text-white" : "d-nones")
-                                }
-                                title={getSurvey(profile).questions[res.question_code].question}
-                                {...passesFilter(res, getSurvey(profile).questions[res.question_code].presentable)}
-                              >
-                                <span>
-                                  {getSurvey(profile).options[res.answer_code].answer}: {getSurvey(profile).questions[res.question_code].question}
-                                </span>
-                              </button>
-                            ))}
+                        <button className="btn btn-fab" onClick={() => setRentalMapGuestProfile(profile)}>
+                          <i className="fa fa-truck fs-3" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <div className="profile-img-container" style={{ height: "calc( 100% - 45px )" }}>
+                        <img
+                          height="400px"
+                          src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"}
+                          alt="profilee"
+                          className="flex-none rounded img-responsive w-100 h-100 object-fit-cover"
+                        />
+                      </div>
+                    </Col>
+                    <Col md={6} className="profile-content flex-grow text-black d-flex flex-column align-items-start">
+                      <BioSurveyView
+                        bio={
+                          <div className="profile-bio">
+                            <span>{profile.age}.</span>
+                            <span>{profile.bio}.</span>
+                            <span>{profile.school?.name}</span>
                           </div>
-                        </Stack>
-                      }
-                    />
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          ))}
+                        }
+                        survey={
+                          <Stack direction="vertical">
+                            <div className="profile-survey-responses attributes d-flex gap-2 pt-3 flex-wrap">
+                              {getSurvey(profile)?.responses?.map((res) => (
+                                <button
+                                  className={
+                                    passesFilter(res)?.classes +
+                                    " btn btn-outline-primary rounded-5 fs-6 btn-xs text-align-left text-left" +
+                                    (getSurvey(profile).questions[res.question_code].presentable ? "show bg-primary text-white" : "d-nones")
+                                  }
+                                  title={getSurvey(profile).questions[res.question_code].question}
+                                  {...passesFilter(res, getSurvey(profile).questions[res.question_code].presentable)}
+                                >
+                                  <span>
+                                    {getSurvey(profile).options[res.answer_code].answer}: {getSurvey(profile).questions[res.question_code].question}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                          </Stack>
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            ))}
 
-          {rentalMapGuestProfile && (
+          {hostProfile?.value?.can_match && rentalMapGuestProfile && (
             <Modal show={rentalMapGuestProfile !== null} onClose={clearRentalMapGuestProfile}>
               <Modal.Header>
                 <Button onClick={clearRentalMapGuestProfile}>
@@ -215,7 +222,7 @@ const Match = () => {
               </Modal.Header>
               <Modal.Body>
                 <ErrorBoundary fallback={<p>RentalMap faialed to load</p>}>
-                  <RentalMap initialRadius={distanceInKm} guestStudent={rentalMapGuestProfile} hostStudent={hostProfile} />
+                  <RentalMap initialRadius={distanceInKm} guestStudent={rentalMapGuestProfile} hostStudent={hostProfile?.value} />
                 </ErrorBoundary>
               </Modal.Body>
             </Modal>
@@ -248,7 +255,7 @@ function BioSurveyView({ bio, survey }) {
 
   return (
     <Stack direction="vertical">
-      <div className="toggle-buttons rounded-5 d-flex justify-content-center bg-primary">
+      <div className="toggle-buttons rounded-5 d-flex justify-content-center bg-primary mb-3">
         <ToggleButtonGroup type="radio" name="selectView" value={selectedView} onChange={doChange}>
           <ToggleButton id={"bio-btn" + randomTag} value={bio} className={selectedView === bio ? "bg-success text-light" : ""}>
             Bio

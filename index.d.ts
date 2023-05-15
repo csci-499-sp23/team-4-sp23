@@ -44,3 +44,8 @@ export interface Profile {
   can_match:boolean
   email
 }
+
+export  interface HostProfile {
+  type: 'parent'| 'student',
+  value: Profile
+}
