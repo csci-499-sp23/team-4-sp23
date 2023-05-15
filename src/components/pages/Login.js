@@ -2,21 +2,27 @@ import { signInWithEmailAndPassword, sendPasswordResetEmail } from '@firebase/au
 import { auth } from '../../firebase-config'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useHostProfileInitialize } from '../../services/accountService';
+import { Button } from 'react-bootstrap';
 
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { loadProfile } = useHostProfileInitialize({ initialize: false })
 
     const navigate = useNavigate();
 
     const signIn = (e) => {
         e.preventDefault();
 
-        signInWithEmailAndPassword(auth, email, password).then(authUser => {
+        signInWithEmailAndPassword(auth, email, password).then(async authUser => {
 
             if (authUser.user.emailVerified) { //This will return true or false
-                navigate("/StudentProfilePage");
+                const { type } = await loadProfile(authUser.user)
+
+                const destination = { student: "/StudentProfilePage", parent: "/ParentProfilePage" }[type]
+                navigate(destination);
             } else {
                 auth.signOut();
                 alert('email not verified');
@@ -38,9 +44,9 @@ const Login = () => {
     }
 
     return (
-        <div class="container p-4 text-center">
+        <div className="container p-4 text-center">
             <h2>Login</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label for="email" className="form-label">Email address</label>
                     <input type="email" className="form-control" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
@@ -52,7 +58,7 @@ const Login = () => {
                 <div className="mb-3">
                     <button type="button" className="btn btn-link" onClick={handleForgotPassword}>Forgot password?</button>
                 </div>
-                <a class="btn btn-primary" href="/StudentProfilePage" onClick={handleSubmit} role="button">Submit</a>
+                <Button className="btn btn-primary" role="button" type='submit'>Submit</Button>
             </form>
         </div>
     );

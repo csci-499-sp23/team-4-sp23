@@ -1,3 +1,4 @@
+
 {
   "name": "wheel-call-you",
   "version": "0.1.0",
@@ -35,7 +36,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "functions": "npm --prefix functions run serve",
-    "dev": "concurrently \"npm run functions\" \"npm start\""
+    "dev": "concurrently \"npm run functions\" \"npm start\"",
+    "lint:fix": "npx eslint --fix src",
+    "lint": "npx eslint src"
   },
   "eslintConfig": {
     "extends": [

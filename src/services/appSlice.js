@@ -5,7 +5,9 @@ const initialAppState = {
   user: null,
   /** @type {"loading"|true|false} */ loggedIn: "loading",
   messageReceiver: null,
-  profilesInConversations: []
+  profilesInConversations: [],
+  /** @type {import('../..').HostProfile} */
+  hostProfile: null
 };
 
 export const appSlice = createSlice({
@@ -31,12 +33,16 @@ export const appSlice = createSlice({
     },
     clearProfileMessageNotification: (state, { payload }) => {
       state.profilesInConversations[payload.email].notify = null
+    },
+    setHostProfile: (state, { payload }) => {
+      state.hostProfile = payload
     }
+
   },
 });
 // Action creators are generated for each case of reducer function, 
 // call them inside dispatch to perform the desired action or change ijn the store
-export const { login, logout, setMessageReceiver, newProfileMessageNotification, clearProfileMessageNotification } = appSlice.actions;
+export const { login, logout, setMessageReceiver, newProfileMessageNotification, clearProfileMessageNotification, setHostProfile } = appSlice.actions;
 
 export default appSlice.reducer;
 
