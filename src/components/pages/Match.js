@@ -10,6 +10,8 @@ import useAppSelector, { useMessageReceiver } from "../../services/selectors";
 import { MatchFilter } from "../MatchFilter";
 import Messages from "../Messages";
 import RentalMap from "./RentalMap";
+import Form from "react-bootstrap/Form";
+import FormCheckLabel from "react-bootstrap/esm/FormCheckLabel";
 
 // const getProfiles = () => demo_profiles;
 const matchReducer = (state, action) => {
@@ -49,6 +51,7 @@ const Match = () => {
   const [matchFilters, dispatchLocal] = useReducer(matchReducer, { distanceInKm, distanceUnit: "mi", loading: null });
   const [rentalMapGuestProfile, setRentalMapGuestProfile] = useState(null);
   const [filterPairs, setFilterPairs] = useState([]);
+  const { profile } = useAppSelector();
 
   const refreshMatchs = useCallback(
     (e = null) => {
@@ -94,6 +97,7 @@ const Match = () => {
   };
 
   const clearRentalMapGuestProfile = () => setRentalMapGuestProfile(null);
+  const setCanMatch = (value) => {};
 
   useEffect(() => {
     if (matchFilters.loading === null) {
@@ -105,28 +109,38 @@ const Match = () => {
 
   return (
     <div className="row">
+      <h2 className="text-center">Your Matches</h2>
       <div className="justify-content-center col-8 matches-containter gap-3">
         <form className="col-12 d-flex flex-column gap-3" onSubmit={refreshMatchs}>
-          <div className="form-group">
-            <label htmlFor="">Unit</label>
-            <select name="distanceUnit" id="" onChange={(e) => dispatchLocal({ type: "set_unit", payload: e.target.value })}>
-              <option value="km">Km</option>
-              <option value="mi">Mi</option>
-            </select>
-          </div>
-          <div className="form-group">
+          <div className="form-group d-flex gap-3 justify-content-start align-items-center">
             <label htmlFor="">
-              Distance ({matchFilters.distanceUnit}): {matchFilters.distanceInKm}
+              Distance {matchFilters.distanceInKm}:
+              <select name="distanceUnit" id="" onChange={(e) => dispatchLocal({ type: "set_unit", payload: e.target.value })}>
+                <option value="km">Km</option>
+                <option value="mi">Mi</option>
+              </select>
+              :
             </label>
+
             <input type="range" min="1" max="30" value={matchFilters.distanceInKm} onChange={(e) => dispatchLocal({ type: "set_distance", payload: Number(e.target.value) })} />
+
+            <button type="submit" className="btn btn-primary flex-none text-nowrap" style={{ width: "140px" }}>
+              View Matches
+            </button>
           </div>
 
-          <button type="submit" className="btn btn-primary flex-none text-nowrap">
-            get matches
-          </button>
-
-          <div>{matchFilters.loading ? "Loading..." : <div>Matches {profiles?.length}</div>}</div>
-          <MatchFilter onChange={setFilterPairs} />
+          <div>
+            {matchFilters.loading ? (
+              "Loading..."
+            ) : (
+              <div className="d-flex gap-3 align-items-center pb-3">
+                Matches {profiles?.length} <MatchFilter onChange={setFilterPairs} />
+                <Form>
+                  <Form.Switch checked={profile?.can_match} name="can_match" label={"Can Match" + profile?.can_match} onChange={(e) => setCanMatch(e.target.checked)}></Form.Switch>
+                </Form>
+              </div>
+            )}
+          </div>
         </form>
 
         <div className="profiles d-flex flex-column gap-5 col">
@@ -147,6 +161,7 @@ const Match = () => {
                     </div>
                     <div className="profile-img-container" style={{ height: "calc( 100% - 45px )" }}>
                       <img
+                        height="400px"
                         src={(profile.image?.length && profile.image) ?? "https://ionicframework.com/docs/img/demos/avatar.svg"}
                         alt="profilee"
                         className="flex-none rounded img-responsive w-100 h-100 object-fit-cover"
@@ -209,7 +224,7 @@ const Match = () => {
 
       {messageReceiver && (
         <div className="col-4 chats-container">
-          Chats
+          Chat
           <ErrorBoundary fallback={<p>Error occured with child component</p>}>
             <Messages />
           </ErrorBoundary>
@@ -234,10 +249,10 @@ function BioSurveyView({ bio, survey }) {
     <Stack direction="vertical">
       <div className="toggle-buttons rounded-5 d-flex justify-content-center bg-primary">
         <ToggleButtonGroup type="radio" name="selectView" value={selectedView} onChange={doChange}>
-          <ToggleButton id={"bio-btn" + randomTag} value={bio}>
+          <ToggleButton id={"bio-btn" + randomTag} value={bio} className={selectedView === bio ? "bg-success text-light" : ""}>
             Bio
           </ToggleButton>
-          <ToggleButton id={"survey-btn" + randomTag} value={survey}>
+          <ToggleButton id={"survey-btn" + randomTag} value={survey} className={selectedView === survey ? "bg-success text-light" : ""}>
             Survey
           </ToggleButton>
         </ToggleButtonGroup>

@@ -17,7 +17,8 @@ import StudentProfilePage from "./components/pages/StudentProfilePage.js";
 import Survey from "./components/pages/Survey";
 import VerifSent from "./components/pages/VerifSent.js";
 import { auth } from "./firebase-config";
-import { login, logout } from "./services/appSlice";
+import { getAccountInfo as getProfileInfo } from "./services/accountService";
+import { login, logout, setProfile } from "./services/appSlice";
 
 function App() {
   // const  = useSelector((store) => store.appStore);
@@ -25,11 +26,26 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   useEffect(() => {
+    let unsubscribe;
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true);
-
         dispatch(login(user.toJSON()));
+
+        try {
+
+          getProfileInfo({ user }).then(profileResponse => {
+
+            if (profileResponse) {
+              const [profile, subscribe] = profileResponse
+              unsubscribe = subscribe((profileChange) => dispatch(setProfile(profileChange)))
+
+              dispatch(setProfile(profile))
+            }
+          })
+        } catch (error) {
+          console.error(error)
+        }
       } else {
         setIsLoggedIn(false);
         dispatch(logout());
@@ -38,6 +54,9 @@ function App() {
 
     return () => {
       listen();
+      if (unsubscribe) {
+        unsubscribe()
+      }
     };
   }, [dispatch]);
 
