@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 //import { getProfiles } from "../../firebase";
 
-import { Button, Card, Col, Modal, Row, Stack, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import { Button, Card, Col, Modal, Row, Spinner, Stack, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { ErrorBoundary } from "react-error-boundary";
 import { useDispatch } from "react-redux";
 import { functionsApi } from "../../firebase";
@@ -79,7 +79,7 @@ const Match = () => {
         .catch(console.error)
         .finally(() => dispatchLocal({ type: "loadingComplete" }));
     },
-    [matchFilters,hostProfile]
+    [matchFilters, hostProfile]
   );
 
   const getSurvey = (profile) => /** @type {import('../../../index').ProfileSurvey} */ (profile?.survey);
@@ -138,7 +138,7 @@ const Match = () => {
 
           <div>
             {matchFilters.loading ? (
-              "Loading..."
+              <Spinner />
             ) : (
               <div className="d-flex gap-3 align-items-center pb-3">
                 Matches {profiles?.length} <MatchFilter onChange={setFilterPairs} />

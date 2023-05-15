@@ -19,7 +19,7 @@ export function profileWatch(ref, cb) {
     }
 }
 
-export function useHostProfileInitialize({ initialize = true }) {
+export function useHostProfileInitialize({ initialize } = { initialize: true }) {
 
     const dispatch = useDispatch()
     const user = useUserSelector()
