@@ -94,6 +94,7 @@ const StudentProfilePage = () => {
       alert("Image Uploaded");
     });
   };
+
   
   const displayBio = () => {
     if (user?.email && studentData && studentData[0].bio !== undefined && studentData[0].bio !== "") {
