@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { GoogleMap, InfoWindow, LoadScript, Marker, DirectionsRenderer } from "@react-google-maps/api";
-import { db } from '../../firebase-config.js';
+import { DirectionsRenderer, GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import { collection, getDocs } from 'firebase/firestore';
-import { Button, Col, Row, Stack } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
+import { db } from '../../firebase-config.js';
 
 const getAddress = ({ state = null, zip = null, street_add = null }) => {
   const values = [state, zip, street_add].filter(item => item)

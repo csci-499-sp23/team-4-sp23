@@ -2,17 +2,16 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 //import { getProfiles } from "../../firebase";
 
 import { Button, Card, Col, Modal, Row, Spinner, Stack, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 import { ErrorBoundary } from "react-error-boundary";
 import { useDispatch } from "react-redux";
 import { functionsApi } from "../../firebase";
-import { setMessageReceiver, setHostProfile } from "../../services/appSlice";
+import { useHostProfileInitialize } from "../../services/accountService";
+import { setMessageReceiver } from "../../services/appSlice";
 import useAppSelector, { useMessageReceiver } from "../../services/selectors";
 import { MatchFilter } from "../MatchFilter";
 import Messages from "../Messages";
 import RentalMap from "./RentalMap";
-import Form from "react-bootstrap/Form";
-import FormCheckLabel from "react-bootstrap/esm/FormCheckLabel";
-import { useHostProfileInitialize } from "../../services/accountService";
 
 // const getProfiles = () => demo_profiles;
 const matchReducer = (state, action) => {

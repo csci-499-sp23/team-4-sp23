@@ -1,23 +1,13 @@
-import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { db } from "../firebase-config";
 import { docToJson } from "../jsonUtils";
-import { useUserSelector } from "./selectors";
 import { setHostProfile } from "./appSlice";
-import { useDispatch } from "react-redux";
-import { useCallback, useEffect, useState } from "react";
-import { updateProfile } from "firebase/auth";
+import { useUserSelector } from "./selectors";
 
 
 
-export function profileWatch(ref, cb) {
-    return (cb) => {
-
-        console.log('profileWatchSubscribe')
-        // onSnapshot(ref, (snapshot) => {
-        //     return cb(!doc ? null : docToJson(doc))
-        // })
-    }
-}
 
 export function useHostProfileInitialize({ initialize } = { initialize: true }) {
 
@@ -27,7 +17,6 @@ export function useHostProfileInitialize({ initialize } = { initialize: true }) 
 
 
     const initializeHostProfile = useCallback(async (_user = user) => {
-        let subscribe
 
         const _where = where('email', '==', _user.email)
         const studentCollectionRef = collection(db, 'students')

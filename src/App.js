@@ -1,4 +1,5 @@
 import { onAuthStateChanged } from "@firebase/auth";
+import { LoadScript } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
@@ -17,9 +18,7 @@ import StudentProfilePage from "./components/pages/StudentProfilePage.js";
 import Survey from "./components/pages/Survey";
 import VerifSent from "./components/pages/VerifSent.js";
 import { auth } from "./firebase-config";
-import { useHostProfileInitialize as getProfileInfo } from "./services/accountService";
-import { login, logout, setHostProfile } from "./services/appSlice";
-import { LoadScript } from "@react-google-maps/api";
+import { login, logout } from "./services/appSlice";
 
 function App() {
   // const  = useSelector((store) => store.appStore);
