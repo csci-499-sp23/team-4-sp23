@@ -1,11 +1,13 @@
 import { onAuthStateChanged } from "@firebase/auth";
 import { LoadScript } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate, useNavigation } from "react-router-dom";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Protected from "./Protected";
 import Navbar from "./components/navbar/Navbar.js";
+import Admin from "./components/pages/Admin";
 import BrowseStudents from "./components/pages/BrowseStudents.js";
 import Contact from "./components/pages/Contact.js";
 import Home from "./components/pages/Home.js";
@@ -18,10 +20,8 @@ import StudentProfilePage from "./components/pages/StudentProfilePage.js";
 import Survey from "./components/pages/Survey";
 import VerifSent from "./components/pages/VerifSent.js";
 import { auth } from "./firebase-config";
-import { login, logout } from "./services/appSlice";
-import Admin from "./components/pages/Admin";
 import { useHostProfileInitialize } from "./services/accountService";
-import { Spinner } from "react-bootstrap";
+import { login, logout } from "./services/appSlice";
 
 const AdminGaurd = ({ element }) => {
   const { hostProfile } = useHostProfileInitialize()
