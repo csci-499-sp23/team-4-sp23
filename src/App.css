@@ -120,9 +120,7 @@ hr {
   line-height: 2;
 }
 #title-section {
-  background-image: url(https://www.hennepin.us/choose-to-reuse/-/media/choose-to-reuse/join-the-circle/2022-sustainable-dorm-move-in-910x400.jpg?h=400&w=910&hash=6E7A86FE248BC748781AB95162099420);
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color:#3f72af;
   text-shadow: 1px 1px 2px black;
   text-align: center;
   padding: 0 0 0% 0;
