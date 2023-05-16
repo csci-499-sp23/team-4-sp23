@@ -127,7 +127,6 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
       );
 
       setMidpoint(midpointLatLng);
-      setCenter(midpoint);
 
       setAllMarkers(newMarkers);
       const filteredMarkers = newMarkers.filter((marker) => {
