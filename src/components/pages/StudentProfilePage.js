@@ -61,7 +61,7 @@ const StudentProfilePage = () => {
           setZip(data[0].zip);
           setUSState(data[0].state);
           setDOB(data[0].dob);
-          setUniversityID(data[0].university);
+          setUniversityID(data[0].school_id);
           setBio(data[0].bio);
         }
       });
@@ -547,14 +547,13 @@ const StudentProfilePage = () => {
     setEditUniversity(false);
     const studentDoc = doc(db, "students", studentData[0].id);
     if (university !== "") {
-      await updateDoc(studentDoc, { university:  universityID });
+      await updateDoc(studentDoc, { school_id:  universityID });
     }
   };
 
   const clearUniversity = async () => {
     const studentDoc = doc(db, "students", studentData[0].id);
-    await updateDoc(studentDoc, { university: "" });
-    setEditUniversity(false);
+    await updateDoc(studentDoc, { school_id: "" });
   };
   
 

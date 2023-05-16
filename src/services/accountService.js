@@ -86,7 +86,7 @@ export async function writeUniverityToSchoolID() {
                 const docRef = doc.ref;
 
                 // Update the desired fields for each student document
-                batch.update(docRef, { university: deleteField() });
+                batch.update(docRef, { schoo_id: deleteField() });
             })
 
         //update the student
