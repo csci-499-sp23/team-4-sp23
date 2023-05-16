@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where, writeBatch } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { db } from "../firebase-config";
@@ -6,7 +6,61 @@ import { docToJson } from "../jsonUtils";
 import { setHostProfile } from "./appSlice";
 import { useUserSelector } from "./selectors";
 
+function generateUniquePIN() {
+    const usedPins = new Set(); // Set to store used PINs
 
+    const generateRandomDigit = () => Math.floor(Math.random() * 10); // Function to generate a random digit
+
+    const generatePIN = () => {
+        let pin = '';
+        for (let i = 0; i < 6; i++) {
+            if (i === 3) {
+                pin += '-';
+            }
+            const digit = generateRandomDigit();
+            pin += digit;
+        }
+        return pin;
+    };
+
+    let pin = generatePIN();
+    while (usedPins.has(pin)) {
+        pin = generatePIN();
+    }
+
+    usedPins.add(pin);
+    return pin;
+}
+
+
+
+export async function generateStudentPins() {
+    try {
+        //get all studennts
+        const studentsRef = await getDocs(collection(db, 'students'))
+        //for each student make a unique pin
+        // Create a batched write operation
+        const batch = writeBatch(db);
+
+        studentsRef.docs
+            .forEach((doc) => {
+                const docRef = doc.ref;
+
+                // Update the desired fields for each student document
+                batch.update(docRef, { pin: generateUniquePIN() });
+            })
+
+        //update the student
+
+        // Commit the batched write operation
+        await batch.commit();
+
+        console.log('Multiple students updated successfully!');
+    } catch (error) {
+        console.error('Error updating multiple students:', error);
+    }
+
+}
 
 
 export function useHostProfileInitialize({ initialize } = { initialize: true }) {

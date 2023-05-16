@@ -24,6 +24,11 @@ const Navbar = () => {
       {/* <AuthDetails /> */}
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav ms-auto">
+          {/* <li className="nav-item">
+            <NavLink className="nav-link" to="/admin">
+              Admin
+            </NavLink>
+          </li> */}
           <li className="nav-item">
             <NavLink className="nav-link" to="/contact">
               Contact
