@@ -167,7 +167,7 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
     };
 
     fetchData();
-  }, []);
+  }, );
 
   return (
     <div>
