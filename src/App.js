@@ -12,7 +12,6 @@ import Home from "./components/pages/Home.js";
 import Login from "./components/pages/Login.js";
 import Match from "./components/pages/Match";
 import ParentProfilePage from "./components/pages/ParentProfilePage.js";
-import RentalMap from "./components/pages/RentalMap.js";
 import SignUp from "./components/pages/SignUp.js";
 import StudentProfilePage from "./components/pages/StudentProfilePage.js";
 import Survey from "./components/pages/Survey";
@@ -64,7 +63,6 @@ function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="rentalMap" element={<RentalMap />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/browseStudents" element={<BrowseStudents />} />
