@@ -2,7 +2,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 import { LoadScript } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate, useNavigation } from "react-router-dom";
 import "./App.css";
 import Protected from "./Protected";
 import Navbar from "./components/navbar/Navbar.js";
@@ -19,6 +19,22 @@ import Survey from "./components/pages/Survey";
 import VerifSent from "./components/pages/VerifSent.js";
 import { auth } from "./firebase-config";
 import { login, logout } from "./services/appSlice";
+import Admin from "./components/pages/Admin";
+import { useHostProfileInitialize } from "./services/accountService";
+import { Spinner } from "react-bootstrap";
+
+const AdminGaurd = ({ element }) => {
+  const { hostProfile } = useHostProfileInitialize()
+
+  if (!hostProfile) {
+    return <Spinner />
+  }
+  if (hostProfile.type === 'admin') {
+    const destination = { student: '/StudentProfile', parent: '/ParentProfile' }[hostProfile.type]
+    return <Navigate to={destination} />
+  }
+  return element
+}
 
 function App() {
   // const  = useSelector((store) => store.appStore);
@@ -68,6 +84,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/browseStudents" element={<BrowseStudents />} />
+          <Route path="/admin" element={<AdminGaurd element={<Admin />} />} />
           <Route
             path="/StudentProfilePage"
             element={
