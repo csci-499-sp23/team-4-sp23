@@ -57,11 +57,6 @@ const Navbar = () => {
                 Map
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/survey">
-                Survey
-              </NavLink>
-            </li>
 
             {/* <li className="nav-item">
               <button className="nav-link btn btn-primary" onClick={(e) => signOut(e)}>
