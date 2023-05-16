@@ -23,7 +23,7 @@ const ParentProfilePage = () => {
                     const { type } = await loadProfile(authUser.user)
                     const destination = { student: "/StudentProfilePage", parent: "/ParentProfilePage" }[type]
                     navigate(destination);
-                }  else if ((authUser.user.emailVerified) && (authUser.pin != PIN)) {
+                }  else if ((authUser.user.emailVerified) && (authUser.pin !== PIN)) {
                     alert('Incorrect PIN');
                 } else {
                     alert('email not verified');
