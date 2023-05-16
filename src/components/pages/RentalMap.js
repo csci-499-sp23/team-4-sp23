@@ -9,6 +9,8 @@ const getAddress = ({ state = null, zip = null, street_add = null }) => {
   return !values.length ? null : values.join(' ')
 }
 
+console.log('hi')
+
 const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
 
   const [activeInfoWindow, setActiveInfoWindow] = useState(null);
@@ -167,11 +169,11 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
       filteredMarkers.push(midpointMarker);
       filteredMarkers.push(schoolMarker);
 
+      console.log('dunzo')
       setMarkers(filteredMarkers);
     };
-
     fetchData();
-  }, );
+  }, [homeImage, location1, location2, midpointImage, radius, schoolImage, truckImage, userImage]);
 
   return (
     <div>
@@ -188,7 +190,6 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
             icon={marker.icon}
             draggable={false}
             onClick={() => {
-              setActiveInfoWindow(marker);
               setCenter(marker.position);
               handleMarkerClick(marker);
             }}
