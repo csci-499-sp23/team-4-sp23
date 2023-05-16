@@ -10,6 +10,7 @@ const getAddress = ({ state = null, zip = null, street_add = null }) => {
 }
 
 
+
 const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
 
   const [activeInfoWindow, setActiveInfoWindow] = useState(null);
