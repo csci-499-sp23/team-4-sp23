@@ -1,7 +1,7 @@
 import { DirectionsRenderer, GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { db } from '../../firebase-config.js';
 
 const getAddress = ({ state = null, zip = null, street_add = null }) => {
@@ -16,7 +16,7 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
   const [allMarkers, setAllMarkers] = useState([]);
   const [staticMarkers, setStaticMarkers] = useState([]);
   const location1 = getAddress(hostStudent);
-  const location2 = useState(getAddress(guestStudent));
+  const location2 = getAddress(guestStudent);
   const [radius, setRadius] = useState(initialRadius);
   const [center, setCenter] = useState({ lat: 40.7678, lng: -73.9645 });
   const [midpoint, setMidpoint] = useState("");
@@ -25,9 +25,12 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
   const userImage = require('../img/user.png');
   const midpointImage = require('../img/midpoint.png');
   const schoolImage = require('../img/school.png');
+ 
 
 
   const containerStyle = { width: '100%', height: '900px' };
+
+
 
 
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
@@ -115,6 +118,7 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
       console.log(location1, location2)
       const location1LatLng = location1Results.results[0].geometry.location;
       const location2LatLng = location2Results.results[0].geometry.location;
+
 
       const midpointLatLng = new window.google.maps.LatLng(
         (location1LatLng.lat() + location2LatLng.lat()) / 2,
@@ -211,5 +215,4 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
 };
 
 export default RentalMap;
-
 
