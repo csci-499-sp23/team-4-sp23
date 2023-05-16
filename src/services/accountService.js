@@ -67,12 +67,7 @@ export async function generateStudentPins() {
 
 }
 
-const getSchoolIDorUniversityId = ({ school_id_temp }) => {
 
-
-
-    return school_id_temp
-}
 
 export async function writeUniverityToSchoolID() {
     if (process.env.REACT_APP_ENABLE_ADMIN !== 'true') {
