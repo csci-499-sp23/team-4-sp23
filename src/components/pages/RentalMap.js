@@ -1,7 +1,7 @@
 import { DirectionsRenderer, GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { db } from '../../firebase-config.js';
 
 const getAddress = ({ state = null, zip = null, street_add = null }) => {
@@ -15,27 +15,19 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
   const [markers, setMarkers] = useState([]);
   const [allMarkers, setAllMarkers] = useState([]);
   const [staticMarkers, setStaticMarkers] = useState([]);
-  const [location1, setLocation1] = useState(getAddress(hostStudent));
-  const [location2, setLocation2] = useState(getAddress(guestStudent));
+  const location1 = getAddress(hostStudent);
+  const location2 = useState(getAddress(guestStudent));
   const [radius, setRadius] = useState(initialRadius);
   const [center, setCenter] = useState({ lat: 40.7678, lng: -73.9645 });
-  const [location1Pos, setLocation1Pos] = useState("");
-  const [location2Pos, setLocation2Pos] = useState("");
   const [midpoint, setMidpoint] = useState("");
   const truckImage = require('../img/trucks.png');
   const homeImage = require('../img/home.png');
   const userImage = require('../img/user.png');
   const midpointImage = require('../img/midpoint.png');
   const schoolImage = require('../img/school.png');
-  const [homeMarker, setHomeMarker] = useState(null);
-  const [userMarker, setUserMarker] = useState(null);
-  const [midpointMarker, setMidpointMarker] = useState(null);
-  const [schoolMarker, setSchoolMarker] = useState(null);
 
 
   const containerStyle = { width: '100%', height: '900px' };
-
-
 
 
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
@@ -124,15 +116,13 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
       const location1LatLng = location1Results.results[0].geometry.location;
       const location2LatLng = location2Results.results[0].geometry.location;
 
-      setLocation1Pos(location1LatLng);
-      setLocation2Pos(location2LatLng);
-
       const midpointLatLng = new window.google.maps.LatLng(
         (location1LatLng.lat() + location2LatLng.lat()) / 2,
         (location1LatLng.lng() + location2LatLng.lng()) / 2
       );
 
       setMidpoint(midpointLatLng);
+      setCenter(midpoint);
 
       setAllMarkers(newMarkers);
       const filteredMarkers = newMarkers.filter((marker) => {
@@ -185,7 +175,7 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
       <input type="number" id="radius" value={radius} onChange={handleRadiusChange} />
       <Button onClick={handleClick}>Submit</Button>
       
-      <GoogleMap mapContainerStyle={containerStyle} center={midpoint} zoom={10}>
+      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
         {markers.map((marker, index) => (
           <Marker
             key={index}
