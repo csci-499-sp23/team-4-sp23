@@ -10,9 +10,6 @@ const ParentProfilePage = () => {
             <input type="email" className="form-control" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
             <br></br>
             <a className="btn btn-primary" href="/VerifSent" role="button">Submit</a>
-            <br></br>
-            <br></br>
-            <a href="/StudentProfilePage" class="btn btn-primary" role="button">Switch to Student</a>
         </div>
     )
 }
