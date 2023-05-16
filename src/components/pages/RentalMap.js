@@ -1,7 +1,7 @@
 import { DirectionsRenderer, GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { db } from '../../firebase-config.js';
 
 const getAddress = ({ state = null, zip = null, street_add = null }) => {
