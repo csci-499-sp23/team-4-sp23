@@ -24,11 +24,11 @@ const Navbar = () => {
       {/* <AuthDetails /> */}
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav ms-auto">
-          {/* <li className="nav-item">
+          <li className={"nav-item " + process.env.REACT_APP_ENABLE_ADMIN === 'true' ? '' : 'd-none'}>
             <NavLink className="nav-link" to="/admin">
               Admin
             </NavLink>
-          </li> */}
+          </li>
           <li className="nav-item">
             <NavLink className="nav-link" to="/contact">
               Contact
@@ -53,6 +53,11 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink className="nav-link" to="/rentalMap">
+                Map
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink className="nav-link" to="/survey">
                 Survey
               </NavLink>
@@ -72,7 +77,7 @@ const Navbar = () => {
           </SignedIn>
         </ul>
       </div>
-    </nav>
+    </nav >
   );
 };
 export default Navbar;
