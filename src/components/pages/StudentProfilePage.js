@@ -582,10 +582,6 @@ const StudentProfilePage = () => {
             <br></br>
             <h5 className="card-title">University</h5>
             {displayUniversity()}
-            <br></br>
-            <a href="/ParentProfilePage" class="btn btn-primary" role="button">
-              Switch to Parent
-            </a>
           </div>
         </div>
       </div>
