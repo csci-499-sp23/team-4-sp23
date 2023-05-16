@@ -56,7 +56,7 @@ const ParentProfilePage = () => {
                 <label htmlFor="pin" className="form-label">Enter your child's designated PIN number:</label>
                 <input type="text" className="form-control" id="pin" name="pin" value={PIN} onChange={(e) => setPIN(e.target.value)}></input>
                 <br></br>
-                <button className="btn btn-primary" role="button" type="submit">Submit</button>
+                <button className="btn btn-primary" type="submit">Submit</button>
             </form>
         </div>
     )
