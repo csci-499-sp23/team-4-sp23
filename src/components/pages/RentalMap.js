@@ -9,6 +9,7 @@ const getAddress = ({ state = null, zip = null, street_add = null }) => {
   return !values.length ? null : values.join(' ')
 }
 
+
 const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
 
   const [activeInfoWindow, setActiveInfoWindow] = useState(null);
@@ -127,7 +128,6 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
       );
 
       setMidpoint(midpointLatLng);
-      setCenter(midpoint);
 
       setAllMarkers(newMarkers);
       const filteredMarkers = newMarkers.filter((marker) => {
@@ -167,12 +167,11 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
       filteredMarkers.push(userMarker);
       filteredMarkers.push(midpointMarker);
       filteredMarkers.push(schoolMarker);
-
       setMarkers(filteredMarkers);
-    };
 
+    };
     fetchData();
-  }, );
+  }, [homeImage, location1, location2, midpointImage, radius, schoolImage, truckImage, userImage]);
 
   return (
     <div>
