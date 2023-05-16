@@ -57,6 +57,9 @@ const StudentProfilePage = () => {
         if (data.length > 0) {
           setFirstName(data[0].first_name);
           setLocation(data[0].street_add);
+          setCity(data[0].city);
+          setZip(data[0].zip);
+          setUSState(data[0].state);
           setDOB(data[0].dob);
           setUniversityID(data[0].university);
           setBio(data[0].bio);
