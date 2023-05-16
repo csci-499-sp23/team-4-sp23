@@ -18,13 +18,24 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
   const [location2, setLocation2] = useState(getAddress(guestStudent));
   const [radius, setRadius] = useState(initialRadius);
   const [center, setCenter] = useState({ lat: 40.7678, lng: -73.9645 });
+  const [location1Pos, setLocation1Pos] = useState("");
+  const [location2Pos, setLocation2Pos] = useState("");
+  const [midpoint, setMidpoint] = useState("");
+  const truckImage = require('../img/trucks.png');
+  const homeImage = require('../img/home.png');
+  const userImage = require('../img/user.png');
+  const midpointImage = require('../img/midpoint.png');
+  const schoolImage = require('../img/midpoint.png');
+
+
+  const test = new window.google.maps.LatLng(40.7678, -73.9645);
 
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
 
   const handleMarkerClick = (marker) => {
     const directionsService = new window.google.maps.DirectionsService();
     const origin = new window.google.maps.LatLng(marker.position.lat(), marker.position.lng());
-    const destination = new window.google.maps.LatLng(40.7678, -73.9645); // replace with hardcoded coordinates
+    const destination = new window.google.maps.LatLng(40.7678, -73.9645); 
 
     directionsService.route(
       {
@@ -63,37 +74,21 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
     setRadius(parseInt(event.target.value));
   }
 
-  const handleClick = async () => {
+  const handleClick = () =>{}
+ /** const handleClick = async () => {
     try {
-      const geocoder = new window.google.maps.Geocoder();
-      const location1Results = await geocoder.geocode({ address: location1 });
-      const location2Results = await geocoder.geocode({ address: location2 });
+      
 
-      if (location1Results.length === 0 || location2Results.length === 0) {
-        console.error("One or both locations could not be geocoded");
-        return;
-      }
-
-      const location1LatLng = location1Results.results[0].geometry.location;
-      const location2LatLng = location2Results.results[0].geometry.location;
-
-      const midpointLatLng = new window.google.maps.LatLng(
-        (location1LatLng.lat() + location2LatLng.lat()) / 2,
-        (location1LatLng.lng() + location2LatLng.lng()) / 2
-      );
-
-      const filteredMarkers = allMarkers.filter((marker) => {
-        const distance = window.google.maps.geometry.spherical.computeDistanceBetween(midpointLatLng, marker.position);
-        return distance <= radius * 1000;
-      });
-
+      
+      let tempMarkers = filteredMarkers;
+      tempMarkers.push(homeMarker);
+      tempMarkers.push(userMarker);
+      tempMarkers.push(midpointMarker);
       setMarkers(filteredMarkers);
-      setCenter(midpointLatLng);
-
     } catch (error) {
       console.error(error);
     }
-  };
+  }; */
 
 
 
@@ -111,6 +106,7 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
           return {
             position: latLng,
             label: { color: 'black', text: ' ' },
+            icon: truckImage,
             link: links,
             location: name,
             address
@@ -118,7 +114,57 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
         })
       );
 
-      setAllMarkers(newMarkers);
+
+      const geocoder = new window.google.maps.Geocoder();
+      const location1Results = await geocoder.geocode({ address: location1 });
+      const location2Results = await geocoder.geocode({ address: location2 });
+
+      if (location1Results.length === 0 || location2Results.length === 0) {
+        console.error("One or both locations could not be geocoded");
+        return;
+      }
+
+      console.log(location1, location2)
+      const location1LatLng = location1Results.results[0].geometry.location;
+      const location2LatLng = location2Results.results[0].geometry.location;
+
+      const midpointLatLng = new window.google.maps.LatLng(
+        (location1LatLng.lat() + location2LatLng.lat()) / 2,
+        (location1LatLng.lng() + location2LatLng.lng()) / 2
+      );
+
+      const filteredMarkers = newMarkers.filter((marker) => {
+        const distance = window.google.maps.geometry.spherical.computeDistanceBetween(midpointLatLng, marker.position);
+        return distance <= radius * 1000;
+      });
+
+      const homeMarker = {
+        position: location1LatLng,
+        label: { color: 'black', text: ' ' },
+        icon: homeImage
+      }
+      const userMarker = {
+        position: location2LatLng,
+        label: { color: 'black', text: ' ' },
+        icon: userImage
+      }
+      const midpointMarker = {
+        position: midpointLatLng,
+        label: { color: 'black', text: ' ' },
+        icon: midpointImage
+      }
+      const schoolMarker = {
+        position: midpointLatLng,
+        label: { color: 'black', text: ' ' },
+        icon: schoolImage
+      }
+
+
+      filteredMarkers.push(homeMarker)
+      filteredMarkers.push(userMarker)
+      filteredMarkers.push(midpointMarker)
+
+      setMarkers(filteredMarkers);
     };
 
     fetchData();
@@ -128,11 +174,11 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
     <div>
       <Row >
         <Col>
-          <label className="w-25 text-dark" htmlFor="location1"> My Address:</label>
+          <label className="w-25 text-dark" htmlFor="location1"> Address:</label>
           <input type="text" className="w-70" id="location1" value={location1} onChange={handleLocation1Change} />
         </Col>
         <Col>
-          <label className="w-25 text-dark" htmlFor="location2"> Your Match:</label>
+          <label className="w-25 text-dark" htmlFor="location2"> Match's address:</label>
           <input type="text" className="w-70" id="location2" value={location2} onChange={handleLocation2Change} />
         </Col>
         <Col>
@@ -148,7 +194,7 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
               key={index}
               position={marker.position}
               label={marker.label}
-              icon={require('../img/marker.png')}
+              icon={marker.icon}
               draggable={false}
               onClick={() => {
                 setActiveInfoWindow(marker);
@@ -156,7 +202,7 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
                 handleMarkerClick(marker);
               }}
             >
-              {activeInfoWindow === marker && (
+              {activeInfoWindow === marker && marker.icon === require('../img/trucks.png') &&(
                 <InfoWindow
                   position={marker.position}
                   onCloseClick={handleInfoWindowClose}
@@ -168,7 +214,7 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
                   </div>
                 </InfoWindow>
               )}
-            </Marker>
+            </Marker> 
           ))}
           {directionsRenderer}
         </GoogleMap>

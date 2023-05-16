@@ -213,7 +213,7 @@ const Match = () => {
             ))}
 
           {hostProfile?.value?.can_match && rentalMapGuestProfile && (
-            <Modal show={rentalMapGuestProfile !== null} onClose={clearRentalMapGuestProfile}>
+            <Modal show={rentalMapGuestProfile !== null} onClose={clearRentalMapGuestProfile} size="xl">
               <Modal.Header>
                 <Button onClick={clearRentalMapGuestProfile}>
                   <i className="fa fa-close"></i>
@@ -226,6 +226,7 @@ const Match = () => {
               </Modal.Body>
             </Modal>
           )}
+
         </div>
       </div>
 
