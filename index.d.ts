@@ -6,6 +6,7 @@ export interface Student {
   first_name;
   last_name;
   school_id;
+  university;
   state;
   zip;
   street_add;
