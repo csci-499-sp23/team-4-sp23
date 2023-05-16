@@ -60,8 +60,9 @@ const RentalMap = ({ guestStudent, hostStudent,initialRadius }) => {
     );
   };
 
-  const handleInfoWindowClose = () => setActiveInfoWindow(null);
-
+  const handleInfoWindowClose = () => {
+    setActiveInfoWindow(null);
+  }
   const handleRadiusChange = (event) => {
     setRadius(parseInt(event.target.value));
   }
